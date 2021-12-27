@@ -28,6 +28,12 @@ class BookController extends Controller
         return Inertia::render('Setup/Books/Index' , compact('books'));
     }
 
+    public function list()
+    {
+        return Book::select( 'id', 'name', 'author_name' ,'description', 'class' , 'note', 'subject'
+        )->where('active' , true)->orderBy('name')->get();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
