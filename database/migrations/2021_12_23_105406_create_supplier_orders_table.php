@@ -16,10 +16,14 @@ class CreateSupplierOrdersTable extends Migration
         Schema::create('supplier_orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('supplier_id');
-            $table->unsignedBigInteger('publisher_id');
             $table->date('date');
+            $table->string('contact_person')->nullable();
+            $table->string('email')->nullable();
+            $table->string('mobile')->nullable();
+            $table->string('fax')->nullable();
+            $table->text('note')->nullable();
             $table->unsignedBigInteger('total_quantity')->default(0);
-            $table->double('total_amount', 10,4)->default(0);
+            $table->double('total_amount', 10,2)->default(0);
 
             $table->unsignedBigInteger('actor_id')->default('1');
             $table->ipAddress('actor_ip')->default('127.0.0.1');

@@ -15,11 +15,12 @@ class CreateSupplierOrderItemsTable extends Migration
     {
         Schema::create('supplier_order_items', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('supplier_id');
             $table->unsignedBigInteger('publisher_id');
-            $table->unsignedBigInteger('order_id');
-            $table->date('date');
             $table->unsignedBigInteger('book_id');
+            $table->string('class')->nullable();
+            $table->string('subject')->nullable();
             $table->integer('quantity')->default(0);
 
             $table->unsignedBigInteger('actor_id')->default('1');

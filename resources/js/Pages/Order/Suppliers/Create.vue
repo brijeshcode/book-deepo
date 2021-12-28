@@ -1,8 +1,8 @@
 <template>
-    <app-layout title="Suppliers">
+    <app-layout title="Supplier Order">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Suppliers <span v-if="edit">Edit</span> <span v-else>Create</span>
+                Supplier Order <span v-if="edit">Edit</span> <span v-else>Create</span>
             </h2>
         </template>
 
@@ -10,73 +10,94 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <div class="p-2">
-                        <form  @submit.prevent=" supplier ? form.put(route('suppliers.update', supplier.id)) : form.post(route('suppliers.store'))">
-                            <div class="mb-4">
-                                <jet-label for="location_id" required="true" value="Location" />
-                                <select id="location_id" v-model="form.location_id" class="w-60 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
-                                    <!-- <option>Select location</option> -->
-                                    <option v-for="location in locations" v-bind:value="location.id">{{ location.name }}</option>
-                                </select>
-                                <jet-input-error :message="form.errors.location_id" class="mt-2" />
+                        <form  @submit.prevent="submitData">
+                            <div class="flex flex-row mb-4">
+
+                                <div class="basis-1/4">
+                                    <jet-label for="supplier_id" required="true" value="Supplier" />
+                                    <select id="supplier_id" @change="changeSupplier($event)" v-model="form.supplier_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
+                                        <option v-for="supplier in suppliers" v-bind:value="supplier.id">{{ supplier.name }}</option>
+                                    </select>
+                                    <jet-input-error :message="form.errors.supplier_id" class="mt-2" />
+                                </div>
+
+                                <div class="mb-4 basis-1/4">
+                                    <jet-label for="contact_person" value="Contact Person Name" />
+                                    <jet-input id="contact_person" type="text" class="mt-1 block" v-model="form.contact_person" autocomplete="contact_person"  readonly />
+                                    <jet-input-error :message="form.errors.contact_person" class="mt-2" />
+                                </div>
+
+                                <div class="mb-4 basis-1/4">
+                                    <jet-label for="mobile" value="Mobile#" required="true" />
+                                    <jet-input id="mobile" type="text" class="mt-1 block" v-model="form.mobile" autocomplete="mobile" readonly />
+                                    <jet-input-error :message="form.errors.mobile" class="mt-2" />
+                                </div>
+
+                                <div class="mb-4 basis-1/4">
+                                    <jet-label for="email" value="Email" required="true" />
+                                    <jet-input id="email" type="text" class="mt-1 block" v-model="form.email" autocomplete="email" readonly />
+                                    <jet-input-error :message="form.errors.email" class="mt-2" />
+                                </div>
+                            </div>
+
+                            <div v-if="form.items.length" class="book-item-details">
+                                <div class="book-item-header">
+                                    <p>Add books to list:
+                                    <span @click="addBook" class="bg-green-400 hover:bg-green-700 hover:text-white p-2 pb-1 pl-2 pt-1 rounded cursor-pointer">Add Book</span>
+                                    </p>
+                                    <div class="flex flex-row">
+                                        <div class="basis-1/4"><jet-label value="Select Book" /></div>
+                                        <div class="basis-1/4"><jet-label value="Class" /></div>
+                                        <div class="basis-1/4"><jet-label value="Subject" /></div>
+                                        <div class="basis-1/4"><jet-label value="Quantity" /></div>
+                                    </div>
+                                </div>
+
+                                <div class="book-item-body">
+                                    <div v-for="(item,index) in form.items" class="flex flex-row row1">
+                                        <div class="basis-1/4">
+                                            <select v-model="item.book_id" @change="itemChange($event)" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
+                                                <option v-for="book in books" :value="book.id" v-text="book.name"></option>
+                                            </select>
+                                        </div>
+
+                                        <div class="basis-1/4">
+                                            <jet-input type="text" class="mt-1 block" v-model="item.class" readonly  />
+                                        </div>
+
+                                        <div class="basis-1/4">
+                                            <jet-input type="text" class="mt-1 block" v-model="item.subject" readonly />
+                                        </div>
+
+                                        <div class="basis-1/4">
+                                            <jet-input type="number" class="mt-1 block" v-model="item.quantity" />
+                                        </div>
+                                        <div class="basis-1/4">
+                                            <button type="button" v-on:click="removeRow(index, item.id)" v-if="index > 0" >
+                                              <span class="material-icons text-sm text-red-500">delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-row">
+                                        <div class="basis-1/4"></div>
+
+                                        <div class="basis-1/4"></div>
+
+                                        <div class="basis-1/4"></div>
+
+                                        <div class="basis-1/4">
+                                            <jet-input type="number" class="mt-1 block" readonly v-model="computeQuantity" />
+                                        </div>
+                                        <div class="basis-1/4">
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="mb-4">
-                                <jet-label for="name" required="true" value="Name" />
-                                <jet-input id="name" type="text" class="mt-1 block" v-model="form.name" autocomplete="name" />
-                                <jet-input-error :message="form.errors.name" class="mt-2" />
-                            </div>
-
-                            <div class="mb-4">
-                                <jet-label for="contact_person" value="Contact Person Name" />
-                                <jet-input id="contact_person" type="text" class="mt-1 block" v-model="form.contact_person" autocomplete="contact_person" />
-                                <jet-input-error :message="form.errors.contact_person" class="mt-2" />
-                            </div>
-
-                            <div class="mb-4">
-                                <jet-label for="mobile" value="Mobile#" required="true" />
-                                <jet-input id="mobile" type="text" class="mt-1 block" v-model="form.mobile" autocomplete="mobile" />
-                                <jet-input-error :message="form.errors.mobile" class="mt-2" />
-                            </div>
-
-                            <div class="mb-4">
-                                <jet-label for="email" value="Email" />
-                                <jet-input id="email" type="text" class="mt-1 block" v-model="form.email" autocomplete="email" />
-                                <jet-input-error :message="form.errors.email" class="mt-2" />
-                            </div>
-
-                            <div class="mb-4">
-                                <jet-label for="city" required="true" value="City" />
-                                <jet-input id="city" type="text" class="mt-1 block" v-model="form.city" autocomplete="city" />
-                                <jet-input-error :message="form.errors.city" class="mt-2" />
-                            </div>
-
-                            <div class="mb-4">
-                                <jet-label for="state" required="true" value="State" />
-                                <jet-input id="state" type="text" class="mt-1 block" v-model="form.state" autocomplete="state" />
-                                <jet-input-error :message="form.errors.state" class="mt-2" />
-                            </div>
-
-                            <div class="mb-4">
-                                <jet-label for="pincode" required="true" value="Pincode" />
-                                <jet-input id="pincode" type="text" class="mt-1 block" v-model="form.pincode" autocomplete="pincode" />
-                                <jet-input-error :message="form.errors.pincode" class="mt-2" />
-                            </div>
-
-                            <div class="mb-4">
-                                <jet-label for="note" value="Note" />
-                                <jet-input id="note" type="text" class="mt-1 block" v-model="form.note" autocomplete="note" />
-                                <jet-input-error :message="form.errors.note" class="mt-2" />
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="flex items-center">
-                                    <jet-checkbox name="active" v-model:checked="form.active" />
-                                    <span class="ml-2 text-sm text-gray-600">Active</span>
-                                </label>
-                            </div>
-
-                            <div class="mb-4">
-                                <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Save</jet-button>
+                                <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing && form.items.length ">Save</jet-button>
                             </div>
                         </form>
                     </div>
@@ -95,6 +116,8 @@
     import JetLabel from '@/Jetstream/Label.vue'
     import { useForm } from '@inertiajs/inertia-vue3'
     import JetCheckbox from '@/Jetstream/Checkbox.vue'
+    // import BookList from '@/Pages/Order/Supplier/BookList.vue'
+    import { Inertia } from '@inertiajs/inertia'
 
     export default defineComponent({
         components: {
@@ -103,38 +126,124 @@
             AppLayout,
             JetButton,
             JetLabel,
-            JetCheckbox
+            JetCheckbox,
+            // BookList
         },
-        props: ['supplier', 'locations'],
-         data: () => ({
-            edit: false
-         }),
+        props: ['suppliers','order'],
+        data: () => ({
+            edit: false,
+            books: []
+        }),
         setup () {
             const form = useForm({
               name: null,
-              location_id: '',
-              city: null,
-              state: null,
-              pincode: '',
+              supplier_id: '',
+              date: '',
               email: '',
               mobile: '',
               fax : '',
               contact_person: '',
               note: '',
-              active: false
-
-            })
+              total_quantity: 0,
+              total_amount: 0,
+              items: []
+            });
 
             return { form  }
         },
-
+        computed: {
+            computeQuantity: function () {
+                let qty = 0;
+                this.form.items.forEach((item) =>{ qty += parseInt(item.quantity); });
+                return qty;
+            }
+        },
         created(){
-            if (this.supplier) {
-
-                Object.keys(this.supplier).forEach((index) => {
-                    this.form[index] = this.supplier[index];
+            if (this.order) {
+                Object.keys(this.order).forEach((index) => {
+                    this.form[index] = this.order[index];
+                });
+                axios.get(route('suppliers.books', this.form.supplier_id)).then(supplierBooks =>{
+                    if(supplierBooks.data.books.length > 0){
+                        this.books = supplierBooks.data.books;
+                    }
                 });
                 this.edit = true;
+
+            }
+        },
+        methods:{
+            changeSupplier(event){
+                this.form.items = [];
+                this.suppliers.forEach((supplier, index) => {
+                    if (supplier.id == event.target.value ) {
+                        axios.get(route('suppliers.books', this.form.supplier_id)).then(supplierBooks =>{
+                            if(supplierBooks.data.books.length > 0){
+                                this.books = supplierBooks.data.books;
+                                this.form.mobile = supplier.mobile;
+                                this.form.email = supplier.email;
+                                this.form.contact_person = supplier.contact_person;
+                                this.addBook();
+                            }else{
+                                this.books = null;
+                            }
+                        });
+                    }
+                });
+            },
+            addBook(){
+                const item = {
+                    supplier_id : this.form.supplier_id,
+                    publisher_id : this.form.publisher_id,
+                    book_id : null,
+                    class: '',
+                    subject: '',
+                    quantity: 0,
+                };
+                this.form.items.push(item);
+            },
+
+            itemChange(event){
+                let book_id = event.target.value;
+                let book = {};
+                this.books.forEach((bookData) =>{
+                    if (bookData.id == event.target.value) {
+                        book = bookData;
+                    }
+                });
+                if (book) {
+                    this.form.items.forEach((item, index) =>{
+                        if(item.book_id == event.target.value){
+                            this.form.items[index].class= book.class;
+                            this.form.items[index].subject= book.subject;
+                            this.form.items[index].publisher_id= book.publisher_id;
+                        }
+                    });
+                }
+            },
+
+            removeRow(index, item_id = null) {
+                if (confirm('Are you sure?')) {
+                    this.form.items.splice(index, 1);
+                    if (item_id) {
+                        axios.delete(route('supplierOrderItem.delete', item_id));
+                    }
+                }
+            },
+
+            submitData(){
+                let canSubmit  = true;
+                this.form.items.forEach((item) =>{
+                    if(!item.book_id){
+                        canSubmit = false;
+                    }
+               });
+               if (canSubmit) {
+                    this.form.total_quantity = this.computeQuantity;
+                    this.order ? this.form.put(route('supplierOrder.update', this.order.id)) : this.form.post(route('supplierOrder.store'));
+               }else{
+                    alert('Order items are not set properly, "please select the book in the list" ');
+               }
             }
         }
     })

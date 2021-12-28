@@ -2,6 +2,8 @@
 
 namespace App\Models\Setup;
 
+use App\Models\Orders\SupplierOrder;
+use App\Models\Setup\Book;
 use App\Models\Setup\Location;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,5 +20,15 @@ class Supplier extends Model
     public function location()
     {
         return $this->belongsTo(Location::class);
+    }
+
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(SupplierOrder::class);
     }
 }

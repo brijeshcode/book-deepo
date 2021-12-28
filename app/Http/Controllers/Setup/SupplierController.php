@@ -100,6 +100,13 @@ class SupplierController extends Controller
         //
     }
 
+    public function books($publisher)
+    {
+        return Supplier::select('id', 'name')->with('books:id,supplier_id,name,class,subject,author_name')->where('id' , $publisher)->first();
+
+        // return response()->json($books);
+    }
+
     private function validateFull($request)
     {
         $tempName = 'Supplier';

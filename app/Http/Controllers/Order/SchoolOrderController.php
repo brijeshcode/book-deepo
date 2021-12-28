@@ -29,12 +29,14 @@ class SchoolOrderController extends Controller
 
     public function edit(Request $request, $order_id)
     {
-        $order = SchoolOrder::select('id', 'date', 'school_id', 'total_quantity', 'total_amount', 'fax', 'email' ,'mobile', 'contact_person' )
-                ->with('items:id,school_id,order_id,book_id,class,quantity,subject')
-                ->where('id', $order_id)->first();
+
+        $order = SchoolOrder::select('id','date','school_id','total_quantity','total_amount', 'fax', 'email', 'mobile',
+            'contact_person')->with('items:id,school_id,order_id,book_id,class,quantity,subject')->where('id',$order_id)->first();
+
         $schools = School::select('id', 'name', 'email' ,'mobile', 'contact_person')->where('active', 1)->orderBy('name')->get();
-        $books = Book::select( 'id', 'name', 'author_name' ,'description', 'class' , 'note', 'subject'
+        $books = Book::select( 'id', 'name', 'author_name','description', 'class' , 'note', 'subject'
         )->where('active' , true)->orderBy('name')->get();
+
         return Inertia::render('Order/Schools/Create', compact('schools', 'order', 'books'));
     }
 

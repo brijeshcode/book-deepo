@@ -3,6 +3,7 @@
 use App\Http\Controllers\Order\PublisherOrderController;
 use App\Http\Controllers\Order\PurchaseOrderController;
 use App\Http\Controllers\Order\SchoolOrderController;
+use App\Http\Controllers\Order\SupplierOrderController;
 use App\Http\Controllers\Setup\BookController;
 use App\Http\Controllers\Setup\LocationsController;
 use App\Http\Controllers\Setup\PublisherController;
@@ -55,6 +56,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/setup/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
     Route::get('/setup/suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
     Route::put('/setup/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+    Route::get('/supplier/{supplier}/books/', [PublisherController::class, 'books'])->name('suppliers.books');
 
     Route::get('/setup/books', [BookController::class, 'index'])->name('books');
     Route::get('/setup/books/create', [BookController::class, 'create'])->name('books.create');
@@ -77,6 +79,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/publisher/orders/{order}/edit', [PublisherOrderController::class, 'edit'])->name('publishersOrder.edit');
     Route::put('/publisher/orders/{order}', [PublisherOrderController::class, 'update'])->name('publishersOrder.update');
     Route::delete('/publisher/order/item/{item}/delete', [PublisherOrderController::class, 'deleteItem'])->name('publisherOrderItem.delete');
+
+    Route::get('/supplier/orders', [SupplierOrderController::class, 'index'])->name('supplierOrder');
+    Route::get('/supplier/order/create', [SupplierOrderController::class, 'create'])->name('supplierOrder.create');
+    Route::post('/supplier/order', [SupplierOrderController::class, 'store'])->name('supplierOrder.store');
+    Route::get('/supplier/order/{order}/edit', [SupplierOrderController::class, 'edit'])->name('supplierOrder.edit');
+    Route::put('/supplier/order/{order}', [SupplierOrderController::class, 'update'])->name('supplierOrder.update');
+    Route::delete('/supplier/orde/item/{item}/delete', [SupplierOrderController::class, 'deleteItem'])->name('supplierOrderItem.delete');
 
 
 

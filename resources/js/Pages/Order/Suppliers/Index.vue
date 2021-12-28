@@ -1,15 +1,15 @@
 <template>
-    <app-layout title="Suppliers">
+    <app-layout title="Supplier Orders">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Suppliers
+                Supplier Orders
             </h2>
         </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div>
-                        <Link :href="route('suppliers.create')" class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Create</Link>
+                        <Link :href="route('supplierOrder.create')" class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">New Order</Link>
                     </div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 
@@ -19,23 +19,24 @@
                       <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                           <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+
                             <table class="min-w-full divide-y divide-gray-200">
                               <thead class="bg-gray-50">
                                 <tr>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Name
+                                    Date
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    City
+                                    Suppliers
+s                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Contact Person
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    State
+                                    Quantity
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Pincode
-                                  </th>
-                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Email
+                                    Amount
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Note
@@ -44,44 +45,41 @@
                                 </tr>
                               </thead>
                               <tbody class="bg-white divide-y divide-gray-200">
-                                <tr v-for="supplier in suppliers.data" :key="supplier.id">
+                                <tr v-for="order in orders.data" :key="order.id">
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ supplier.name }}</div>
-                                    <span v-if="supplier.active" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                      Active
-                                    </span>
-                                    <span v-else class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                      in-Active
-                                    </span>
+                                    <div class="text-sm text-gray-500">{{ order.date }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-500">{{ supplier.city }}</div>
+                                    <div class="text-sm text-gray-900">{{ order.supplier.name }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-500">{{ supplier.state }}</div>
+                                    <div class="text-sm text-gray-900">{{ order.supplier.name }}</div>
+                                    <div class="text-sm text-gray-500">{{ order.email }}</div>
+                                    <div class="text-sm text-gray-500">{{ order.mobile }}</div>
+                                  </td>
+                                  <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-500">{{ order.total_quantity }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <div class="text-sm text-gray-500">{{ supplier.pincode }}</div>
+                                    <div class="text-sm text-gray-500">{{ order.total_amount }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <div class="text-sm text-gray-500">{{ supplier.email }}</div>
-                                  </td>
-                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <div class="text-sm text-gray-500">{{ supplier.note }}</div>
+                                    <div class="text-sm text-gray-500">{{ order.note }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <Link :href="route('suppliers.edit', supplier.id)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
+                                    <Link :href="route('supplierOrder.edit', order.id)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
+
                             <Pagination
-                              :links="suppliers.links"
-                              :from="suppliers.from"
-                              :to="suppliers.to"
-                              :total="suppliers.total"
-                              :previous="suppliers.prev_page_url"
-                              :next="suppliers.next_page_url"
+                              :links="orders.links"
+                              :from="orders.from"
+                              :to="orders.to"
+                              :total="orders.total"
+                              :previous="orders.prev_page_url"
+                              :next="orders.next_page_url"
                             />
                           </div>
                         </div>
@@ -107,7 +105,7 @@
             Pagination
         },
         props:{
-            suppliers: Object
+            orders: Object
         }
     })
 </script>
