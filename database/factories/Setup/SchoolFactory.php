@@ -54,7 +54,7 @@ class SchoolFactory extends Factory
         ];
         // $school name
         return [
-            'location_id' => $this->faker->randomDigitNotNull(),
+            'warehouse_id' => $this->faker->randomElement([1,2,3,4,5]),
             'name' => $this->faker->firstName() . ' Public School',
             'city' => $this->faker->city(),
             'email' => $this->faker->email(),

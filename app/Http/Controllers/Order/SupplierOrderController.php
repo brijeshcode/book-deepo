@@ -20,7 +20,7 @@ class SupplierOrderController extends Controller
 
     public function create(Request $request)
     {
-        $suppliers = Supplier::select('id', 'name', 'email' ,'mobile', 'contact_person')->where('active', 1)->orderBy('name')->has('books')->get();
+        $suppliers = Supplier::select('id','name','email','mobile','contact_person')->where('active', 1)->orderBy('name')->has('books')->get();
         return Inertia::render('Order/Suppliers/Create', compact('suppliers'));
     }
 

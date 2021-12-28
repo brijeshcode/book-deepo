@@ -9,7 +9,7 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div>
-                        <Link :href="route('schools.create')" class="mb-6 p-2 shadow-xl bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Create School</Link>
+                        <Link :href="route('schools.create')" class="mb-6 p-2 shadow-xl bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Add School</Link>
                         &nbsp;
                         <Link :href="route('schoolOrder')" class="mb-6 p-2 ml-2 bg-green-400 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Orders</Link>
                     </div>
@@ -32,7 +32,7 @@
                                   </th>
 
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Location
+                                    Warehouse
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                 </tr>
@@ -55,7 +55,7 @@
                                   </td>
 
                                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <div class="text-sm text-gray-900">{{ school.location }}</div>
+                                    <div class="text-sm text-gray-900">{{ school.warehouse }}</div>
                                     <div class="text-sm text-gray-800">{{ school.city }}, {{ school.state }}</div>
                                       <div class="text-sm text-gray-500"> ({{ school.pincode }})</div>
                                   </td>

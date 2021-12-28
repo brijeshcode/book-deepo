@@ -12,7 +12,6 @@ use Inertia\Inertia;
 
 class SchoolOrderController extends Controller
 {
-    //
     public function index(Request $request)
     {
         $orders = SchoolOrder::with('school:id,name')->select('id', 'school_id','email' , 'date', 'mobile', 'fax', 'contact_person',  'note', 'total_quantity', 'total_amount' )->orderBy('id', 'desc')->paginate(5);

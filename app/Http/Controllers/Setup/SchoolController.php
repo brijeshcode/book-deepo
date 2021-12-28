@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Setup;
 
 use App\Http\Controllers\Controller;
-use App\Models\Setup\Location;
+use App\Models\Setup\Warehouse;
 use App\Models\Setup\School;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,12 +17,13 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        $schools = School::with('location')->orderBy('id', 'desc')->paginate(10)->through(fn($school) => [
+        $schools = School::with('warehouse')->orderBy('id', 'desc')->paginate(10)->through(fn($school) => [
             'id' => $school->id,
             'name' => $school->name,'city' => $school->city,'state' => $school->state, 'contact_person' => $school->contact_person,
             'pincode' => $school->pincode, 'email' => $school->email, 'note' => $school->note,
             'mobile'=> $school->mobile, 'active' => $school->active,
-            'location' => $school->location->name
+            'warehouse' => $school->warehouse->name,
+            // 'location' => $school->warehouse->location->name
         ]);
         return Inertia::render('Setup/Schools/Index' , compact('schools'));
     }
@@ -34,8 +35,8 @@ class SchoolController extends Controller
      */
     public function create()
     {
-        $locations = Location::select('id', 'name', 'city', 'state' , 'pincode')->where('active', 1)->orderBy('name')->get();
-        return Inertia::render('Setup/Schools/Create', compact('locations'));
+        $warehouses = Warehouse::select('id', 'name', 'city', 'state' , 'pincode')->where('active', 1)->orderBy('name')->get();
+        return Inertia::render('Setup/Schools/Create', compact('warehouses'));
     }
 
     /**
@@ -70,9 +71,9 @@ class SchoolController extends Controller
      */
     public function edit(School $school)
     {
-        $locations = Location::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
-        $school = $school->only('id','name', 'email', 'city', 'state', 'mobile', 'location_id', 'contact_person', 'pincode', 'note', 'active');
-        return Inertia::render('Setup/Schools/Create', compact('school', 'locations'));
+        $warehouses = Warehouse::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
+        $school = $school->only('id','name', 'email', 'city', 'state', 'mobile', 'warehouse_id', 'contact_person', 'pincode', 'note', 'active');
+        return Inertia::render('Setup/Schools/Create', compact('school', 'warehouses'));
     }
 
     /**
@@ -110,7 +111,7 @@ class SchoolController extends Controller
                 'state' => 'required|max:50',
                 'pincode' => 'required|digits:6',
                 'mobile' => 'required|digits:10',
-                'location_id' => 'required',
+                'warehouse_id' => 'required',
                 'email' => 'email',
             ],
             [

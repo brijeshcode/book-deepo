@@ -29,14 +29,6 @@
                                     Locations
                                 </jet-nav-link>
                             </div>
-
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('schools')" :active="route().current('schools')">
-                                    Schools
-                                </jet-nav-link>
-                            </div>
-
-
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('warehouses')" :active="route().current('warehouses')">
                                     Warehouses
@@ -54,6 +46,13 @@
                                     Publishers
                                 </jet-nav-link>
                             </div>
+
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link :href="route('schools')" :active="route().current('schools')">
+                                    Schools
+                                </jet-nav-link>
+                            </div>
+
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('books')" :active="route().current('books')">
                                     Books

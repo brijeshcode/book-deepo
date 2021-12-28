@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Setup;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setup\Location;
+use App\Models\Setup\School;
 use App\Models\Setup\Warehouse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -98,6 +99,11 @@ class WarehouseController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function schools($warehouse_id)
+    {
+        return School::select('id', 'name')->where('warehouse_id' , $warehouse_id)->get();
     }
 
     private function validateFull($request)

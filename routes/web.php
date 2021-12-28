@@ -39,24 +39,29 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/setup/locations/{location}/edit', [LocationsController::class, 'edit'])->name('locations.edit');
     Route::put('/setup/locations/{location}', [LocationsController::class, 'update'])->name('locations.update');
 
-    Route::get('/setup/schools', [SchoolController::class, 'index'])->name('schools');
-    Route::get('/setup/schools/create', [SchoolController::class, 'create'])->name('schools.create');
-    Route::post('/setup/schools', [SchoolController::class, 'store'])->name('schools.store');
-    Route::get('/setup/schools/{school}/edit', [SchoolController::class, 'edit'])->name('schools.edit');
-    Route::put('/setup/schools/{school}', [SchoolController::class, 'update'])->name('schools.update');
-
     Route::get('/setup/warehouses', [WarehouseController::class, 'index'])->name('warehouses');
     Route::get('/setup/warehouses/create', [WarehouseController::class, 'create'])->name('warehouses.create');
     Route::post('/setup/warehouses', [WarehouseController::class, 'store'])->name('warehouses.store');
     Route::get('/setup/warehouses/{warehouse}/edit', [WarehouseController::class, 'edit'])->name('warehouses.edit');
     Route::put('/setup/warehouses/{warehouse}', [WarehouseController::class, 'update'])->name('warehouses.update');
 
+    Route::get('/warehouse/{warehouse_id}/schools', [WarehouseController::class, 'schools'])->name('warehouse.schools');
+
+    Route::get('/setup/schools', [SchoolController::class, 'index'])->name('schools');
+    Route::get('/setup/schools/create', [SchoolController::class, 'create'])->name('schools.create');
+    // Route::get('/setup/schools/{school}', [SchoolController::class, 'create'])->name('schools.create');
+    Route::post('/setup/schools', [SchoolController::class, 'store'])->name('schools.store');
+    Route::get('/setup/schools/{school}/edit', [SchoolController::class, 'edit'])->name('schools.edit');
+    Route::put('/setup/schools/{school}', [SchoolController::class, 'update'])->name('schools.update');
+
+
     Route::get('/setup/suppliers', [SupplierController::class, 'index'])->name('suppliers');
+    Route::get('/setup/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
     Route::get('/setup/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
     Route::post('/setup/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
     Route::get('/setup/suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
     Route::put('/setup/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
-    Route::get('/supplier/{supplier}/books/', [PublisherController::class, 'books'])->name('suppliers.books');
+    Route::get('/supplier/{supplier}/books/', [SupplierController::class, 'books'])->name('suppliers.books');
 
     Route::get('/setup/books', [BookController::class, 'index'])->name('books');
     Route::get('/setup/books/create', [BookController::class, 'create'])->name('books.create');

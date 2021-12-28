@@ -12,8 +12,6 @@
                         <Link :href="route('supplierOrder.create')" class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">New Order</Link>
                     </div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-
-
                     <!-- This example requires Tailwind CSS v2.0+ -->
                     <div class="flex flex-col">
                       <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -27,7 +25,7 @@
                                     Date
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Suppliers
+                                    Supplier
 s                                  </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Contact Person

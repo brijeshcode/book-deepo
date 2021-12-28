@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePublishersTable extends Migration
+class CreateBooksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,20 @@ class CreatePublishersTable extends Migration
      */
     public function up()
     {
-        Schema::create('publishers', function (Blueprint $table) {
+        Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('location_id');
+            $table->unsignedBigInteger('publisher_id')->nullable();
+            $table->unsignedBigInteger('supplier_id')->nullable();
+            $table->unsignedBigInteger('warehouse_id')->nullable();
+            $table->unsignedBigInteger('school_id')->nullable();
             $table->string('name');
-            $table->string('city');
-            $table->string('state');
-            $table->string('pincode');
-            $table->string('email');
-            $table->string('contact_person')->nullable();
-            $table->string('mobile')->nullable();
-            $table->string('fax')->nullable();
+            $table->string('sku_no')->unique();
+            $table->integer('quantity')->default(0);
+            $table->double('cost', 10, 2)->default(0);
+            $table->string('author_name')->nullable();
+            $table->string('class')->nullable();
+            $table->string('subject')->nullable();
+            $table->string('description')->nullable();
             $table->string('note')->nullable()->comment('additional information for this entry');
             $table->boolean('active')->default(true);
 
@@ -41,6 +44,6 @@ class CreatePublishersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('publishers');
+        Schema::dropIfExists('books');
     }
 }

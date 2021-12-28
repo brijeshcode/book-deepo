@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Book extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = [ 'supplier_id' ,'publisher_id' ,'subject', 'name', 'author_name', 'description', 'class', 'note', 'active', 'actor_id', 'actor_ip'];
+    protected $fillable = [ 'supplier_id' ,'publisher_id', 'sku_no','cost', 'warehouse_id', 'school_id' ,'subject', 'name', 'author_name', 'description', 'class', 'quantity', 'note', 'active', 'actor_id', 'actor_ip'];
 
     protected $casts = [
       'active' => 'boolean'

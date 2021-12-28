@@ -5,17 +5,16 @@ namespace App\Http\Controllers\Setup;
 use App\Http\Controllers\Controller;
 use App\Models\Setup\Book;
 use App\Models\Setup\Publisher;
+use App\Models\Setup\School;
 use App\Models\Setup\Supplier;
+use App\Models\Setup\Warehouse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Validation\Rule;
+
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $books = Book::orderBy('id', 'desc')->paginate(10)->through(fn($book) => [
@@ -34,21 +33,19 @@ class BookController extends Controller
         )->where('active' , true)->orderBy('name')->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $suppliers = Supplier::select('id', 'name')->where('active', 1)->orderBy('name')->get();
         $publishers = Publisher::select('id', 'name')->where('active', 1)->orderBy('name')->get();
-        return Inertia::render('Setup/Books/Create', compact('suppliers','publishers') );
+        $warehouses = Warehouse::select('id', 'name')->where('active', 1)->orderBy('name')->get();
+
+        return Inertia::render('Setup/Books/Create', compact('suppliers','publishers', 'warehouses') );
     }
 
     public function store(Request $request)
     {
         $this->validateFull($request);
+        // dd($request);
         Book::create($request->all());
         return redirect(route('books'));
     }
@@ -62,20 +59,15 @@ class BookController extends Controller
     {
         $suppliers = Supplier::select('id', 'name')->where('active', 1)->orderBy('name')->get();
         $publishers = Publisher::select('id', 'name')->where('active', 1)->orderBy('name')->get();
-        $book = $book->only('id','name', 'author_name','subject', 'supplier_id', 'publisher_id', 'description', 'class', 'note', 'active');
-        return Inertia::render('Setup/Books/Create', compact('book', 'suppliers', 'publishers'));
+        $warehouses = Warehouse::select('id', 'name')->where('active', 1)->orderBy('name')->get();
+        $book = $book->only('id','name', 'sku_no', 'cost', 'quantity', 'school_id', 'warehouse_id', 'author_name','subject', 'supplier_id', 'publisher_id', 'description', 'class', 'note', 'active');
+
+        return Inertia::render('Setup/Books/Create', compact('book', 'suppliers', 'publishers', 'warehouses'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Book $book)
     {
-        $this->validateFull($request);
+        $this->validateUpdate($request , $book);
         $book->update($request->all());
         return redirect(route('books'));
     }
@@ -91,10 +83,52 @@ class BookController extends Controller
         $request->validate(
             [
                 'name' => 'required|max:150',
+                'publisher_id' => 'required',
+                'subject' => 'required',
+                'class' => 'required',
+                'warehouse_id' => 'required',
+                'school_id' => 'required',
+                'sku_no' => 'required|unique:books|min:3'
             ],
             [
                 'name.required' => $tempName .' Name is empty.' ,
                 'name.max' => $tempName .'Name must be smaller then 150 characters' ,
+                'publisher_id.required' => 'Please select publisher.' ,
+                'warehouse_id.required' => 'Please select warehouses.' ,
+                'school_id.required' => 'Please select school.' ,
+                'class.required' => $tempName .' Class is empty.' ,
+                'subject.required' => $tempName .' Subject is empty.' ,
+                'sku_no.required' => 'SKU number cannot be empty.',
+                'sku_no.min' => 'SKU number must be atleast 3 characters.',
+                'sku_no.unique' => 'This SKU number is already in system.'
+            ]
+        );
+    }
+
+    private function validateUpdate($request, $book)
+    {
+        $tempName = 'Book';
+        $request->validate(
+            [
+                'name' => 'required|max:150',
+                'publisher_id' => 'required',
+                'subject' => 'required',
+                'class' => 'required',
+                'warehouse_id' => 'required',
+                'school_id' => 'required',
+                'sku_no' => ['required','min:3',Rule::unique('books')->ignore($book->id)]
+            ],
+            [
+                'name.required' => $tempName .' Name is empty.' ,
+                'name.max' => $tempName .'Name must be smaller then 150 characters' ,
+                'publisher_id.required' => 'Please select publisher.' ,
+                'warehouse_id.required' => 'Please select warehouses.' ,
+                'school_id.required' => 'Please select school.' ,
+                'class.required' => $tempName .' Class is empty.' ,
+                'subject.required' => $tempName .' Subject is empty.' ,
+                'sku_no.required' => 'SKU number cannot be empty.',
+                'sku_no.min' => 'SKU number must be atleast 3 characters.',
+                'sku_no.unique' => 'This SKU number is already in system.'
             ]
         );
     }

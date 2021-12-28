@@ -17,10 +17,10 @@ class CreateSuppliersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('location_id');
             $table->string('name');
-            $table->string('city');
-            $table->string('state');
-            $table->string('pincode');
             $table->string('email');
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('pincode')->nullable();
             $table->string('contact_person')->nullable();
             $table->string('mobile')->nullable();
             $table->string('fax')->nullable();
