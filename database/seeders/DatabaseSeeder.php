@@ -21,21 +21,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        /*User::query()->truncate();
+        User::query()->truncate();
         Location::query()->truncate();
         Warehouse::query()->truncate();
         School::query()->truncate();
         Supplier::query()->truncate();
-        Publisher::query()->truncate();*/
+        Publisher::query()->truncate();
         Book::query()->truncate();
-        // $this->call(UserSeeder::class);
+        $this->call(UserSeeder::class);
 
-        /*User::factory(3)->create();
+        User::factory(3)->create();
         Location::factory(10)->create();
         Warehouse::factory(5)->create();
         School::factory(10)->create();
         Supplier::factory(10)->create();
-        Publisher::factory(10)->create();*/
+        Publisher::factory(10)->create();
         Book::factory(500)->create();
     }
 }
