@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Setup;
 
 use App\Http\Controllers\Controller;
-use App\Models\Setup\Warehouse;
+use App\Models\Setup\Book;
 use App\Models\Setup\School;
+use App\Models\Setup\Warehouse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -99,6 +100,23 @@ class SchoolController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function checkStock(Request $request, $school)
+    {/*
+        $schoolBooks = Book::where('school_id',$school)->where('quantity', '>', 0 )->where('active' , true)->limit(3)->get();
+        $report = [];
+        foreach ($request->items as $key => $item) {
+            foreach ($schoolBooks as $skey => $sbook) {
+                if ($item->book_id == $sbook->id  ) {
+                    $report[$item->book_id] = [
+                        'id' => $sbook->id,
+                        'name' => $sbook->name,
+                        'quantity' => $sbook->quantity
+                    ];
+                }
+            }
+        }*/
     }
 
     private function validateFull($request)

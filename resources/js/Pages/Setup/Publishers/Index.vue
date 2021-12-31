@@ -9,7 +9,7 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div>
-                        <Link :href="route('publishers.create')" class="mb-6 p-2 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Create Publisher</Link>
+                        <Link :href="route('publishers.create')" class="mb-6 p-2 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Add Publisher</Link>
                         &nbsp;
                         <Link :href="route('publishersOrder')" class="mb-6 p-2 bg-green-400 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Orders</Link>
                     </div>

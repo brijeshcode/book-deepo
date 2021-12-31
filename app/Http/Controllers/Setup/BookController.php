@@ -17,13 +17,11 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::orderBy('id', 'desc')->paginate(10)->through(fn($book) => [
-            'id' => $book->id,
-            'name' => $book->name,'author_name' => $book->author_name,'description' => $book->description,
-            'class' => $book->class, 'note' => $book->note,
-            'subject' => $book->subject,
-            'active' => $book->active
-        ]);
+        $books = Book::select('id', 'warehouse_id', 'school_id' , 'supplier_id' ,'publisher_id', 'sku_no','cost', 'subject', 'name', 'author_name', 'description', 'class', 'quantity', 'note', 'active')
+            ->with(
+                'school:id,name,city,state,pincode,contact_person,mobile,active,email',
+                'warehouse:id,name,city,state,pincode,contact_person,mobile,active,email')->paginate(10);
+
         return Inertia::render('Setup/Books/Index' , compact('books'));
     }
 

@@ -9,7 +9,9 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div>
-                        <Link :href="route('suppliers.create')" class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Create</Link>
+                        <Link :href="route('suppliers.create')" class="mb-6 p-2 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Add Supplier</Link>
+                        &nbsp;
+                        <Link :href="route('supplierOrder')" class="mb-6 p-2 bg-green-400 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Orders</Link>
                     </div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 

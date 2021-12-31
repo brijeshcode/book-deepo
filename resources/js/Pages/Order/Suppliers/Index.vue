@@ -9,7 +9,9 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div>
-                        <Link :href="route('supplierOrder.create')" class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">New Order</Link>
+                        <Link :href="route('suppliers')" class="mb-6 p-2 shadow-xl bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Suppliers</Link>
+                        &nbsp;
+                        <Link :href="route('supplierOrder.create')" class="mb-6 p-2  bg-green-400 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Generate Order</Link>
                     </div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <!-- This example requires Tailwind CSS v2.0+ -->

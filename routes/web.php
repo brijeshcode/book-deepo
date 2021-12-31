@@ -54,6 +54,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/setup/schools/{school}/edit', [SchoolController::class, 'edit'])->name('schools.edit');
     Route::put('/setup/schools/{school}', [SchoolController::class, 'update'])->name('schools.update');
 
+    // check stock in given school by book list
+    Route::post('/school/{school}/check-stock', [SchoolController::class, 'checkStock'])->name('school.checkStock');
+    // Route::get('/school/{school}/get-stock', [SchoolController::class, 'getStock'])->name('school.getStock');
+
 
     Route::get('/setup/suppliers', [SupplierController::class, 'index'])->name('suppliers');
     Route::get('/setup/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
@@ -100,6 +104,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/school/orders/{order}/edit', [SchoolOrderController::class, 'edit'])->name('schoolOrder.edit');
     Route::put('/school/orders/{order}', [SchoolOrderController::class, 'update'])->name('schoolOrder.update');
     Route::delete('/school/order/item/{item}/delete', [SchoolOrderController::class, 'deleteItem'])->name('schoolOrderItem.delete');
+
+
+
 
     /*Route::get('/order/supplier', [SupplierOrderController::class, 'index'])->name('publishersOrder');
     Route::get('/order/supplier/create', [SupplierOrderController::class, 'create'])->name('publishersOrder.create');

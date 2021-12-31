@@ -3,7 +3,9 @@
 namespace App\Models\Setup;
 
 use App\Models\Setup\Publisher;
+use App\Models\Setup\School;
 use App\Models\Setup\Supplier;
+use App\Models\Setup\Warehouse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,7 +19,7 @@ class Book extends Model
       'active' => 'boolean'
     ];
 
-    public function suppler()
+    public function supplier()
     {
         return $this->belongsTo(Supplier::class);
     }
@@ -25,6 +27,16 @@ class Book extends Model
     public function publisher()
     {
         return $this->belongsTo(Publisher::class);
+    }
+
+    public function school()
+    {
+        return $this->belongsTo(School::class);
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
     }
 
 }
