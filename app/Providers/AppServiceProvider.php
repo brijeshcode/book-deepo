@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $host = request()->getHttpHost();
-        dd($host);
+        // dd($host);
         if ($host != "127.0.0.1:8000") {
             \URL::forceScheme('https');
         }
