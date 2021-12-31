@@ -102,7 +102,7 @@ class SupplierController extends Controller
 
     public function books($publisher)
     {
-        return Supplier::select('id', 'name')->with('books:id,supplier_id,name,class,subject,author_name')->where('id' , $publisher)->first();
+        return Supplier::select('id', 'name')->with('books:id,supplier_id,publisher_id,name,class,subject,author_name')->where('id' , $publisher)->first();
 
         // return response()->json($books);
     }
