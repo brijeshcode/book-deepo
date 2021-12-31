@@ -475,7 +475,7 @@ __webpack_require__.r(__webpack_exports__);
     addBook: function addBook() {
       var item = {
         supplier_id: this.form.supplier_id,
-        publisher_id: this.form.publisher_id,
+        publisher_id: '',
         book_id: null,
         "class": '',
         subject: '',
