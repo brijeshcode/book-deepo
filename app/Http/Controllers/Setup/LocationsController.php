@@ -12,7 +12,17 @@ class LocationsController extends Controller
     public function index(Request $request)
     {
         $locations = Location::select('id', 'name', 'city', 'state',  'pincode', 'active', 'note')
-            ->orderBy('id', 'desc')->paginate(4);
+            ->when($request->search, function ($query, $search){
+                $query->where('name', 'like', '%'. $search . '%');
+                $query->orWhere('city', 'like', '%'. $search . '%');
+                $query->orWhere('state', 'like', '%'. $search . '%');
+                $query->orWhere('pincode', 'like', '%'. $search . '%');
+                $query->orWhere('note', 'like', '%'. $search . '%');
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(4)
+            ->withQueryString()
+            ;
         return Inertia::render('Setup/Locations/Index' , compact('locations'));
     }
 

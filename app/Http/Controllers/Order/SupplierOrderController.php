@@ -14,7 +14,18 @@ class SupplierOrderController extends Controller
     //
     public function index(Request $request)
     {
-        $orders = SupplierOrder::with('supplier:id,name')->select('id', 'supplier_id','email' , 'date', 'mobile', 'fax', 'contact_person',  'note', 'total_quantity', 'total_amount' )->orderBy('id', 'desc')->paginate(5);
+        $orders = SupplierOrder::with('supplier:id,name')->select('id', 'supplier_id','email' , 'date', 'mobile', 'fax', 'contact_person',  'note', 'total_quantity', 'total_amount' )->orderBy('id', 'desc')
+        ->when($request->search, function ($query, $search){
+            $query->where('total_quantity', 'like', '%'. $search . '%');
+            $query->where('total_amount', 'like', '%'. $search . '%');
+            $query->orWhere('contact_person', 'like', '%'. $search . '%');
+            $query->orWhere('email', 'like', '%'. $search . '%');
+            $query->orWhere('date', 'like', '%'. $search . '%');
+            $query->orWhere('mobile', 'like', '%'. $search . '%');
+            $query->orWhere('note', 'like', '%'. $search . '%');
+            // $query->orWhere('supplier.name', 'like', '%'. $search . '%');
+        })
+        ->paginate(10)->withQueryString();
         return Inertia::render('Order/Suppliers/Index', compact('orders'));
     }
 

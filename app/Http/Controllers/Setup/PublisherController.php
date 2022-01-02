@@ -11,9 +11,20 @@ use Inertia\Inertia;
 
 class PublisherController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $publishers = Publisher::with('location')->orderBy('id', 'desc')->paginate(10)->through(fn($publisher) => [
+        $publishers = Publisher::with('location')->orderBy('id', 'desc')
+         ->when($request->search, function ($query, $search){
+            $query->where('name', 'like', '%'. $search . '%');
+            $query->orWhere('contact_person', 'like', '%'. $search . '%');
+            $query->orWhere('email', 'like', '%'. $search . '%');
+            $query->orWhere('city', 'like', '%'. $search . '%');
+            $query->orWhere('state', 'like', '%'. $search . '%');
+            $query->orWhere('pincode', 'like', '%'. $search . '%');
+            $query->orWhere('mobile', 'like', '%'. $search . '%');
+            $query->orWhere('note', 'like', '%'. $search . '%');
+        })
+        ->paginate(10)->withQueryString()->through(fn($publisher) => [
             'id' => $publisher->id,
             'name' => $publisher->name,'city' => $publisher->city,'state' => $publisher->state, 'contact_person' => $publisher->contact_person,
             'pincode' => $publisher->pincode, 'email' => $publisher->email, 'note' => $publisher->note,

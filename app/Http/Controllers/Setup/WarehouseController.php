@@ -16,9 +16,20 @@ class WarehouseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $warehouses = Warehouse::with('location')->orderBy('id', 'desc')->paginate(10)->through(fn($warehouse) => [
+        $warehouses = Warehouse::with('location')->orderBy('id', 'desc')
+        ->when($request->search, function ($query, $search){
+            $query->where('name', 'like', '%'. $search . '%');
+            $query->orWhere('contact_person', 'like', '%'. $search . '%');
+            $query->orWhere('email', 'like', '%'. $search . '%');
+            $query->orWhere('city', 'like', '%'. $search . '%');
+            $query->orWhere('state', 'like', '%'. $search . '%');
+            $query->orWhere('pincode', 'like', '%'. $search . '%');
+            $query->orWhere('mobile', 'like', '%'. $search . '%');
+            $query->orWhere('note', 'like', '%'. $search . '%');
+        })
+        ->paginate(10)->withQueryString()->through(fn($warehouse) => [
             'id' => $warehouse->id,
             'name' => $warehouse->name,'city' => $warehouse->city,'state' => $warehouse->state, 'contact_person' => $warehouse->contact_person,
             'pincode' => $warehouse->pincode, 'email' => $warehouse->email, 'note' => $warehouse->note,

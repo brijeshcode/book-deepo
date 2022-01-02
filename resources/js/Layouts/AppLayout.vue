@@ -36,22 +36,71 @@
                             </div>
 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('suppliers')" :active="route().current('suppliers')">
+                                <jet-dropdown align="left" width="48">
+                                    <template #trigger>
+                                           <div class="items-center py-6 cursor-pointer text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">Suppliers</div>
+                                    </template>
+
+                                    <template #content>
+
+                                        <jet-dropdown-link :href="route('suppliers')">
+                                            List
+                                        </jet-dropdown-link>
+
+                                        <jet-dropdown-link :href="route('supplierOrder')">
+                                            Orders
+                                        </jet-dropdown-link>
+
+
+                                    </template>
+                                </jet-dropdown>
+                                <!-- <jet-nav-link :href="route('suppliers')" :active="route().current('suppliers')">
                                     Suppliers
-                                </jet-nav-link>
+                                </jet-nav-link> -->
                             </div>
 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('publishers')" :active="route().current('publishers')">
-                                    Publishers
-                                </jet-nav-link>
+                                <jet-dropdown align="left" width="48">
+                                    <template #trigger>
+                                           <div class="items-center py-6 cursor-pointer text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">Publishers</div>
+                                    </template>
+
+                                    <template #content>
+
+                                        <jet-dropdown-link :href="route('publishers')">
+                                            List
+                                        </jet-dropdown-link>
+
+                                        <jet-dropdown-link :href="route('publishersOrder')">
+                                            Orders
+                                        </jet-dropdown-link>
+
+
+                                    </template>
+                                </jet-dropdown>
                             </div>
 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('schools')" :active="route().current('schools')">
-                                    Schools
-                                </jet-nav-link>
+                                <jet-dropdown align="left" width="48">
+                                    <template #trigger>
+                                           <div class="items-center py-6 cursor-pointer text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">Schools</div>
+                                    </template>
+
+                                    <template #content>
+
+                                        <jet-dropdown-link :href="route('schools')">
+                                            List
+                                        </jet-dropdown-link>
+
+                                        <jet-dropdown-link :href="route('schoolOrder')">
+                                            Orders
+                                        </jet-dropdown-link>
+
+
+                                    </template>
+                                </jet-dropdown>
                             </div>
+
 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('books')" :active="route().current('books')">
@@ -278,11 +327,18 @@
 
             <!-- Page Heading -->
             <header class="bg-white shadow" v-if="$slots.header">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between">
                     <slot name="header"></slot>
                 </div>
             </header>
 
+            <!-- Page Actions -->
+            <div class="pageactions">
+                <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8 flex justify-between">
+                    <slot name="breadcrum"></slot>
+                    <slot name="actions"></slot>
+                </div>
+            </div>
             <!-- Page Content -->
             <main>
                 <slot></slot>
@@ -295,6 +351,7 @@
     import { defineComponent } from 'vue'
     import JetApplicationMark from '@/Jetstream/ApplicationMark.vue'
     import JetBanner from '@/Jetstream/Banner.vue'
+    // import JetInput from '@/Jetstream/Input.vue'
     import JetDropdown from '@/Jetstream/Dropdown.vue'
     import JetDropdownLink from '@/Jetstream/DropdownLink.vue'
     import JetNavLink from '@/Jetstream/NavLink.vue'
@@ -310,6 +367,7 @@
             Head,
             JetApplicationMark,
             JetBanner,
+            // JetInput,
             JetDropdown,
             JetDropdownLink,
             JetNavLink,

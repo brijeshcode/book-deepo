@@ -15,9 +15,20 @@ class SupplierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $suppliers = Supplier::with('location')->orderBy('id', 'desc')->paginate(10)->through(fn($supplier) => [
+        $suppliers = Supplier::with('location')->orderBy('id', 'desc')
+         ->when($request->search, function ($query, $search){
+            $query->where('name', 'like', '%'. $search . '%');
+            $query->orWhere('contact_person', 'like', '%'. $search . '%');
+            $query->orWhere('email', 'like', '%'. $search . '%');
+            $query->orWhere('city', 'like', '%'. $search . '%');
+            $query->orWhere('state', 'like', '%'. $search . '%');
+            $query->orWhere('pincode', 'like', '%'. $search . '%');
+            $query->orWhere('mobile', 'like', '%'. $search . '%');
+            $query->orWhere('note', 'like', '%'. $search . '%');
+        })
+        ->paginate(10)->withQueryString()->through(fn($supplier) => [
             'id' => $supplier->id,
             'name' => $supplier->name,'city' => $supplier->city,'state' => $supplier->state, 'contact_person' => $supplier->contact_person,
             'pincode' => $supplier->pincode, 'email' => $supplier->email, 'note' => $supplier->note,

@@ -6,33 +6,20 @@
             </h2>
         </template>
 
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class=" breadcrum flex items-center py-4 overflow-y-auto whitespace-nowrap">
-                <Link :href="route('dashboard')" class="text-gray-600 dark:text-gray-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                    </svg>
-                </Link>
+        <template #breadcrum>
+            <bread-simple :items="[ { route: 'books'} ]" />
+        </template>
 
-                <span class="mx-5 text-gray-500 dark:text-gray-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                    </svg>
-                </span>
-
-                <Link :href="route('books')"  class="text-blue-600 dark:text-blue-200 hover:underline">Books</Link>
+        <template #actions>
+            <div class="flex">
+              <search searchRoute='books' />
+              <Add-link createRoute="books.create" withIcon />
             </div>
-        </div>
+        </template>
 
-        <div class="py-12">
+        <div class="pb-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div>
-                        <Link :href="route('books.create')" class="mb-6 p-2 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto">Create</Link>
-                    </div>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-
-
-                    <!-- This example requires Tailwind CSS v2.0+ -->
                     <div class="flex flex-col">
                       <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -95,20 +82,13 @@
                                   <td>
                                     <div class="truncate w-20">{{ book.note }}</div>
                                   </td>
-                                  <td class="px-4 py-2 whitespace-nowrap text-right text-sm font-medium">
-                                    <Link :href="route('books.edit', book.id)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
+                                  <td class="px-4 py-2 whitespace-nowrap text-right text-sm flex justify-end font-medium">
+                                    <Edit-link :edit="{route: 'books.edit', to:book.id }" showicon />
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
-                            <Pagination
-                              :links="books.links"
-                              :from="books.from"
-                              :to="books.to"
-                              :total="books.total"
-                              :previous="books.prev_page_url"
-                              :next="books.next_page_url"
-                            />
+                            <Pagination :pageData="books" pageof=" Books" />
                           </div>
                         </div>
                       </div>
@@ -121,14 +101,16 @@
 
 <script>
     import { defineComponent } from 'vue'
-    import { Link } from '@inertiajs/inertia-vue3';
-    import Pagination from '@/Layouts/Pagination.vue'
     import AppLayout from '@/Layouts/AppLayout.vue'
+    import Pagination from '@/Shared/Components/Pagination/Simple.vue'
+    import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
+    import AddLink from '@/Shared/Components/Links/Add.vue'
+    import EditLink from '@/Shared/Components/Links/Edit.vue'
+    import Search from '@/Shared/Components/Filters/Search.vue'
 
     export default defineComponent({
         components: {
-            AppLayout,Link,
-            Pagination
+            AppLayout,BreadSimple,Search,AddLink,EditLink,Pagination
         },
         props:{
             books: Object

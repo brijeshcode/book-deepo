@@ -15,12 +15,22 @@ use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $books = Book::select('id', 'warehouse_id', 'school_id' , 'supplier_id' ,'publisher_id', 'sku_no','cost', 'subject', 'name', 'author_name', 'description', 'class', 'quantity', 'note', 'active')
             ->with(
                 'school:id,name,city,state,pincode,contact_person,mobile,active,email',
-                'warehouse:id,name,city,state,pincode,contact_person,mobile,active,email')->paginate(10);
+                'warehouse:id,name,city,state,pincode,contact_person,mobile,active,email')
+            ->when($request->search, function ($query, $search){
+            $query->where('name', 'like', '%'. $search . '%');
+            $query->orWhere('author_name', 'like', '%'. $search . '%');
+            $query->orWhere('class', 'like', '%'. $search . '%');
+            $query->orWhere('description', 'like', '%'. $search . '%');
+            $query->orWhere('quantity', 'like', '%'. $search . '%');
+            $query->orWhere('sku_no', 'like', '%'. $search . '%');
+            $query->orWhere('note', 'like', '%'. $search . '%');
+        })
+        ->paginate(10)->withQueryString();
 
         return Inertia::render('Setup/Books/Index' , compact('books'));
     }

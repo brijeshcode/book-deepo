@@ -16,9 +16,19 @@ class SchoolController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $schools = School::with('warehouse')->orderBy('id', 'desc')->paginate(10)->through(fn($school) => [
+        $schools = School::with('warehouse')->orderBy('id', 'desc')->when($request->search, function ($query, $search){
+            $query->where('name', 'like', '%'. $search . '%');
+            $query->orWhere('contact_person', 'like', '%'. $search . '%');
+            $query->orWhere('email', 'like', '%'. $search . '%');
+            $query->orWhere('city', 'like', '%'. $search . '%');
+            $query->orWhere('state', 'like', '%'. $search . '%');
+            $query->orWhere('pincode', 'like', '%'. $search . '%');
+            $query->orWhere('mobile', 'like', '%'. $search . '%');
+            $query->orWhere('note', 'like', '%'. $search . '%');
+        })
+        ->paginate(10)->withQueryString()->through(fn($school) => [
             'id' => $school->id,
             'name' => $school->name,'city' => $school->city,'state' => $school->state, 'contact_person' => $school->contact_person,
             'pincode' => $school->pincode, 'email' => $school->email, 'note' => $school->note,
