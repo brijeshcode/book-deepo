@@ -51,6 +51,11 @@ class LocationsController extends Controller
         return redirect(route('locations'));
     }
 
+    public function locations()
+    {
+        return $locations = Location::select('id', 'name', 'city', 'state',  'pincode')
+            ->orderBy('name', 'desc')->get();
+    }
     private function validateFull($request)
     {
         $tempName = 'Location';

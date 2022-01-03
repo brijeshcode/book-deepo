@@ -36,12 +36,12 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
-        $schools = School::get()->count();
-        $warehouses = Warehouse::get()->count();
-        $books = Book::get()->count();
-        $schoolOrders = SchoolOrder::get()->count();
-        $supplierOrders = SupplierOrder::get()->count();
-        $publisherOrders = PublisherOrder::get()->count();
+        $schools = School::count();
+        $warehouses = Warehouse::count();
+        $books = Book::count();
+        $schoolOrders = SchoolOrder::count();
+        $supplierOrders = SupplierOrder::count();
+        $publisherOrders = PublisherOrder::count();
 
         return Inertia::render('Dashboard', compact('schools', 'warehouses', 'books', 'schoolOrders', 'supplierOrders', 'publisherOrders'));
     })->name('dashboard');
@@ -51,6 +51,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/setup/locations', [LocationsController::class, 'store'])->name('locations.store');
     Route::get('/setup/locations/{location}/edit', [LocationsController::class, 'edit'])->name('locations.edit');
     Route::put('/setup/locations/{location}', [LocationsController::class, 'update'])->name('locations.update');
+    Route::get('/get/locations', [LocationsController::class, 'locations'])->name('locations.list');
 
     Route::get('/setup/warehouses', [WarehouseController::class, 'index'])->name('warehouses');
     Route::get('/setup/warehouses/create', [WarehouseController::class, 'create'])->name('warehouses.create');

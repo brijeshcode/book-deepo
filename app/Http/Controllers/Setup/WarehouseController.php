@@ -11,16 +11,45 @@ use Inertia\Inertia;
 
 class WarehouseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
+        /*$where = array();
+        if ($request->search_location_id) {
+            $where[] = ['location_id', $request->search_location_id];
+            if ($request->search) {
+                $where[] = ['name',  'like', '%'. $request->search . '%' ];
+            }
+        }else{
+            if ($request->search) {
+                $where[] = ['name', 'like', '%'. $request->search . '%' ];
+                $where[] = ['contact_person', 'like', '%'. $request->search . '%' ];
+                $where[] = ['email', 'like', '%'. $request->search . '%' ];
+                $where[] = ['city', 'like', '%'. $request->search . '%' ];
+                $where[] = ['state', 'like', '%'. $request->search . '%' ];
+                $where[] = ['pincode', 'like', '%'. $request->search . '%' ];
+                $where[] = ['mobile', 'like', '%'. $request->search . '%' ];
+                $where[] = ['note', 'like', '%'. $request->search . '%' ];
+            }
+        }
+
         $warehouses = Warehouse::with('location')->orderBy('id', 'desc')
+        ->orWhere($where)
+        ->paginate(10)->withQueryString()->through(fn($warehouse) => [
+            'id' => $warehouse->id,
+            'name' => $warehouse->name,'city' => $warehouse->city,
+            'state' => $warehouse->state, 'contact_person' => $warehouse->contact_person,
+            'pincode' => $warehouse->pincode, 'email' => $warehouse->email, 'note' => $warehouse->note,
+            'mobile'=> $warehouse->mobile, 'active' => $warehouse->active,
+            'location' => $warehouse->location->name
+        ]);*/
+
+        $warehouses = Warehouse::with('location')->orderBy('id', 'desc')
+         ->when($request->search_location_id, function ($tesm, $search_location_id){
+            $tesm->where('location_id', $search_location_id );
+        })
         ->when($request->search, function ($query, $search){
-            $query->where('name', 'like', '%'. $search . '%');
+            $query->orWhere('name', 'like', '%'. $search . '%');
             $query->orWhere('contact_person', 'like', '%'. $search . '%');
             $query->orWhere('email', 'like', '%'. $search . '%');
             $query->orWhere('city', 'like', '%'. $search . '%');
@@ -29,9 +58,11 @@ class WarehouseController extends Controller
             $query->orWhere('mobile', 'like', '%'. $search . '%');
             $query->orWhere('note', 'like', '%'. $search . '%');
         })
+
         ->paginate(10)->withQueryString()->through(fn($warehouse) => [
             'id' => $warehouse->id,
-            'name' => $warehouse->name,'city' => $warehouse->city,'state' => $warehouse->state, 'contact_person' => $warehouse->contact_person,
+            'name' => $warehouse->name,'city' => $warehouse->city,
+            'state' => $warehouse->state, 'contact_person' => $warehouse->contact_person,
             'pincode' => $warehouse->pincode, 'email' => $warehouse->email, 'note' => $warehouse->note,
             'mobile'=> $warehouse->mobile, 'active' => $warehouse->active,
             'location' => $warehouse->location->name
@@ -39,23 +70,12 @@ class WarehouseController extends Controller
         return Inertia::render('Setup/Warehouses/Index' , compact('warehouses'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $locations = Location::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
         return Inertia::render('Setup/Warehouses/Create', compact('locations'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validateFull($request);
@@ -63,23 +83,11 @@ class WarehouseController extends Controller
         return redirect(route('warehouses'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Warehouse $warehouse)
     {
         $locations = Location::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
@@ -87,13 +95,6 @@ class WarehouseController extends Controller
         return Inertia::render('Setup/Warehouses/Create', compact('warehouse', 'locations'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Warehouse $warehouse)
     {
         $this->validateFull($request);
@@ -101,12 +102,6 @@ class WarehouseController extends Controller
         return redirect(route('warehouses'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
