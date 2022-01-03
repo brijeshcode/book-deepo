@@ -10,6 +10,12 @@ use App\Http\Controllers\Setup\PublisherController;
 use App\Http\Controllers\Setup\SchoolController;
 use App\Http\Controllers\Setup\SupplierController;
 use App\Http\Controllers\Setup\WarehouseController;
+use App\Models\Orders\PublisherOrder;
+use App\Models\Orders\SchoolOrder;
+use App\Models\Orders\SupplierOrder;
+use App\Models\Setup\Book;
+use App\Models\Setup\School;
+use App\Models\Setup\Warehouse;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,7 +36,14 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        $schools = School::get()->count();
+        $warehouses = Warehouse::get()->count();
+        $books = Book::get()->count();
+        $schoolOrders = SchoolOrder::get()->count();
+        $supplierOrders = SupplierOrder::get()->count();
+        $publisherOrders = PublisherOrder::get()->count();
+
+        return Inertia::render('Dashboard', compact('schools', 'warehouses', 'books', 'schoolOrders', 'supplierOrders', 'publisherOrders'));
     })->name('dashboard');
 
     Route::get('/setup/locations', [LocationsController::class, 'index'])->name('locations');

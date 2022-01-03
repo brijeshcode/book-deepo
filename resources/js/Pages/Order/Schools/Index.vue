@@ -69,13 +69,13 @@
                                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     <div class="text-sm text-gray-500">{{ order.note }}</div>
                                   </td>
-                                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                  <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
                                     <Edit-link :edit="{route: 'schoolOrder.edit', to:order.id }" showicon />
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
-                            <Pagination :pageData="orders" pageof=" Publishers Orders" />
+                            <Pagination :pageData="orders" pageof=" Schools Orders" />
                           </div>
                         </div>
                       </div>
