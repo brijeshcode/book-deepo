@@ -34,7 +34,8 @@ class SupplierController extends Controller
             'name' => $supplier->name,'city' => $supplier->city,'state' => $supplier->state, 'contact_person' => $supplier->contact_person,
             'pincode' => $supplier->pincode, 'email' => $supplier->email, 'note' => $supplier->note,
             'mobile'=> $supplier->mobile, 'active' => $supplier->active,
-            'location' => $supplier->location->name
+            'location' => $supplier->location->name,
+            'address' => $supplier->address
         ]);
         return Inertia::render('Setup/Supplier/Index' , compact('suppliers'));
     }

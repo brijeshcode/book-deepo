@@ -35,6 +35,7 @@ class SchoolController extends Controller
             'pincode' => $school->pincode, 'email' => $school->email, 'note' => $school->note,
             'mobile'=> $school->mobile, 'active' => $school->active,
             'warehouse' => $school->warehouse->name,
+            'address' => $school->address
             // 'location' => $school->warehouse->location->name
         ]);
         return Inertia::render('Setup/Schools/Index' , compact('schools'));
