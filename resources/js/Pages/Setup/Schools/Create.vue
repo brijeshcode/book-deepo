@@ -2,13 +2,13 @@
     <app-layout title="School">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                School <span v-if="edit">Edit</span> <span v-else>Create</span>
+                School <span v-if="edit">Edit</span> <span v-else>Add</span>
             </h2>
         </template>
 
         <template #breadcrum>
             <bread-simple v-if="edit" :items="[ { route: 'schools'}, { name:'edit'} ]" />
-            <bread-simple v-else :items="[ { route: 'schools'}, {route: 'schools.create', name:'create'} ]" />
+            <bread-simple v-else :items="[ { route: 'schools'}, {route: 'schools.create', name:'add'} ]" />
         </template>
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">

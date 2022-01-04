@@ -3,6 +3,7 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Locations
+                <add-link createRoute="locations.create" isbutton >Add</add-link>
             </h2>
         </template>
 
@@ -13,7 +14,7 @@
         <template #actions>
             <div class="flex">
               <search searchRoute='locations' />
-              <Add-link createRoute="locations.create" withIcon />
+              <Add-link createRoute="locations.create" withIcon  />
             </div>
         </template>
         <!-- <alert-success  message="Location added successfuly" /> -->

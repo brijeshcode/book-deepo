@@ -3,6 +3,7 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Publisher Order
+                <add-link createRoute="publishersOrder.create" isbutton >Generate</add-link>
             </h2>
         </template>
 

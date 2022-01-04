@@ -3,6 +3,7 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Supplier Orders
+                <add-link createRoute="supplierOrder.create" isbutton >Generate</add-link>
             </h2>
         </template>
         <template #breadcrum>

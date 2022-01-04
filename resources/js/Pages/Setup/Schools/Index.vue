@@ -3,6 +3,7 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Schools
+                <add-link createRoute="schools.create" isbutton >Add</add-link>
             </h2>
         </template>
 

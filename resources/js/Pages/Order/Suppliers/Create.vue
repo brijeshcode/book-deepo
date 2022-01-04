@@ -2,13 +2,13 @@
     <app-layout title="Supplier Order">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Supplier Order <span v-if="edit">Edit</span> <span v-else>Create</span>
+                Supplier Order <span v-if="edit">Edit</span> <span v-else>Generate</span>
             </h2>
         </template>
 
         <template #breadcrum>
             <bread-simple v-if="edit" :items="[  { route: 'suppliers'}, {route: 'supplierOrder', name:'Orders'} , { name:'edit'} ]" />
-            <bread-simple v-else :items="[ { route: 'suppliers'}, {route: 'supplierOrder', name:'Orders'} , {route: 'supplierOrder.create', name:'create'} ]" />
+            <bread-simple v-else :items="[ { route: 'suppliers'}, {route: 'supplierOrder', name:'Orders'} , {route: 'supplierOrder.create', name:'Generate'} ]" />
         </template>
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">

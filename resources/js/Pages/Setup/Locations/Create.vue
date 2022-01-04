@@ -2,13 +2,13 @@
     <app-layout title="Location Create">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Location <span v-if="edit">Edit</span> <span v-else>Create</span>
+                Location <span v-if="edit">Edit</span> <span v-else>Add</span>
             </h2>
         </template>
 
         <template #breadcrum>
             <bread-simple v-if="edit" :items="[ { route: 'locations'}, { name:'edit'} ]" />
-            <bread-simple v-else :items="[ { route: 'locations'}, {route: 'locations.create', name:'create'} ]" />
+            <bread-simple v-else :items="[ { route: 'locations'}, {route: 'locations.create', name:'Add'} ]" />
         </template>
 
 
