@@ -24,7 +24,7 @@
                         </div>
 
                         <div class="basis-1/4">
-                            <jet-label for="city" required="true" value="City" />
+                            <jet-label for="city" required="true" value="City"/>
                             <jet-input id="city" type="text" class="mt-1 block" v-model="form.city" autocomplete="city" />
                             <jet-input-error :message="form.errors.city" class="mt-2" />
                         </div>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="flex flex-row mb-4">
 
-                        <div class="  basis-1/4">
+                        <div class=" basis-1/4">
                             <jet-label for="note" value="Note" />
                             <jet-input id="note" type="text" class="mt-1 block" v-model="form.note" autocomplete="note" />
                             <jet-input-error :message="form.errors.note" class="mt-2" />

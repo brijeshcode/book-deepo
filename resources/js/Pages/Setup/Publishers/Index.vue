@@ -64,7 +64,7 @@
                                 <div class="text-sm text-gray-800">{{ publisher.city }}, {{ publisher.state }}</div>
                                   <div class="text-sm text-gray-500"> ({{ publisher.pincode }})</div>
                               </td>
-                              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                              <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
                                 <Edit-link :edit="{route: 'publishers.edit', to:publisher.id }" showicon />
                               </td>
                             </tr>

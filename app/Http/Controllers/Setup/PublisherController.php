@@ -30,7 +30,7 @@ class PublisherController extends Controller
             'name' => $publisher->name,'city' => $publisher->city,'state' => $publisher->state, 'contact_person' => $publisher->contact_person,
             'pincode' => $publisher->pincode, 'email' => $publisher->email, 'note' => $publisher->note,
             'mobile'=> $publisher->mobile, 'active' => $publisher->active,
-            'location' => $publisher->location->name
+            'location' => $publisher->location->name, 'address' => $publisher->address
         ]);
         return Inertia::render('Setup/Publishers/Index' , compact('publishers'));
     }
