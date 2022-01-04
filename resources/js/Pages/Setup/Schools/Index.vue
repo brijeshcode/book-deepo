@@ -47,6 +47,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                           <Edit-link :edit="{route: 'schools.edit', to:school.id }" >
                             <div class="text-sm text-gray-900">{{ school.name }}</div>
+                            <div class="text-sm text-gray-700">{{ school.address }}</div>
                           </Edit-link>
                           <span v-if="school.active" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                             Active

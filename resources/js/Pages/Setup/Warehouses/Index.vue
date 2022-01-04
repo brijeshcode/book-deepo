@@ -43,6 +43,7 @@
                       <td class="px-6 py-4 whitespace-nowrap">
                       <Edit-link :edit="{route: 'warehouses.edit', to:warehouse.id }" >
                         <div class="text-sm text-gray-900">{{ warehouse.name }}</div>
+                        <div class="text-sm text-gray-700">{{ warehouse.address }}</div>
                       </Edit-link>
                         <span v-if="warehouse.active" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                           Active

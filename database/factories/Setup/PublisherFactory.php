@@ -56,6 +56,7 @@ class PublisherFactory extends Factory
         return [
             'location_id' => $this->faker->randomDigitNotNull(),
             'name' => $this->faker->firstName() . ' Publications',
+            'address' => $this->faker->address(),
             'city' => $this->faker->city(),
             'email' => $this->faker->email(),
             'mobile' => $this->faker->phoneNumber(),

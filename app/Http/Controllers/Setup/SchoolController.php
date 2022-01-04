@@ -26,6 +26,7 @@ class SchoolController extends Controller
             $query->orWhere('state', 'like', '%'. $search . '%');
             $query->orWhere('pincode', 'like', '%'. $search . '%');
             $query->orWhere('mobile', 'like', '%'. $search . '%');
+            $query->orWhere('address', 'like', '%'. $search . '%');
             $query->orWhere('note', 'like', '%'. $search . '%');
         })
         ->paginate(10)->withQueryString()->through(fn($school) => [
@@ -83,7 +84,7 @@ class SchoolController extends Controller
     public function edit(School $school)
     {
         $warehouses = Warehouse::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
-        $school = $school->only('id','name', 'email', 'city', 'state', 'mobile', 'warehouse_id', 'contact_person', 'pincode', 'note', 'active');
+        $school = $school->only('id','name', 'email', 'address', 'city', 'state', 'mobile', 'warehouse_id', 'contact_person', 'pincode', 'note', 'active');
         return Inertia::render('Setup/Schools/Create', compact('school', 'warehouses'));
     }
 

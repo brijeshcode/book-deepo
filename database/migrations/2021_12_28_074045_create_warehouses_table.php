@@ -17,6 +17,7 @@ class CreateWarehousesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('location_id');
             $table->string('name');
+            $table->text('address');
             $table->string('city');
             $table->string('state');
             $table->string('pincode');

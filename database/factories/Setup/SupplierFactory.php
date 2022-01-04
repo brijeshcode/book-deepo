@@ -56,6 +56,7 @@ class SupplierFactory extends Factory
         return [
             'location_id' => $this->faker->randomDigitNotNull(),
             'name' => $this->faker->firstName() . ' Supplier',
+            'address' => $this->faker->address(),
             'city' => $this->faker->city(),
             'email' => $this->faker->email(),
             'mobile' => $this->faker->phoneNumber(),

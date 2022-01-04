@@ -57,6 +57,7 @@ class SchoolFactory extends Factory
             'warehouse_id' => $this->faker->randomElement([1,2,3,4,5]),
             'name' => $this->faker->firstName() . ' Public School',
             'city' => $this->faker->city(),
+            'address' => $this->faker->address(),
             'email' => $this->faker->email(),
             'mobile' => $this->faker->phoneNumber(),
             'state' => $this->faker->randomElement($states),

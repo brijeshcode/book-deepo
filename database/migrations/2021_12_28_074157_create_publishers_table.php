@@ -18,6 +18,7 @@ class CreatePublishersTable extends Migration
             $table->unsignedBigInteger('location_id');
             $table->string('name')->nullable();
             $table->string('email');
+            $table->text('address')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('pincode')->nullable();

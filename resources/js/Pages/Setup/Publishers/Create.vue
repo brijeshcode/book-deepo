@@ -70,6 +70,11 @@
 
                     <div class="flex flex-row">
                         <div class="mb-4 basis-1/4">
+                            <jet-label for="address" value="Address" />
+                            <jet-input id="address" type="text" class="mt-1 block" v-model="form.address" autocomplete="address" />
+                            <jet-input-error :message="form.errors.address" class="mt-2" />
+                        </div>
+                        <div class="mb-4 basis-1/4">
                             <jet-label for="note" value="Note" />
                             <jet-input id="note" type="text" class="mt-1 block" v-model="form.note" autocomplete="note" />
                             <jet-input-error :message="form.errors.note" class="mt-2" />
@@ -133,6 +138,7 @@
               fax : '',
               contact_person: '',
               note: '',
+              address: '',
               active: false
 
             })

@@ -26,6 +26,7 @@ class SupplierController extends Controller
             $query->orWhere('state', 'like', '%'. $search . '%');
             $query->orWhere('pincode', 'like', '%'. $search . '%');
             $query->orWhere('mobile', 'like', '%'. $search . '%');
+            $query->orWhere('address', 'like', '%'. $search . '%');
             $query->orWhere('note', 'like', '%'. $search . '%');
         })
         ->paginate(10)->withQueryString()->through(fn($supplier) => [
@@ -82,7 +83,7 @@ class SupplierController extends Controller
     public function edit(Supplier $supplier)
     {
         $locations = Location::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
-        $supplier = $supplier->only('id','name', 'email', 'city', 'state', 'mobile', 'location_id', 'contact_person', 'pincode', 'note', 'active');
+        $supplier = $supplier->only('id','name', 'address', 'email', 'city', 'state', 'mobile', 'location_id', 'contact_person', 'pincode', 'note', 'active');
         return Inertia::render('Setup/Supplier/Create', compact('supplier', 'locations'));
     }
 

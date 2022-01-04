@@ -45,9 +45,9 @@ class WarehouseController extends Controller
         ]);*/
 
         $warehouses = Warehouse::with('location')->orderBy('id', 'desc')
-         ->when($request->search_location_id, function ($tesm, $search_location_id){
+        /*->when($request->search_location_id, function ($tesm, $search_location_id){
             $tesm->where('location_id', $search_location_id );
-        })
+        })*/
         ->when($request->search, function ($query, $search){
             $query->orWhere('name', 'like', '%'. $search . '%');
             $query->orWhere('contact_person', 'like', '%'. $search . '%');
@@ -55,17 +55,17 @@ class WarehouseController extends Controller
             $query->orWhere('city', 'like', '%'. $search . '%');
             $query->orWhere('state', 'like', '%'. $search . '%');
             $query->orWhere('pincode', 'like', '%'. $search . '%');
+            $query->orWhere('address', 'like', '%'. $search . '%');
             $query->orWhere('mobile', 'like', '%'. $search . '%');
             $query->orWhere('note', 'like', '%'. $search . '%');
         })
-
         ->paginate(10)->withQueryString()->through(fn($warehouse) => [
             'id' => $warehouse->id,
             'name' => $warehouse->name,'city' => $warehouse->city,
             'state' => $warehouse->state, 'contact_person' => $warehouse->contact_person,
             'pincode' => $warehouse->pincode, 'email' => $warehouse->email, 'note' => $warehouse->note,
             'mobile'=> $warehouse->mobile, 'active' => $warehouse->active,
-            'location' => $warehouse->location->name
+            'location' => $warehouse->location->name, 'address' => $warehouse->address
         ]);
         return Inertia::render('Setup/Warehouses/Index' , compact('warehouses'));
     }
@@ -91,7 +91,7 @@ class WarehouseController extends Controller
     public function edit(Warehouse $warehouse)
     {
         $locations = Location::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
-        $warehouse = $warehouse->only('id','name', 'email', 'city', 'state', 'mobile', 'location_id', 'contact_person', 'pincode', 'note', 'active');
+        $warehouse = $warehouse->only('id','name', 'address', 'email', 'city', 'state', 'mobile', 'location_id', 'contact_person', 'pincode', 'note', 'active');
         return Inertia::render('Setup/Warehouses/Create', compact('warehouse', 'locations'));
     }
 
@@ -119,6 +119,7 @@ class WarehouseController extends Controller
             [
                 'name' => 'required|max:50',
                 'city' => 'required|max:50',
+                'address' => 'required',
                 'state' => 'required|max:50',
                 'pincode' => 'required|digits:6',
                 'mobile' => 'required|digits:10',
@@ -126,6 +127,7 @@ class WarehouseController extends Controller
             ],
             [
                 'name.required' => $tempName .' Name is empty.' ,
+                'address.required' => $tempName .' Address is empty.' ,
                 'city.required' => $tempName .' City is empty.' ,
                 'state.required' => $tempName .' State is empty.' ,
                 'pincode.required' => $tempName .' Pincode is empty.' ,

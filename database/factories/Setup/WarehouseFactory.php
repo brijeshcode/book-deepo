@@ -57,6 +57,7 @@ class WarehouseFactory extends Factory
             'location_id' => $this->faker->randomDigitNotNull(),
             'name' => $this->faker->firstName() . ' Warehouse',
             'city' => $this->faker->city(),
+            'address' => $this->faker->address(),
             'email' => $this->faker->email(),
             'mobile' => $this->faker->phoneNumber(),
             'state' => $this->faker->randomElement($states),
