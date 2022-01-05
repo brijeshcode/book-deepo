@@ -60,7 +60,7 @@ class SupplierOrderController extends Controller
             'total_amount' => $request->total_amount
         ];
         $order = SupplierOrder::create($order)->items()->createMany($request->items);
-        return redirect(route('supplierOrder'));
+        return redirect(route('supplierOrder'))->with('type', 'success')->with('message', 'Order generated successfully !!');
     }
     public function update(Request $request, SupplierOrder $order)
     {
@@ -86,7 +86,7 @@ class SupplierOrderController extends Controller
             }
         }
 
-        return redirect(route('supplierOrder'));
+        return redirect(route('supplierOrder'))->with('type', 'success')->with('message', 'Order updated successfully !!');
     }
 
     public function deleteItem(SupplierOrderItem $item)

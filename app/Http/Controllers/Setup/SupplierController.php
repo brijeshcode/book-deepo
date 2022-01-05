@@ -61,7 +61,7 @@ class SupplierController extends Controller
     {
         $this->validateFull($request);
         Supplier::create($request->all());
-        return redirect(route('suppliers'));
+        return redirect(route('suppliers'))->with('type', 'success')->with('message', 'Supplier added successfully !!');
     }
 
     /**
@@ -99,7 +99,7 @@ class SupplierController extends Controller
     {
         $this->validateFull($request);
         $supplier->update($request->all());
-        return redirect(route('suppliers'));
+        return redirect(route('suppliers'))->with('type', 'success')->with('message', 'Supplier added successfully !!');
     }
 
     /**

@@ -15,7 +15,7 @@
             <div class="flex">
               <search searchRoute='schools' />
               <Add-link createRoute="schools.create" withIcon />
-              <FilterIcon class="cursor-pointer" @click="showpink" />
+              <!-- <FilterIcon class="cursor-pointer" @click="showpink" /> -->
             </div>
         </template>
 
@@ -69,6 +69,7 @@
                             <div class="text-sm text-gray-500"> ({{ school.pincode }})</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
+                          <BookLink :book="{route: 'schools.books', of:school.id }" showicon />
                           <Edit-link :edit="{route: 'schools.edit', to:school.id }" showicon />
                         </td>
                       </tr>
@@ -89,12 +90,13 @@
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import AddLink from '@/Shared/Components/Links/Add.vue'
     import EditLink from '@/Shared/Components/Links/Edit.vue'
+    import BookLink from '@/Shared/Components/Links/ViewBooks.vue'
     import FilterIcon from '@/Shared/Components/Links/Filter.vue'
     import Search from '@/Shared/Components/Filters/Search.vue'
 
     export default defineComponent({
         components: {
-            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination,FilterIcon
+            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination,FilterIcon,BookLink
         },
         props:{
             schools: Object

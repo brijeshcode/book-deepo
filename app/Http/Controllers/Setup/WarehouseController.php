@@ -80,7 +80,7 @@ class WarehouseController extends Controller
     {
         $this->validateFull($request);
         Warehouse::create($request->all());
-        return redirect(route('warehouses'));
+        return redirect(route('warehouses'))->with('type', 'success')->with('message', 'Warehouse added successfully !!');
     }
 
     public function show($id)
@@ -99,7 +99,7 @@ class WarehouseController extends Controller
     {
         $this->validateFull($request);
         $warehouse->update($request->all());
-        return redirect(route('warehouses'));
+        return redirect(route('warehouses'))->with('type', 'success')->with('message', 'Warehouse updated successfully !!');
     }
 
     public function destroy($id)

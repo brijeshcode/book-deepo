@@ -35,7 +35,7 @@ class LocationsController extends Controller
     {
         $this->validateFull($request);
         Location::create($request->all());
-        return redirect(route('locations'));
+        return redirect(route('locations'))->with('type', 'success')->with('message', 'Location added successfully !!');
     }
 
     public function edit(Location $location)
@@ -48,7 +48,7 @@ class LocationsController extends Controller
     {
         $this->validateFull($request);
         $location->update($request->all());
-        return redirect(route('locations'));
+        return redirect(route('locations'))->with('type', 'success')->with('message', 'Location updated successfully !!');
     }
 
     public function locations()

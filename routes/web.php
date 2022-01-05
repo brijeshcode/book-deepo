@@ -68,6 +68,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/setup/schools/{school}/edit', [SchoolController::class, 'edit'])->name('schools.edit');
     Route::put('/setup/schools/{school}', [SchoolController::class, 'update'])->name('schools.update');
 
+    Route::get('/school/{school}/books', [SchoolController::class, 'books'])->name('schools.books');
+
     // check stock in given school by book list
     Route::post('/school/{school}/check-stock', [SchoolController::class, 'checkStock'])->name('school.checkStock');
     // Route::get('/school/{school}/get-stock', [SchoolController::class, 'getStock'])->name('school.getStock');

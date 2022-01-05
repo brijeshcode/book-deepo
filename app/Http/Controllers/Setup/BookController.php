@@ -55,7 +55,7 @@ class BookController extends Controller
         $this->validateFull($request);
         // dd($request);
         Book::create($request->all());
-        return redirect(route('books'));
+        return redirect(route('books'))->with('type', 'success')->with('message', 'Book added successfully !!');
     }
 
     public function show($id)
@@ -77,7 +77,7 @@ class BookController extends Controller
     {
         $this->validateUpdate($request , $book);
         $book->update($request->all());
-        return redirect(route('books'));
+        return redirect(route('books'))->with('type', 'success')->with('message', 'Book updated successfully !!');
     }
 
     public function destroy($id)

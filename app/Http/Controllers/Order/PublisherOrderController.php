@@ -50,7 +50,7 @@ class PublisherOrderController extends Controller
             'total_amount' => $request->total_amount
         ];
         $order = PublisherOrder::create($order)->items()->createMany($request->items);
-        return redirect(route('publishersOrder'));
+        return redirect(route('publishersOrder'))->with('type', 'success')->with('message', 'Order generated successfully !!');
     }
     public function update(Request $request, PublisherOrder $order)
     {
@@ -76,7 +76,7 @@ class PublisherOrderController extends Controller
             }
         }
 
-        return redirect(route('publishersOrder'));
+        return redirect(route('publishersOrder'))->with('type', 'success')->with('message', 'Order updated successfully !!');
     }
 
     public function deleteItem(PublisherOrderItem $item)

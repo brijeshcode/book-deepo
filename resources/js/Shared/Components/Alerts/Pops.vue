@@ -8,7 +8,7 @@
 
         <div class="px-4 py-2 -mx-3">
             <div class="mx-3">
-                <span class="font-semibold text-emerald-500 dark:text-emerald-400">Success</span>
+                <span class="font-semibold text-emerald-500 dark:text-emerald-400">{{ type }}</span>
                 <p class="text-sm text-gray-600 dark:text-gray-200">{{ message }}</p>
             </div>
         </div>
@@ -17,6 +17,24 @@
 <script>
 
     export default{
-        props: { message:String }
+        props: { message:String , type: String},
+        data: () => ({
+            class: ''
+         }),
+        created(){
+            if (this.type.toLowerCase() === 'success') {
+                this.class = 'bg-emerald-500';
+            }else if (this.type.toLowerCase() === 'info' || this.type.toLowerCase() === 'primary') {
+                this.class = 'bg-blue-500';
+            }else if (this.type.toLowerCase() === 'warning') {
+                this.class = 'bg-yellow-500';
+            }else if (this.type.toLowerCase() === 'error' || this.type.toLowerCase() === 'danger') {
+                this.class = 'bg-red-500';
+            }else{
+                this.class = 'bg-gray-500';
+                console.log((this.class));
+            }
+
+        }
     };
 </script>

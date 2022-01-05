@@ -45,7 +45,7 @@ class PublisherController extends Controller
     {
         $this->validateFull($request);
         Publisher::create($request->all());
-        return redirect(route('publishers'));
+        return redirect(route('publishers'))->with('type', 'success')->with('message', 'Publisher added successfully !!');
     }
 
     public function show($id)
@@ -64,7 +64,7 @@ class PublisherController extends Controller
     {
         $this->validateFull($request);
         $publisher->update($request->all());
-        return redirect(route('publishers'));
+        return redirect(route('publishers'))->with('type', 'success')->with('message', 'Publisher updated successfully !!');
     }
 
     public function destroy($id)

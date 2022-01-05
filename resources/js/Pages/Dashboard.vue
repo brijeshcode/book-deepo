@@ -51,7 +51,7 @@
                                     class="relative flex items-center px-8 py-6 overflow-hidden rounded-md shadow-sm bg-gradient-to-br from-gray-100 to-gray-200">
                                     <span class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-orange-300 to-orange-500"></span>
                                     <div class="p-3 bg-opacity-75 rounded-full bg-gradient-to-br from-orange-400 to-orange-600">
-                                        <svg class="h-8 w-8 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>
+                                        <bookIcon class="h-8 w-8 text-white" />
                                     </div>
                                     <div class="mx-5">
                                         <h4 class="text-2xl font-semibold text-gray-700">{{ books }}</h4>
@@ -108,9 +108,10 @@
 <script>
     import { defineComponent } from 'vue'
     import AppLayout from '@/Layouts/AppLayout.vue'
+    import bookIcon from '@/Shared/Components/Icons/svg/Book.vue'
 
     export default defineComponent({
-        components: {AppLayout},
+        components: {AppLayout,bookIcon},
         props: ['books','schools','warehouses', 'schoolOrders', 'supplierOrders', 'publisherOrders']
     })
 </script>

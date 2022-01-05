@@ -36,7 +36,7 @@ class SchoolOrderController extends Controller
         $books = Book::select('id','name','author_name','description','quantity', 'cost', 'class' , 'note', 'subject'
         )->where('active' , true)->orderBy('name')->get();
 
-        return Inertia::render('Order/Schools/Create', compact('schools', 'order', 'books'));
+        return Inertia::render('Order/Schools/Create', compact('schools', 'order', 'books'))->with('type', 'success')->with('message', 'Order generated successfully !!');
     }
 
 
@@ -88,7 +88,7 @@ class SchoolOrderController extends Controller
                 }
             }
         });
-        return redirect(route('schoolOrder'));
+        return redirect(route('schoolOrder'))->with('type', 'success')->with('message', 'Order updated successfully !!');
     }
 
     public function deleteItem(SchoolOrderItem $item)

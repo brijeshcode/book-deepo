@@ -339,6 +339,14 @@
                     <slot name="actions"></slot>
                 </div>
             </div>
+
+
+            <!-- Page Notification and alerts -->
+            <div class="notifications" v-if="$page.props.flash.message">
+                <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8  ">
+                    <Alerts :type="$page.props.flash.type" :message="$page.props.flash.message" />
+                </div>
+            </div>
             <!-- Page Content -->
             <main>
                 <div class="pb-12">
@@ -362,6 +370,7 @@
     import JetNavLink from '@/Jetstream/NavLink.vue'
     import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue'
     import { Head, Link } from '@inertiajs/inertia-vue3';
+    import Alerts from '@/Shared/Components/Alerts/FullWidth.vue'
 
     export default defineComponent({
         props: {
@@ -372,6 +381,7 @@
             Head,
             JetApplicationMark,
             JetBanner,
+            Alerts,
             // JetInput,
             JetDropdown,
             JetDropdownLink,
