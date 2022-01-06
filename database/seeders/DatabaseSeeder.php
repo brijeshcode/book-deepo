@@ -38,6 +38,6 @@ class DatabaseSeeder extends Seeder
         School::factory(50)->create();
         Supplier::factory(50)->create();
         Publisher::factory(50)->create();
-        Book::factory(5)->create();
+        // Book::factory(5)->create();
     }
 }

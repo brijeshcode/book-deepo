@@ -132,7 +132,6 @@
               note: '',
               active: false,
               books: []
-
             })
 
             return { form  }

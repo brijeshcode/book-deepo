@@ -102,14 +102,10 @@
             schools: Object
         },
         data(){
-          return {
-            showFilter : false
-          }
+          return { showFilter : false }
         },
         methods: {
-          showpink(){
-              this.showFilter = this.showFilter ? false : true;
-          }
+          showpink(){ this.showFilter = this.showFilter ? false : true; }
         }
     })
 </script>
