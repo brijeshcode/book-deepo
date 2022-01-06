@@ -32,7 +32,10 @@
                         Book
                       </th>
                       <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Schools
+                        Quantity
+                      </th>
+                      <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Cost
                       </th>
                       <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Warehouse
@@ -54,6 +57,12 @@
                         <div class="text-sm text-gray-700">{{ book.class }}, {{ book.subject }}</div>
                       </td>
                       <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">{{ book.quantity }}</div>
+                      </td>
+                      <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">{{ book.cost }}</div>
+                      </td>
+                      <!-- <td class="px-4 py-4 whitespace-nowrap">
                         <div v-for="school in book.schools" class="pb-2">
 
                           <div class="text-sm text-gray-900 ">
@@ -67,7 +76,7 @@
                             <MapIcon class="inline-flex w-4 h-4" /> {{ school.city }}, {{ school.state }} ({{ school.pincode }})
                           </div>
                         </div>
-                      </td>
+                      </td> -->
                       <!-- <td class="px-4 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900">  {{ book.school.name }}, {{ book.school.contact_person }}</div>
                         <div class="text-sm text-gray-700">

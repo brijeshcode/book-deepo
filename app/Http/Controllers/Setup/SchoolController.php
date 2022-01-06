@@ -137,6 +137,11 @@ class SchoolController extends Controller
         ->with('warehouse:id,name,city,state,email,pincode,mobile,contact_person', 'publisher:id,name')->get();
     }
 
+    public function bundleList(School $school)
+    {
+        return $books = $school->bundles()->with('items:id,book_id,bundle_id,quantity', 'items.book:id,name,quantity,cost,class,subject')->get();
+    }
+
     public function books(School $school)
     {
         $books = $school->books()->select('id')

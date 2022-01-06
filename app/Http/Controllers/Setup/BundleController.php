@@ -53,14 +53,26 @@ class BundleController extends Controller
     {
         $this->validateFull($request);
         \DB::transaction(function() use ($request, $bundle) {
+            $allItems = array();
+            $currentItems = array();
+            foreach ($bundle->items as $key => $item) {
+                $allItems[] = $item->id;
+            }
             $bundle->update($bundle->only('name', 'class', 'school_id', 'note', 'active'));
             foreach ($request->books as $reqKey => $item) {
                 if (isset($item['id'])) {
+                    $currentItems[] = $item['id'];
                     BundleBooks::where('id', $item['id'])->update($item);
                 }else{
                     $bundle->items()->create($item);
                 }
             }
+
+            $deletedItems = array_diff($allItems, $currentItems);
+            if ($deletedItems ) {
+                BundleBooks::destroy($deletedItems);
+            }
+
         });
 
         $bundle->update($request->all());
@@ -71,21 +83,6 @@ class BundleController extends Controller
     {
         return $bundles = Bundle::select('id', 'name', 'city', 'state',  'pincode')
             ->orderBy('name', 'desc')->get();
-    }
-
-    public function warehouses($location_id)
-    {
-        return Warehouse::select('id', 'name')->where('location_id' , $location_id)->whereActive('1')->get();
-    }
-
-    public function publishers($location_id)
-    {
-        return Publisher::select('id', 'name')->where('location_id' , $location_id)->whereActive('1')->get();
-    }
-
-    public function suppliers($location_id)
-    {
-        return Supplier::select('id', 'name')->where('location_id' , $location_id)->whereActive('1')->get();
     }
 
     private function validateFull($request)

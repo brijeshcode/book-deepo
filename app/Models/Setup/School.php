@@ -4,6 +4,7 @@ namespace App\Models\Setup;
 
 use App\Models\Orders\SchoolOrder;
 use App\Models\Setup\Book;
+use App\Models\Setup\Bundle;
 use App\Models\Setup\Location;
 use App\Models\Setup\Warehouse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,6 +31,10 @@ class School extends Model
         // return $this->hasMany(Book::class);
     }
 
+    public function bundles()
+    {
+        return $this->hasMany(Bundle::class);
+    }
     public function orders()
     {
         return $this->hasMany(SchoolOrder::class);

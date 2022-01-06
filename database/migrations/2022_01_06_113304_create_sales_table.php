@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBundlesTable extends Migration
+class CreateSalesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreateBundlesTable extends Migration
      */
     public function up()
     {
-        Schema::create('bundles', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
             $table->unsignedBigInteger('school_id');
-            $table->string('name');
-
-            $table->boolean('active')->default(true);
-            $table->string('note')->nullable()->comment('Additional information for this entry');
-
-            $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
+            $table->unsignedBigInteger('bundle_id');
+            $table->string('student_name');
+            // $table->string('transaction_id')->unique();
+            $table->double('total_amount',10,2)->default(0);
+            $table->integer('total_quantity')->default(0);
+            $table->text('note')->nullable();
 
             $table->unsignedBigInteger('user_id')->default('1');
             $table->ipAddress('user_ip')->default('127.0.0.1');
@@ -37,6 +38,6 @@ class CreateBundlesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bundles');
+        Schema::dropIfExists('sales');
     }
 }

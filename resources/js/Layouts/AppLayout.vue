@@ -95,18 +95,9 @@
                                         <jet-dropdown-link :href="route('schoolOrder')">
                                             Orders
                                         </jet-dropdown-link>
-
-
                                     </template>
                                 </jet-dropdown>
                             </div>
-
-
-                            <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('books')" :active="route().current('books')">
-                                    Books
-                                </jet-nav-link>
-                            </div> -->
 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-dropdown align="left" width="48">
@@ -127,6 +118,12 @@
 
                                     </template>
                                 </jet-dropdown>
+                            </div>
+
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link :href="route('sales')" :active="route().current('sales')">
+                                    Sales
+                                </jet-nav-link>
                             </div>
 
                             <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">

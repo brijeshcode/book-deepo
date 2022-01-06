@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Order\PublisherOrderController;
 use App\Http\Controllers\Order\PurchaseOrderController;
+use App\Http\Controllers\Order\SaleController;
 use App\Http\Controllers\Order\SchoolOrderController;
 use App\Http\Controllers\Order\SupplierOrderController;
 use App\Http\Controllers\Setup\BookController;
@@ -69,6 +70,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/school/{school}/books/show', [SchoolController::class, 'books'])->name('schools.books.show');
     Route::get('/school/{school}/books', [SchoolController::class, 'bookList'])->name('schools.books');
+    Route::get('/school/{school}/bundles', [SchoolController::class, 'bundleList'])->name('schools.bundles');
 
 
     // check stock in given school by book list
@@ -135,6 +137,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/setup/bundles', [BundleController::class, 'store'])->name('bundles.store');
     Route::get('/setup/bundles/{bundle}/edit', [BundleController::class, 'edit'])->name('bundles.edit');
     Route::put('/setup/bundles/{bundle}', [BundleController::class, 'update'])->name('bundles.update');
+    // need to update code for bundle item delete on update if removed from list
+
+
+    Route::get('/sales', [SaleController::class, 'index'])->name('sales');
+    Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
+    Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
+    Route::get('/sales/{sale}/edit', [SaleController::class, 'edit'])->name('sales.edit');
+    Route::put('/sales/{sale}', [SaleController::class, 'update'])->name('sales.update');
+    Route::delete('/sales/item/{item}/delete', [SaleController::class, 'deleteItem'])->name('sales.Item.delete');
+
 
     /*Route::get('/order/supplier', [SupplierOrderController::class, 'index'])->name('publishersOrder');
     Route::get('/order/supplier/create', [SupplierOrderController::class, 'create'])->name('publishersOrder.create');
