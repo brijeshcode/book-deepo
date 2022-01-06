@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSupplierOrderItemsTable extends Migration
+class CreateBundlesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,16 @@ class CreateSupplierOrderItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('supplier_order_items', function (Blueprint $table) {
+        Schema::create('bundles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('supplier_id');
-            $table->unsignedBigInteger('publisher_id');
-            $table->unsignedBigInteger('book_id');
+            $table->unsignedBigInteger('school_id');
+            $table->string('name');
             $table->string('class')->nullable();
-            $table->string('subject')->nullable();
-            $table->integer('quantity')->default(0);
 
-            $table->foreign('order_id')->references('id')->on('supplier_orders')->onDelete('cascade');
+            $table->boolean('active')->default(true);
+            $table->string('note')->nullable()->comment('Additional information for this entry');
 
+            $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
 
             $table->unsignedBigInteger('user_id')->default('1');
             $table->ipAddress('user_ip')->default('127.0.0.1');
@@ -40,6 +38,6 @@ class CreateSupplierOrderItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supplier_order_items');
+        Schema::dropIfExists('bundles');
     }
 }

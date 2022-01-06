@@ -3,6 +3,7 @@
 namespace App\Models\Setup;
 
 use App\Models\Setup\Location;
+use App\Models\Setup\School;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,5 +20,10 @@ class Warehouse extends Model
     public function location()
     {
         return $this->belongsTo(Location::class);
+    }
+
+    public function schools()
+    {
+        return $this->hasMany(School::class);
     }
 }

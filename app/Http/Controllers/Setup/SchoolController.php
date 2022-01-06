@@ -131,6 +131,12 @@ class SchoolController extends Controller
         }*/
     }
 
+    public function bookList(School $school)
+    {
+        return $books = $school->books()->select('id','name', 'class','subject')
+        ->with('warehouse:id,name,city,state,email,pincode,mobile,contact_person', 'publisher:id,name')->get();
+    }
+
     public function books(School $school)
     {
         $books = $school->books()->select('id')

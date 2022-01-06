@@ -120,8 +120,8 @@
                                             List
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link :href="route('publishersOrder')">
-                                            Orders
+                                        <jet-dropdown-link :href="route('bundles')">
+                                            Bundles
                                         </jet-dropdown-link>
 
 

@@ -21,8 +21,8 @@ class SchoolOrderController extends Controller
     public function create(Request $request)
     {
         $schools = School::select('id', 'name', 'email' ,'mobile', 'contact_person')->where('active', 1)->orderBy('name')->get();
-        $books = Book::with('supplier:id,name,mobile,email', 'publisher:id,name,mobile,email')
-                ->select( 'id', 'supplier_id' ,'publisher_id', 'sku_no','name', 'author_name' ,'description', 'quantity', 'cost', 'class' , 'note', 'subject')->where('active' , true)->orderBy('name')->limit(15)->get();
+        $books = Book::with('suppliers', 'publisher:id,name,mobile,email')
+                ->select( 'id', 'publisher_id', 'sku_no','name', 'author_name' ,'description', 'quantity', 'cost', 'class' , 'note', 'subject')->where('active' , true)->orderBy('name')->limit(15)->get();
         return Inertia::render('Order/Schools/Create', compact('schools', 'books'));
     }
 

@@ -21,6 +21,9 @@ class CreatePublisherOrderItemsTable extends Migration
             $table->string('class')->nullable();
             $table->string('subject')->nullable();
             $table->integer('quantity')->default(0);
+
+            $table->foreign('order_id')->references('id')->on('publisher_orders')->onDelete('cascade');
+
             $table->unsignedBigInteger('user_id')->default('1');
             $table->ipAddress('user_ip')->default('127.0.0.1');
             $table->softDeletes();

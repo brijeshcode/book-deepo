@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSupplierOrderItemsTable extends Migration
+class CreateBundleBooksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,20 @@ class CreateSupplierOrderItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('supplier_order_items', function (Blueprint $table) {
+        Schema::create('bundle_books', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('supplier_id');
-            $table->unsignedBigInteger('publisher_id');
+            $table->unsignedBigInteger('bundle_id');
             $table->unsignedBigInteger('book_id');
+            $table->Integer('quantity')->default(0);
             $table->string('class')->nullable();
             $table->string('subject')->nullable();
-            $table->integer('quantity')->default(0);
-
-            $table->foreign('order_id')->references('id')->on('supplier_orders')->onDelete('cascade');
-
 
             $table->unsignedBigInteger('user_id')->default('1');
             $table->ipAddress('user_ip')->default('127.0.0.1');
+
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+            $table->foreign('bundle_id')->references('id')->on('bundles')->onDelete('cascade');
+
             $table->softDeletes();
             $table->timestamps();
         });
@@ -40,6 +39,6 @@ class CreateSupplierOrderItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supplier_order_items');
+        Schema::dropIfExists('bundle_books');
     }
 }

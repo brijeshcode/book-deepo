@@ -69,7 +69,7 @@
                             <div class="text-sm text-gray-500"> ({{ school.pincode }})</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                          <BookLink :book="{route: 'schools.books', of:school.id }" showicon />
+                          <BookLink :book="{route: 'schools.books.show', of:school.id }" showicon />
                           <Edit-link :edit="{route: 'schools.edit', to:school.id }" showicon />
                         </td>
                       </tr>

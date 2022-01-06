@@ -48,8 +48,8 @@ class BookController extends Controller
     {
         $suppliers = Supplier::select('id', 'name')->where('active', 1)->orderBy('name')->get();
         $publishers = Publisher::select('id', 'name')->where('active', 1)->orderBy('name')->get();
-        $warehouses = Warehouse::select('id', 'name')->where('active', 1)->orderBy('name')->get();
-        $locations = Location::select('id', 'name')->where('active', 1)->orderBy('name')->get();
+        $warehouses = Warehouse::select('id', 'name')->where('active', 1)->has('schools')->orderBy('name')->get();
+        $locations = Location::select('id', 'name')->where('active', 1)->has('publishers')->has('warehouses')->orderBy('name')->get();
         $book = Warehouse::select('id', 'name')->where('active', 1)->orderBy('name')->get();
 
         return Inertia::render('Setup/Books/Create', compact('suppliers', 'locations','publishers', 'warehouses') );

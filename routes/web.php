@@ -5,6 +5,7 @@ use App\Http\Controllers\Order\PurchaseOrderController;
 use App\Http\Controllers\Order\SchoolOrderController;
 use App\Http\Controllers\Order\SupplierOrderController;
 use App\Http\Controllers\Setup\BookController;
+use App\Http\Controllers\Setup\BundleController;
 use App\Http\Controllers\Setup\LocationsController;
 use App\Http\Controllers\Setup\PublisherController;
 use App\Http\Controllers\Setup\SchoolController;
@@ -62,16 +63,17 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/setup/schools', [SchoolController::class, 'index'])->name('schools');
     Route::get('/setup/schools/create', [SchoolController::class, 'create'])->name('schools.create');
-    // Route::get('/setup/schools/{school}', [SchoolController::class, 'create'])->name('schools.create');
     Route::post('/setup/schools', [SchoolController::class, 'store'])->name('schools.store');
     Route::get('/setup/schools/{school}/edit', [SchoolController::class, 'edit'])->name('schools.edit');
     Route::put('/setup/schools/{school}', [SchoolController::class, 'update'])->name('schools.update');
 
-    Route::get('/school/{school}/books', [SchoolController::class, 'books'])->name('schools.books');
+    Route::get('/school/{school}/books/show', [SchoolController::class, 'books'])->name('schools.books.show');
+    Route::get('/school/{school}/books', [SchoolController::class, 'bookList'])->name('schools.books');
+
 
     // check stock in given school by book list
     Route::post('/school/{school}/check-stock', [SchoolController::class, 'checkStock'])->name('school.checkStock');
-    // Route::get('/school/{school}/get-stock', [SchoolController::class, 'getStock'])->name('school.getStock');
+    Route::get('/school/{school}/get-stock', [SchoolController::class, 'getStock'])->name('school.getStock');
 
 
     Route::get('/setup/suppliers', [SupplierController::class, 'index'])->name('suppliers');
@@ -126,6 +128,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/location/{location_id}/suppliers', [LocationsController::class, 'suppliers'])->name('location.suppliers');
     Route::get('/location/{location_id}/publishers', [LocationsController::class, 'publishers'])->name('location.publishers');
 
+
+
+    Route::get('/setup/bundles', [BundleController::class, 'index'])->name('bundles');
+    Route::get('/setup/bundles/create', [BundleController::class, 'create'])->name('bundles.create');
+    Route::post('/setup/bundles', [BundleController::class, 'store'])->name('bundles.store');
+    Route::get('/setup/bundles/{bundle}/edit', [BundleController::class, 'edit'])->name('bundles.edit');
+    Route::put('/setup/bundles/{bundle}', [BundleController::class, 'update'])->name('bundles.update');
 
     /*Route::get('/order/supplier', [SupplierOrderController::class, 'index'])->name('publishersOrder');
     Route::get('/order/supplier/create', [SupplierOrderController::class, 'create'])->name('publishersOrder.create');
