@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SchoolOrderItem extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable =['school_id','order_id','book_id','class','subject','quantity','order_to','publisher_id','supplier_id','actor_id','actor_ip'];
+    protected $fillable =['school_id','order_id','book_id','class','subject','quantity','order_to','publisher_id','supplier_id','user_id','user_ip'];
 
     public function order()
     {

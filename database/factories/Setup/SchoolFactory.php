@@ -64,7 +64,7 @@ class SchoolFactory extends Factory
             'contact_person' => $this->faker->name(),
             'pincode' => $this->faker->randomNumber(6),
             'note' => $this->faker->realText(30, 2),
-            'actor_ip' => $this->faker->ipv4(),
+            'user_ip' => $this->faker->ipv4(),
             'active' => true
         ];
     }

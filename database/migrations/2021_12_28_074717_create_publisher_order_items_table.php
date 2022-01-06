@@ -21,8 +21,8 @@ class CreatePublisherOrderItemsTable extends Migration
             $table->string('class')->nullable();
             $table->string('subject')->nullable();
             $table->integer('quantity')->default(0);
-            $table->unsignedBigInteger('actor_id')->default('1');
-            $table->ipAddress('actor_ip')->default('127.0.0.1');
+            $table->unsignedBigInteger('user_id')->default('1');
+            $table->ipAddress('user_ip')->default('127.0.0.1');
             $table->softDeletes();
             $table->timestamps();
         });

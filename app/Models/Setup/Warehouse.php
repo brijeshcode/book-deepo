@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Warehouse extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = [ 'location_id' , 'name','address', 'city', 'state', 'pincode',  'email' ,'mobile', 'fax' ,'contact_person',  'note', 'active', 'actor_id', 'actor_ip'];
+    protected $fillable = [ 'location_id' , 'name','address', 'city', 'state', 'pincode',  'email' ,'mobile', 'fax' ,'contact_person',  'note', 'active', 'user_id', 'user_ip'];
 
     protected $casts = [
       'active' => 'boolean',

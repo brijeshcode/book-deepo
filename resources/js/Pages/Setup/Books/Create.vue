@@ -201,11 +201,11 @@
                 publisher_id: '',
                 warehouse_id: '',
                 cost: 0,
-                name: 'sdfsd',
+                name: '',
                 note: '',
-                class: 'sdfs',
-                sku_no: 'dfsdfs',
-                subject: 'sdfs',
+                class: '',
+                sku_no: '',
+                subject: '',
                 quantity: 0,
                 active: false,
                 author_name: '',
@@ -237,8 +237,8 @@
                 // Vue.util.extend({}, this.form.skill)
             },
             addSupplier(){ this.suppliersIds.push({ id: ''}); },
-            removeSupplier(index){ if (confirm('Are you sure?')) this.form.suppliers.splice(index, 1); },
-            removeSchool(index){ if (confirm('Are you sure?')) this.form.schools.splice(index, 1); },
+            removeSupplier(index){ if (confirm('Are you sure?')) this.suppliersIds.splice(index, 1); },
+            removeSchool(index){ if (confirm('Are you sure?')) this.schoolIds.splice(index, 1); },
             changeWarehouse(event){ this.getSchoolByWarehouse(event.target.value); },
             changeLocation(event){
                 this.warehouses = [];

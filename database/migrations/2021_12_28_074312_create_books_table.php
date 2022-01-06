@@ -29,8 +29,8 @@ class CreateBooksTable extends Migration
             $table->string('note')->nullable()->comment('additional information for this entry');
             $table->boolean('active')->default(true);
 
-            $table->unsignedBigInteger('actor_id')->default('1');
-            $table->ipAddress('actor_ip')->default('127.0.0.1');
+            $table->unsignedBigInteger('user_id')->default('1');
+            $table->ipAddress('user_ip')->default('127.0.0.1');
             $table->softDeletes();
             $table->timestamps();
         });

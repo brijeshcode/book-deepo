@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class School extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = [ 'warehouse_id' , 'address', 'name', 'city', 'state', 'pincode',  'email' ,'mobile', 'fax' ,'contact_person',  'note', 'active', 'actor_id', 'actor_ip'];
+    protected $fillable = [ 'warehouse_id' , 'address', 'name', 'city', 'state', 'pincode',  'email' ,'mobile', 'fax' ,'contact_person',  'note', 'active', 'user_id', 'user_ip'];
 
     protected $casts = [
       'active' => 'boolean',

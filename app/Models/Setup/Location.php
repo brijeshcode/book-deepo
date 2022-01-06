@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Location extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = [ 'name', 'city', 'state', 'pincode', 'note', 'active', 'actor_id', 'actor_ip'];
+    protected $fillable = [ 'name', 'city', 'state', 'pincode', 'note', 'active', 'user_id', 'user_ip'];
 
     protected $casts = [
       'active' => 'boolean',
