@@ -30,9 +30,9 @@
                       <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Book
                       </th>
-                      <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <!-- <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         School
-                      </th>
+                      </th> -->
                       <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Warehouse
                       </th>
@@ -49,7 +49,7 @@
                         <div class="text-sm text-gray-900"> <span class="font-bold">{{ book.name }}</span> by, <span class="italic">{{ book.author_name }}</span></div>
                         <div class="text-sm text-gray-700">{{ book.class }}, {{ book.subject }}</div>
                       </td>
-                      <td class="px-4 py-4 whitespace-nowrap">
+                      <!-- <td class="px-4 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900">  {{ book.school.name }}, {{ book.school.contact_person }}</div>
                         <div class="text-sm text-gray-700">
                           <MailIcon class="inline-flex w-4 h-4" /> {{ book.school.email }},<br/>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="text-sm text-gray-500">
                         <MapIcon class="inline-flex w-4 h-4" /> {{ book.school.city }}, {{ book.school.state }} ({{ book.school.pincode }})</div>
-                      </td>
+                      </td> -->
                       <td class="px-4 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900">{{ book.warehouse.name }}, {{ book.warehouse.contact_person }}</div>
                         <div class="text-sm text-gray-700">

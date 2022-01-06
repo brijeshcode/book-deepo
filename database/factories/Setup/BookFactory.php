@@ -16,9 +16,10 @@ class BookFactory extends Factory
             $num[] = $i;
         }
         return [
-            'supplier_id' => $this->faker->randomElement($num),
+            // 'supplier_id' => $this->faker->randomElement($num),
+            // 'school_id' => $this->faker->randomElement($num),
             'publisher_id' => $this->faker->randomElement($num),
-            'school_id' => $this->faker->randomElement($num),
+            'location_id' => $this->faker->randomDigitNotNull(),
             'warehouse_id' => $this->faker->randomElement([1,2,3,4,5]),
             'name' => $this->faker->unique()->firstName() . ' Book',
             'subject' => $this->faker->randomElement(['Math', 'Science', 'English', 'Hindi', 'SST', 'Phyiscs', 'Chemistry', 'Biology','Accounts','Ip','Computer Basis','Hindi II','Economics','Political Science','Sociology', 'Psychology', "History", 'Civics', 'Geogrophy', 'Art', 'Hindi Shahetya', 'Hindi Viyakaran', 'English Listrature', 'English Grammer', 'Philosophy', 'Anthropology', 'Earth Sciences', 'Life Sciences', 'Physics', 'Space Sciences', 'Logic', 'Mathematics', 'Statistics', 'Systems Science', 'Agriculture', 'Architecture and Design', 'Business', 'Divinity', 'Education','Engineering', 'Family and Consumer Science', 'Health Sciences', 'Law', 'Journalism, Media Studies and Communication','Military Sciences', 'Public Administration', 'Social Work', 'Transportation']),

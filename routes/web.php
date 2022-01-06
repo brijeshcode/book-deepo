@@ -59,7 +59,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/setup/warehouses/{warehouse}/edit', [WarehouseController::class, 'edit'])->name('warehouses.edit');
     Route::put('/setup/warehouses/{warehouse}', [WarehouseController::class, 'update'])->name('warehouses.update');
 
-    Route::get('/warehouse/{warehouse_id}/schools', [WarehouseController::class, 'schools'])->name('warehouse.schools');
 
     Route::get('/setup/schools', [SchoolController::class, 'index'])->name('schools');
     Route::get('/setup/schools/create', [SchoolController::class, 'create'])->name('schools.create');
@@ -122,6 +121,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::delete('/school/order/item/{item}/delete', [SchoolOrderController::class, 'deleteItem'])->name('schoolOrderItem.delete');
 
 
+    Route::get('/warehouse/{warehouse_id}/schools', [WarehouseController::class, 'schools'])->name('warehouse.schools');
+    Route::get('/location/{location_id}/warehouses', [LocationsController::class, 'warehouses'])->name('location.warehouses');
+    Route::get('/location/{location_id}/suppliers', [LocationsController::class, 'suppliers'])->name('location.suppliers');
+    Route::get('/location/{location_id}/publishers', [LocationsController::class, 'publishers'])->name('location.publishers');
 
 
     /*Route::get('/order/supplier', [SupplierOrderController::class, 'index'])->name('publishersOrder');

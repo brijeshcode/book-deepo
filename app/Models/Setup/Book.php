@@ -13,30 +13,32 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Book extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = [ 'supplier_id' ,'publisher_id', 'sku_no','cost', 'warehouse_id', 'school_id' ,'subject', 'name', 'author_name', 'description', 'class', 'quantity', 'note', 'active', 'actor_id', 'actor_ip'];
+    // protected $fillable = [ 'supplier_id' ,'publisher_id', 'sku_no','cost', 'warehouse_id', 'school_id' ,'subject', 'name', 'author_name', 'description', 'class', 'quantity', 'note', 'active', 'actor_id', 'actor_ip'];
+    protected $fillable = [ 'warehouse_id', 'location_id', 'publisher_id', 'sku_no','cost', 'subject', 'name', 'author_name', 'description', 'class', 'quantity', 'note', 'active', 'actor_id', 'actor_ip'];
 
     protected $casts = [
       'active' => 'boolean'
     ];
 
-    public function supplier()
-    {
-        return $this->belongsTo(Supplier::class);
-    }
 
     public function publisher()
     {
         return $this->belongsTo(Publisher::class);
     }
 
-    public function school()
-    {
-        return $this->belongsTo(School::class);
-    }
-
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class);
+    }
+
+    public function suppliers()
+    {
+        return $this->belongsToMany(Supplier::class)->withTimestamps();
+    }
+
+    public function schools()
+    {
+        return $this->belongsToMany(School::class)->withTimestamps();
     }
 
 }

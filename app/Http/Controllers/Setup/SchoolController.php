@@ -131,18 +131,14 @@ class SchoolController extends Controller
         }*/
     }
 
-    public function books($school)
+    public function books(School $school)
     {
-        $books = Book::select('id', 'sku_no', 'name', 'author_name', 'class', 'subject', 'school_id', 'warehouse_id', 'supplier_id', 'publisher_id', 'note', 'description', 'active')
-            ->with('school:id,name,city,state,email,pincode,mobile,contact_person', 'supplier:id,name', 'warehouse:id,name,city,state,email,pincode,mobile,contact_person', 'publisher:id,name')
-            ->where('school_id', $school)
-            ->paginate(15);
-
-        $school = School::findorFail($school);
+        $books = $school->books()->select('id')
+        ->with('warehouse:id,name,city,state,email,pincode,mobile,contact_person', 'publisher:id,name')
+        ->paginate(10);
+        $school = $school->only('id','name') ;
 
         return Inertia::render('Setup/Schools/Books' , compact('books', 'school'));
-
-        // return response()->json($books);
     }
     private function validateFull($request)
     {

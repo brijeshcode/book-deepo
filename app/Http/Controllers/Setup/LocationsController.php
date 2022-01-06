@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Setup;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setup\Location;
+use App\Models\Setup\Publisher;
+use App\Models\Setup\Supplier;
+use App\Models\Setup\Warehouse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -56,6 +59,24 @@ class LocationsController extends Controller
         return $locations = Location::select('id', 'name', 'city', 'state',  'pincode')
             ->orderBy('name', 'desc')->get();
     }
+
+
+    public function warehouses($location_id)
+    {
+        return Warehouse::select('id', 'name')->where('location_id' , $location_id)->whereActive('1')->get();
+    }
+
+    public function publishers($location_id)
+    {
+        return Publisher::select('id', 'name')->where('location_id' , $location_id)->whereActive('1')->get();
+    }
+
+
+    public function suppliers($location_id)
+    {
+        return Supplier::select('id', 'name')->where('location_id' , $location_id)->whereActive('1')->get();
+    }
+
     private function validateFull($request)
     {
         $tempName = 'Location';

@@ -109,7 +109,7 @@ class WarehouseController extends Controller
 
     public function schools($warehouse_id)
     {
-        return School::select('id', 'name')->where('warehouse_id' , $warehouse_id)->get();
+        return School::select('id', 'name')->where('warehouse_id' , $warehouse_id)->whereActive('1')->get();
     }
 
     private function validateFull($request)

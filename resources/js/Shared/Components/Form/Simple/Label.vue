@@ -9,6 +9,9 @@
     import { defineComponent } from 'vue'
 
     export default defineComponent({
-        props: ['value', 'required']
+        props: {
+            value: String,
+            required : {type: Boolean , default: false}
+        }
     })
 </script>

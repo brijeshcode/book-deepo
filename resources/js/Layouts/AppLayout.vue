@@ -347,6 +347,13 @@
                     <Alerts :type="$page.props.flash.type" :message="$page.props.flash.message" />
                 </div>
             </div>
+
+            <!-- Errors -->
+            <div class="notifications" v-if="$page.props.errors">
+                <div v-for="error in $page.props.errors" class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8  ">
+                    <Alerts type="error" :message="error" />
+                </div>
+            </div>
             <!-- Page Content -->
             <main>
                 <div class="pb-12">
