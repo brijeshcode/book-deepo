@@ -25,8 +25,8 @@ class SaleController extends Controller
 
     public function edit(Request $request, $order_id)
     {
-        $order = Sale::select('id', 'date', 'publisher_id', 'total_quantity', 'total_amount', 'fax', 'email' ,'mobile', 'contact_person' )
-                ->with('items:id,publisher_id,order_id,book_id,class,quantity,subject')
+        $order = Sale::select('id', 'date', 'school_id', 'total_quantity', 'total_amount', 'student_name', 'bundle_id' ,'note' )
+                ->with('items:id,bundle_id,sale_id,book_id,class,quantity,subject')
                 ->where('id', $order_id)->first();
         $schools = School::select('id', 'name', 'email' ,'mobile', 'contact_person')->where('active', 1)->orderBy('name')->has('bundles')->get();
         return Inertia::render('Order/Sales/Create', compact('schools', 'order'));
@@ -37,20 +37,13 @@ class SaleController extends Controller
     {
         $this->validateFull($request);
         \DB::transaction(function() use ($request) {
-            $order= [
-                'name' => $request->name,
-                'school_id' => $request->school_id,
-                'bundle_id' => $request->bundle_id,
-                'date' => $request->date,
-                'student_name' => $request->student_name,
-                'note' => $request->note,
-                'total_quantity' => $request->total_quantity,
-                'total_amount' => $request->total_amount
-            ];
-            $order = Sale::create($order)->items()->createMany($request->items);
+
+            $order = Sale::create($request->only('name', 'school_id', 'bundle_id', 'date', 'student_name', 'total_amount', 'total_quantity','note'))->items()->createMany($request->items);
         });
         return redirect(route('sales'))->with('type', 'success')->with('message', 'Sales generated successfully !!');
     }
+
+
     public function update(Request $request, Sale $order)
     {
         $orderData= [
