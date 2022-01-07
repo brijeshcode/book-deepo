@@ -18,7 +18,7 @@
                     </div>
                     <div class="flex items-start justify-center pt-5 bg-white min-w-screen">
                         <div class="flex flex-wrap w-full px-4">
-                            <div class="w-full px-2 sm:w-1/2 xl:w-1/3">
+                            <div class="w-full px-2 sm:w-1/2 xl:w-1/4">
                                 <div
                                     class="relative flex items-center px-5 py-6 overflow-hidden rounded-md shadow-sm bg-gradient-to-br from-gray-100 to-gray-200">
                                     <span class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-indigo-300 to-indigo-500"></span>
@@ -31,7 +31,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-full px-2 mt-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
+                            <div class="w-full px-2 mt-6 sm:w-1/2 xl:w-1/4 xl:mt-0">
                                 <div
                                     class="relative flex items-center px-5 py-6 overflow-hidden rounded-md shadow-sm bg-gradient-to-br from-gray-100 to-gray-200">
                                     <span class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-pink-300 to-pink-500"></span>
@@ -46,7 +46,7 @@
                             </div>
 
 
-                            <div class="w-full px-2 mt-6 sm:w-1/2 xl:w-1/3 sm:mt-0">
+                            <div class="w-full px-2 mt-6 sm:w-1/2 xl:w-1/4 sm:mt-0">
                                 <div
                                     class="relative flex items-center px-8 py-6 overflow-hidden rounded-md shadow-sm bg-gradient-to-br from-gray-100 to-gray-200">
                                     <span class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-orange-300 to-orange-500"></span>
@@ -56,6 +56,24 @@
                                     <div class="mx-5">
                                         <h4 class="text-2xl font-semibold text-gray-700">{{ books }}</h4>
                                         <div class="text-gray-500">Books</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w-full px-2 mt-6 sm:w-1/2 xl:w-1/4 sm:mt-0">
+                                <div
+                                    class="relative flex items-center px-8 py-6 overflow-hidden rounded-md shadow-sm bg-gradient-to-br from-gray-100 to-gray-200">
+                                    <span class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-yellow-300 to-yellow-500"></span>
+                                    <div class="p-3 bg-opacity-75 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600">
+
+
+                                        <svg class="h-8 w-8 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <polygon points="12 2 2 7 12 12 22 7 12 2" />  <polyline points="2 17 12 22 22 17" />  <polyline points="2 12 12 17 22 12" /></svg>
+
+
+                                    </div>
+                                    <div class="mx-5">
+                                        <h4 class="text-2xl font-semibold text-gray-700">{{ bundles }}</h4>
+                                        <div class="text-gray-500">Bundles</div>
                                     </div>
                                 </div>
                             </div>
@@ -92,8 +110,8 @@
                           </div>
                           <div class="p-4 sm:w-1/4 w-1/2">
                             <div class="bg-indigo-500 rounded-lg p-2 xl:p-6">
-                                <h2 class="title-font font-medium sm:text-4xl text-3xl text-white">4</h2>
-                                <p class="leading-relaxed text-gray-100 font-bold">Pendings</p>
+                                <h2 class="title-font font-medium sm:text-4xl text-3xl text-white">{{ sales }}</h2>
+                                <p class="leading-relaxed text-gray-100 font-bold">Sales</p>
                             </div>
                           </div>
                         </div>
@@ -112,6 +130,6 @@
 
     export default defineComponent({
         components: {AppLayout,bookIcon},
-        props: ['books','schools','warehouses', 'schoolOrders', 'supplierOrders', 'publisherOrders']
+        props: ['books','schools','warehouses', 'schoolOrders', 'supplierOrders', 'publisherOrders', 'sales', 'bundles']
     })
 </script>

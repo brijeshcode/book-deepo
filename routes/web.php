@@ -13,9 +13,11 @@ use App\Http\Controllers\Setup\SchoolController;
 use App\Http\Controllers\Setup\SupplierController;
 use App\Http\Controllers\Setup\WarehouseController;
 use App\Models\Orders\PublisherOrder;
+use App\Models\Orders\Sale;
 use App\Models\Orders\SchoolOrder;
 use App\Models\Orders\SupplierOrder;
 use App\Models\Setup\Book;
+use App\Models\Setup\Bundle;
 use App\Models\Setup\School;
 use App\Models\Setup\Warehouse;
 use Illuminate\Foundation\Application;
@@ -43,9 +45,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         $books = Book::count();
         $schoolOrders = SchoolOrder::count();
         $supplierOrders = SupplierOrder::count();
+        $sales = Sale::count();
+        $bundles = Bundle::count();
         $publisherOrders = PublisherOrder::count();
 
-        return Inertia::render('Dashboard', compact('schools', 'warehouses', 'books', 'schoolOrders', 'supplierOrders', 'publisherOrders'));
+        return Inertia::render('Dashboard', compact('schools', 'warehouses', 'books', 'schoolOrders', 'bundles', 'supplierOrders', 'publisherOrders', 'sales'));
     })->name('dashboard');
 
     Route::get('/setup/locations', [LocationsController::class, 'index'])->name('locations');
