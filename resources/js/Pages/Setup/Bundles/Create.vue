@@ -32,11 +32,6 @@
                             <jet-input-error :message="form.errors.name" class="mt-2" />
                         </div>
 
-                        <div class="basis-1/4">
-                            <jet-label for="class" required value="Class"/>
-                            <jet-input id="class" type="text" class="mt-1 block" v-model="form.class" autocomplete="class" />
-                            <jet-input-error :message="form.errors.class" class="mt-2" />
-                        </div>
 
                         <div class=" basis-1/4">
                             <jet-label for="note" value="Note" />
@@ -124,7 +119,6 @@
         setup () {
             const form = useForm({
               name: null,
-              class: null,
               state: null,
               school_id: '',
               pincode: '',

@@ -13,11 +13,11 @@ class BundleController extends Controller
 {
     public function index(Request $request)
     {
-        $bundles = Bundle::select('id', 'name', 'class', 'school_id', 'note', 'active')
+        $bundles = Bundle::select('id', 'name', 'school_id', 'note', 'active')
             ->with('school')
             ->when($request->search, function ($query, $search){
                 $query->where('name', 'like', '%'. $search . '%');
-                $query->orWhere('class', 'like', '%'. $search . '%');
+                $query->orWhere( 'like', '%'. $search . '%');
                 $query->orWhere('note', 'like', '%'. $search . '%');
             })
             ->orderBy('id', 'desc')
@@ -37,14 +37,14 @@ class BundleController extends Controller
     {
         $this->validateFull($request);
         \DB::transaction(function() use ($request) {
-            Bundle::create($request->only('name', 'class', 'school_id', 'note', 'active'))->items()->createMany($request->books);
+            Bundle::create($request->only('name', 'school_id', 'note', 'active'))->items()->createMany($request->books);
         });
         return redirect(route('bundles'))->with('type', 'success')->with('message', 'Bundle added successfully !!');
     }
 
     public function edit($bundle)
     {
-        $bundle = Bundle::select('id','name', 'class', 'school_id', 'note', 'active')->with('items:id,bundle_id,class,quantity,book_id')->where('id', $bundle)->first();
+        $bundle = Bundle::select('id','name', 'school_id', 'note', 'active')->with('items:id,bundle_id,class,quantity,book_id')->where('id', $bundle)->first();
         $schools = School::where('active', true)->has('books')->get();
         return Inertia::render('Setup/Bundles/Create', compact('bundle', 'schools'));
     }
