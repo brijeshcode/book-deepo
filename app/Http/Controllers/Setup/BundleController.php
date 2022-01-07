@@ -92,13 +92,11 @@ class BundleController extends Controller
             [
                 'name' => 'required|max:50',
                 'school_id' => 'required',
-                'class' => 'required',
                 'books' => 'required'
             ],
             [
                 'name.required' => $tempName .' Name is empty.' ,
                 'school_id.required' => $tempName .' School is empty.' ,
-                'class.required' => $tempName .' Class is empty.' ,
                 'books.required' => ' Add books in bundle.'
             ]
         );
