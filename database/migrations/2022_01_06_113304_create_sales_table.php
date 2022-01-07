@@ -19,6 +19,8 @@ class CreateSalesTable extends Migration
             $table->unsignedBigInteger('school_id');
             $table->unsignedBigInteger('bundle_id');
             $table->string('student_name');
+            $table->string('student_mobile')->nullable();
+            $table->string('student_email')->nullable();
             // $table->string('transaction_id')->unique();
             $table->double('total_amount',10,2)->default(0);
             $table->integer('total_quantity')->default(0);

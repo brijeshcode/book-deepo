@@ -19,8 +19,11 @@ class CreateSaleItemsTable extends Migration
             $table->unsignedBigInteger('bundle_id');
             $table->unsignedBigInteger('book_id');
             $table->Integer('quantity')->default(0);
+            $table->double('cost',10,2)->default(0);
             $table->string('class')->nullable();
             $table->string('subject')->nullable();
+            $table->string('book_name')->nullable();
+            $table->string('system_quantity')->nullable();
 
             $table->unsignedBigInteger('user_id')->default('1');
             $table->ipAddress('user_ip')->default('127.0.0.1');

@@ -27,6 +27,18 @@
                             <jet-input-error :message="form.errors.student_name" class="mt-2" />
                         </div>
 
+                        <div class="mb-4 basis-1/4">
+                            <jet-label for="student_email" value="Student Email" />
+                            <jet-input id="student_email" type="email" class="mt-1 block" v-model="form.student_email" autocomplete="student_email"  />
+                            <jet-input-error :message="form.errors.student_email" class="mt-2" />
+                        </div>
+
+                        <div class="mb-4 basis-1/4">
+                            <jet-label for="student_mobile" value="Student Mobile" />
+                            <jet-input id="student_mobile" type="text" class="mt-1 block" v-model="form.student_mobile" autocomplete="student_mobile"  />
+                            <jet-input-error :message="form.errors.student_mobile" class="mt-2" />
+                        </div>
+
                         <div class="basis-1/4">
                             <jet-label for="school_id" required value="Schools" />
                             <select id="school_id" @change="schoolChange($event)" v-model="form.school_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
@@ -35,7 +47,11 @@
                             <jet-input-error :message="form.errors.school_id" class="mt-2" />
                         </div>
 
-                        <div class="basis-1/4" v-if="bundles.length > 0">
+
+                    </div>
+
+                    <div class="flex flex-row mb-4">
+                        <div class="flex-col" v-if="bundles.length > 0">
                             <jet-label for="bundle_id" required value="Bundle" />
                             <select id="bundle_id" @change="bundleChange($event)" v-model="form.bundle_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
                                 <option v-for="bundle in bundles" v-bind:value="bundle.id">{{ bundle.name }}</option>
@@ -143,10 +159,12 @@
         setup () {
             const form = useForm({
               name: null,
+              date: new Date().toISOString().slice(0,10),
               school_id: '',
               bundle_id: '',
-              date: '',
               student_name: '',
+              student_email: '',
+              student_mobile: '',
               total_quantity: 0,
               total_amount: 0,
               note: '',
@@ -167,20 +185,20 @@
                 return cost;
             }
         },
-        /*created(){
+        created(){
             if (this.sale) {
                 Object.keys(this.sale).forEach((index) => {
                     this.form[index] = this.sale[index];
                 });
-                axios.get(route('schools.books', this.form.school_id)).then(publisherBooks =>{
-                    if(publisherBooks.data.books.length > 0){
-                        this.books = publisherBooks.data.books;
+                axios.get(route('schools.bundles', this.form.school_id)).then(bundles =>{
+                    if(bundles.data.length > 0){
+                        this.bundles = bundles.data;
                     }
                 });
                 this.edit = true;
 
             }
-        },*/
+        },
         methods:{
             schoolChange(event){
                 this.form.items = [];
@@ -265,8 +283,8 @@
                     if(!item.book_id){
                         canSubmit = false;
                     }
-                    delete this.form.items[key].system_quantity;
-                    delete this.form.items[key].book_name;
+                    /*delete this.form.items[key].system_quantity;
+                    delete this.form.items[key].book_name;*/
                });
                if (canSubmit) {
                     this.form.total_quantity = this.computeQuantity;

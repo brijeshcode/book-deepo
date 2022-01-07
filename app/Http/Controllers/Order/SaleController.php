@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
 use App\Models\Orders\Sale;
+use App\Models\Orders\SaleItem;
 use App\Models\Setup\School;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,7 +14,7 @@ class SaleController extends Controller
     //
     public function index(Request $request)
     {
-        $sales = Sale::with('school:id,name')->select('id', 'date' , 'school_id', 'bundle_id', 'student_name', 'total_amount' ,'total_quantity', 'note' )->orderBy('id', 'desc')->paginate(5);
+        $sales = Sale::with('school:id,name')->select('id', 'date' , 'school_id', 'bundle_id', 'student_name', 'student_mobile', 'student_email', 'total_amount' ,'total_quantity', 'note' )->orderBy('id', 'desc')->paginate(5);
         return Inertia::render('Order/Sales/Index', compact('sales'));
     }
 
@@ -25,11 +26,13 @@ class SaleController extends Controller
 
     public function edit(Request $request, $order_id)
     {
-        $order = Sale::select('id', 'date', 'school_id', 'total_quantity', 'total_amount', 'student_name', 'bundle_id' ,'note' )
-                ->with('items:id,bundle_id,sale_id,book_id,class,quantity,subject')
+        $sale = Sale::select('id', 'date', 'school_id', 'total_quantity', 'total_amount', 'student_name', 'student_mobile', 'student_email', 'bundle_id' ,'note' )
+                ->with('items:id,bundle_id,sale_id,book_id,class,book_name,quantity,subject,cost,system_quantity')
                 ->where('id', $order_id)->first();
-        $schools = School::select('id', 'name', 'email' ,'mobile', 'contact_person')->where('active', 1)->orderBy('name')->has('bundles')->get();
-        return Inertia::render('Order/Sales/Create', compact('schools', 'order'));
+        $schools = School::select('id', 'name', 'email' ,'mobile', 'contact_person')->where('active', 1)
+            ->orderBy('name')
+            ->has('bundles')->get();
+        return Inertia::render('Order/Sales/Create', compact('schools', 'sale'));
     }
 
 
@@ -38,35 +41,39 @@ class SaleController extends Controller
         $this->validateFull($request);
         \DB::transaction(function() use ($request) {
 
-            $order = Sale::create($request->only('name', 'school_id', 'bundle_id', 'date', 'student_name', 'total_amount', 'total_quantity','note'))->items()->createMany($request->items);
+            $order = Sale::create($request->only('name', 'school_id', 'bundle_id', 'date', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'total_quantity','note'))->items()->createMany($request->items);
         });
         return redirect(route('sales'))->with('type', 'success')->with('message', 'Sales generated successfully !!');
     }
 
 
-    public function update(Request $request, Sale $order)
+    public function update(Request $request, Sale $sale)
     {
-        $orderData= [
-            'publisher_id' => $request->publisher_id,
-            'mobile' => $request->mobile,
-            'email' => $request->email,
-            'date' => $request->date,
-            'fax' => $request->fax,
-            'contact_person' => $request->contact_person,
-            'note' => $request->note,
-            'total_quantity' => $request->total_quantity,
-            'total_amount' => $request->total_amount
-        ];
-        $this->validateFull($request);
-        $order->update($orderData);
 
-        foreach ($request->items as $reqKey => $item) {
-            if (isset($item['id'])) {
-                PublisherOrderItem::where('id', $item['id'])->update($item);
-            }else{
-                $order->items()->create($item);
+        $this->validateFull($request);
+        \DB::transaction(function() use ($request, $sale) {
+            $allItems = array();
+            $currentItems = array();
+            foreach ($sale->items as $key => $item) {
+                $allItems[] = $item->id;
             }
-        }
+            $sale->update($request->only('name', 'school_id', 'bundle_id', 'date', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'total_quantity','note'));
+
+            foreach ($request->items as $reqKey => $item) {
+                if (isset($item['id'])) {
+                    $currentItems[] = $item['id'];
+                    SaleItem::where('id', $item['id'])->update($item);
+                }else{
+                    $sale->items()->create($item);
+                }
+            }
+
+            $deletedItems = array_diff($allItems, $currentItems);
+            if ($deletedItems ) {
+                SaleItem::destroy($deletedItems);
+            }
+        });
+
 
         return redirect(route('sales'))->with('type', 'success')->with('message', 'Sales updated successfully !!');
     }
@@ -83,12 +90,15 @@ class SaleController extends Controller
             [
                 'school_id' => 'required',
                 'bundle_id' => 'required',
+                'student_name' => 'required',
                 'items' => 'required'
             ],
             [
                 'school_id.required' => 'School is not selected.',
                 'bundle_id.required' => 'Bundle is not selected.',
+                'student_name.required' => 'Student name cannot be empty',
                 'items.required' => "No item added in the order"
+
             ]
         );
     }
