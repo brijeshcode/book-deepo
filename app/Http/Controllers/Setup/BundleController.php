@@ -58,7 +58,7 @@ class BundleController extends Controller
             foreach ($bundle->items as $key => $item) {
                 $allItems[] = $item->id;
             }
-            $bundle->update($bundle->only('name', 'class', 'school_id', 'note', 'active'));
+            $bundle->update($bundle->only('name',  'school_id', 'note', 'active'));
             foreach ($request->books as $reqKey => $item) {
                 if (isset($item['id'])) {
                     $currentItems[] = $item['id'];
