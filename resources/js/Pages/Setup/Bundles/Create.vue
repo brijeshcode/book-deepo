@@ -40,13 +40,13 @@
                         </div>
 
                     </div>
-                    <div class="flex flex-row mb-4">
+                    <div class="flex flex-row mb-4" v-if="schoolBooks.length > 0">
                         <table>
                             <thead>
                                 <tr>
                                     <th>Book</th>
                                     <th>Quantity</th>
-                                    <th><span @click="addBooks" > Add</span></th>
+                                    <th><span @click="addBooks" ><add-icon /></span></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,7 +61,7 @@
                                     </td>
                                     <td>
                                         <button type="button" @click="remove(index)" class="ml-4" v-if="index > 0">
-                                          <span class="text-sm text-red-500 ">Delete</span>
+                                          <span class="text-sm text-red-500 "><remove-icon /></span>
                                         </button>
                                     </td>
                                 </tr>
@@ -99,11 +99,15 @@
     import { useForm } from '@inertiajs/inertia-vue3'
     import JetCheckbox from '@/Jetstream/Checkbox.vue'
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
+    import RemoveIcon from '@/Shared/Components/Icons/svg/Trash.vue'
+    import AddIcon from '@/Shared/Components/Icons/svg/Plus.vue'
     // import { Link } from '@inertiajs/inertia-vue3';
 
     export default defineComponent({
         components: {
             JetInputError,
+            RemoveIcon,
+            AddIcon,
             BreadSimple,
             JetInput,
             AppLayout,

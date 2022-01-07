@@ -21,6 +21,26 @@
                             <jet-input-error :message="form.errors.date" class="mt-2" />
                         </div>
 
+                        <div class="basis-1/4">
+                            <jet-label for="school_id" required value="Schools" />
+                            <select id="school_id" @change="schoolChange($event)" v-model="form.school_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
+                                <option v-for="school in schools" v-bind:value="school.id">{{ school.name }}</option>
+                            </select>
+                            <jet-input-error :message="form.errors.school_id" class="mt-2" />
+                        </div>
+
+                        <div class="flex-col" v-if="bundles.length > 0">
+                            <jet-label for="bundle_id" required value="Bundle" />
+                            <select id="bundle_id" @change="bundleChange($event)" v-model="form.bundle_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
+                                <option v-for="bundle in bundles" v-bind:value="bundle.id">{{ bundle.name }}</option>
+                            </select>
+                            <jet-input-error :message="form.errors.bundle_id" class="mt-2" />
+                        </div>
+
+
+                    </div>
+
+                    <div class="flex flex-row mb-4">
                         <div class="mb-4 basis-1/4">
                             <jet-label for="student_name" required value="Student Name" />
                             <jet-input id="student_name" type="text" class="mt-1 block" v-model="form.student_name" autocomplete="student_name"  />
@@ -39,25 +59,6 @@
                             <jet-input-error :message="form.errors.student_mobile" class="mt-2" />
                         </div>
 
-                        <div class="basis-1/4">
-                            <jet-label for="school_id" required value="Schools" />
-                            <select id="school_id" @change="schoolChange($event)" v-model="form.school_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
-                                <option v-for="school in schools" v-bind:value="school.id">{{ school.name }}</option>
-                            </select>
-                            <jet-input-error :message="form.errors.school_id" class="mt-2" />
-                        </div>
-
-
-                    </div>
-
-                    <div class="flex flex-row mb-4">
-                        <div class="flex-col" v-if="bundles.length > 0">
-                            <jet-label for="bundle_id" required value="Bundle" />
-                            <select id="bundle_id" @change="bundleChange($event)" v-model="form.bundle_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
-                                <option v-for="bundle in bundles" v-bind:value="bundle.id">{{ bundle.name }}</option>
-                            </select>
-                            <jet-input-error :message="form.errors.bundle_id" class="mt-2" />
-                        </div>
                     </div>
 
                     <div v-if="form.items.length" class="book-item-details">
@@ -98,7 +99,7 @@
                                     </td>
                                     <td>
                                        <button type="button" v-on:click="removeRow(index, item.id)" v-if="index > 0" >
-                                          <span class="material-icons text-sm text-red-500">Remove</span>
+                                          <span class="material-icons text-sm text-red-500"><remove-icon /></span>
                                        </button>
                                     </td>
                                 </tr>
@@ -121,10 +122,16 @@
 
                     <div class="mb-4">
                         <jet-button :class="{ 'opacity-25': form.processing }" >Save</jet-button>
+                        <jet-button class="ml-4" >Save & Pring</jet-button>
                     </div>
                 </form>
             </div>
         </div>
+        <!-- <div class="notifications" v-if="$page.props.flash.message">
+            <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8  ">
+                <Alerts :type="$page.props.flash.type" :message="$page.props.flash.message" />
+            </div>
+        </div> -->
     </app-layout>
 </template>
 
@@ -139,10 +146,12 @@
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import InputGroup from '@/Shared/Components/Form/Simple/InputGroup.vue'
     import { Inertia } from '@inertiajs/inertia'
+    import RemoveIcon from '@/Shared/Components/Icons/svg/Trash.vue'
 
     export default defineComponent({
         components: {
             JetInputError,
+            RemoveIcon,
             InputGroup,
             JetInput,
             AppLayout,

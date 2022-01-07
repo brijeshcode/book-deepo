@@ -115,7 +115,7 @@
                                         <option v-for="supplier in suppliers" v-bind:value="supplier.id">{{ supplier.name }}</option>
                                     </select>
                                     <button type="button" v-on:click="removeSupplier(index)" class="ml-4" v-if="index > 0" >
-                                      <span class="material-icons text-sm text-red-500">delete</span>
+                                      <span class="material-icons text-sm text-red-500"><remove-icon /></span>
                                     </button>
                                 </div>
                             </div>
@@ -128,7 +128,7 @@
                                             <option v-for="school in schools" v-bind:value="school.id">{{ school.name }}</option>
                                         </select>
                                         <button type="button" @click="removeSchool(index)" class="ml-4" v-if="index > 0">
-                                          <span class="material-icons text-sm text-red-500 ">delete</span>
+                                          <span class="material-icons text-sm text-red-500 "><remove-icon /></span>
                                         </button>
 
                                     </div>
@@ -163,10 +163,12 @@
     import { Link } from '@inertiajs/inertia-vue3';
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import JetCheckbox from '@/Jetstream/Checkbox.vue'
+    import RemoveIcon from '@/Shared/Components/Icons/svg/Trash.vue'
 
     export default defineComponent({
         components: {
             JetInputError,
+            RemoveIcon,
             BreadSimple,
             JetInput,
             AppLayout,

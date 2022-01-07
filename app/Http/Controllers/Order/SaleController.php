@@ -43,7 +43,7 @@ class SaleController extends Controller
 
             $order = Sale::create($request->only('name', 'school_id', 'bundle_id', 'date', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'total_quantity','note'))->items()->createMany($request->items);
         });
-        return redirect(route('sales'))->with('type', 'success')->with('message', 'Sales generated successfully !!');
+        return redirect(route('sales.create'))->with('type', 'success')->with('message', 'Sales generated successfully !!');
     }
 
 
