@@ -210,9 +210,10 @@ class SchoolOrderController extends Controller
 
     public function storeDelivery(Request $request)
     {
+        \DB::transaction(function() use ($request) {
+
         $totalRecivedQuantity = $schoolOrderId = 0;
         $bookQuantity = $supplierDelivery = $publisherDelivery = $itemRecived = array();
-        \DB::transaction(function() use ($request) {
 
             foreach ($request->items as $key => $item) {
                 if ($item['quantity'] <= 0 ) continue;
@@ -307,7 +308,7 @@ class SchoolOrderController extends Controller
 
             if ($schoolOrderId > 0 && $totalRecivedQuantity > 0) {
                 $schoolOrder = SchoolOrder::where('id', $schoolOrderId)->first();
-                $schoolOrder->statu = $schoolOrder->quantity ==  $totalRecivedQuantity  ? 'Completed' : 'Parital';
+                $schoolOrder->status = $schoolOrder->quantity ==  $totalRecivedQuantity  ? 'Completed' : 'Partial';
                 $schoolOrder->save();
             }
         });

@@ -2,6 +2,7 @@
 
 namespace App\Models\Orders;
 
+use App\Models\Setup\Book;
 use App\Models\Setup\Publisher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

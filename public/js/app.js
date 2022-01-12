@@ -9950,7 +9950,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         items: [{
           route: 'publishers'
         }, {
-          route: 'publisherOrder',
+          route: 'publishersOrder',
           name: 'Deliveries'
         }]
       })];

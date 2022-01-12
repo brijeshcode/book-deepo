@@ -125,6 +125,6 @@ class PublisherOrderController extends Controller
     public function deliveryIndex(Request $request)
     {
         $deliveries = PublisherOrderDelivery::with('book', 'publisher')->paginate(10);
-        return Inertia::render('Order/Publisher/DeliveryIndex', compact('deliveries'));
+        return Inertia::render('Order/Publishers/DeliveryIndex', compact('deliveries'));
     }
 }
