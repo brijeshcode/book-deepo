@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Orders\PublisherOrder;
 use App\Models\Orders\PublisherOrderDelivery;
 use App\Models\Orders\PublisherOrderItem;
+use App\Models\Orders\PublisherOrderReturn;
 use App\Models\Setup\Book;
 use App\Models\Setup\Publisher;
 use Illuminate\Http\Request;
@@ -126,5 +127,11 @@ class PublisherOrderController extends Controller
     {
         $deliveries = PublisherOrderDelivery::with('book', 'publisher')->paginate(10);
         return Inertia::render('Order/Publishers/DeliveryIndex', compact('deliveries'));
+    }
+
+    public function returnIndex(Request $request)
+    {
+        $returns = PublisherOrderReturn::with('publisher')->paginate(10);
+        return Inertia::render('Order/Publishers/ReturnIndex', compact('returns'));
     }
 }

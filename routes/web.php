@@ -90,12 +90,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('/setup/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
     Route::get('/supplier/{supplier}/books/', [SupplierController::class, 'books'])->name('suppliers.books');
 
+
+
     Route::get('/setup/books', [BookController::class, 'index'])->name('books');
     Route::get('/setup/books/create', [BookController::class, 'create'])->name('books.create');
     Route::post('/setup/books', [BookController::class, 'store'])->name('books.store');
     Route::get('/setup/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
     Route::put('/setup/books/{book}', [BookController::class, 'update'])->name('books.update');
     Route::get('/books/list', [BookController::class, 'list'])->name('books.list');
+
+
 
     Route::get('/setup/publishers', [PublisherController::class, 'index'])->name('publishers');
     Route::get('/setup/publishers/create', [PublisherController::class, 'create'])->name('publishers.create');
@@ -116,6 +120,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/publisher/orders/{order}/delivery', [PublisherOrderController::class, 'delivery'])->name('publisher.order.delivery');
 
     Route::get('/publisher/order/deliveries', [PublisherOrderController::class, 'deliveryIndex'])->name('publisher.delivery.index');
+    Route::get('/publisher/order/returns', [PublisherOrderController::class, 'returnIndex'])->name('publisher.returns.index');
+
+
+
 
     Route::get('/supplier/orders', [SupplierOrderController::class, 'index'])->name('supplierOrder');
     Route::get('/supplier/order/create', [SupplierOrderController::class, 'create'])->name('supplierOrder.create');
@@ -126,6 +134,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/supplier/orders/{order}/delivery', [SupplierOrderController::class, 'delivery'])->name('supplier.order.delivery');
     Route::get('/supplier/order/deliveries', [SupplierOrderController::class, 'deliveryIndex'])->name('supplier.delivery.index');
 
+    Route::get('/supplier/order/returns', [SupplierOrderController::class, 'returnIndex'])->name('supplier.returns.index');
+    Route::get('/supplier/order/returns/{return}', [SupplierOrderController::class, 'returnShow'])->name('supplier.returns.show');
 
 
     Route::get('/school/orders', [SchoolOrderController::class, 'index'])->name('schoolOrder');

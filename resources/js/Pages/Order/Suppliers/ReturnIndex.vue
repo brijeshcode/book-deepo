@@ -1,13 +1,13 @@
 <template>
-    <app-layout title="Supplier Orders">
+    <app-layout title="Supplier Returns">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Supplier Orders
+                Supplier Returns
                 <!-- <add-link createRoute="supplierOrder.create" isbutton >Generate</add-link> -->
             </h2>
         </template>
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplierOrder', name:'Orders'} ]" />
+            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplierOrder', name:'Returns'} ]" />
         </template>
 
         <template #actions>
@@ -25,62 +25,49 @@
                             <table class="min-w-full divide-y divide-gray-200">
                               <thead class="bg-gray-50">
                                 <tr>
-                                  <th>#</th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Date
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Supplier
 s                                  </th>
-                                  <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Contact Person
-                                  </th> -->
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Suppler order #
+                                  </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Quantity
                                   </th>
-                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Amount
+                                  <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Unit Price
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Note
-                                  </th>
-                                  <!-- <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th> -->
+                                    Total
+                                  </th> -->
                                 </tr>
+
                               </thead>
                               <tbody class="bg-white divide-y divide-gray-200">
-                                <tr v-for="order in orders.data" :key="order.id">
+                                <tr v-for="returnData in returns.data" :key="returnData.id">
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                  {{ order.id }}</td>
-                                  <td class="px-6 py-4 whitespace-nowrap">
-                                    <Edit-link :edit="{route: 'supplierOrder.edit', to:order.id }" >
-                                    <div class="text-sm text-gray-500">{{ order.date }}</div>
+                                    <Edit-link :edit="{route: 'supplierOrder.edit', to:returnData.id }" >
+                                    <div class="text-sm text-gray-500">{{ returnData.date }}</div>
                                   </Edit-link>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ order.supplier.name }}</div>
+                                    <div class="text-sm text-gray-900">{{ returnData.supplier.name }}</div>
                                   </td>
-                                  <!-- <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ order.contact_person }}</div>
-                                    <div class="text-sm text-gray-500">{{ order.email }}</div>
-                                    <div class="text-sm text-gray-500">{{ order.mobile }}</div>
-                                  </td> -->
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-500">{{ order.quantity }}</div>
+                                    <div class="text-sm text-gray-900">{{ returnData.supplier_order_id }}</div>
                                   </td>
-                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <div class="text-sm text-gray-500">{{ order.amount }}</div>
+                                  <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-500">{{ returnData.quantity }}</div>
                                   </td>
-                                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <div class="text-sm text-gray-500">{{ order.note }}</div>
-                                  </td>
-                                  <!-- <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                                  <deliver-link :order="{route: 'supplier.order.delivery', id:order.id }" title="Update delivery" showicon />
-                                  </td> -->
+
                                 </tr>
                               </tbody>
                             </table>
 
-                            <Pagination :pageData="orders" pageof=" Suppliers Orders" />
+                            <Pagination :pageData="returns" pageof=" Suppliers Returns" />
                           </div>
                         </div>
                       </div>
@@ -106,7 +93,7 @@ s                                  </th>
             AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination
         },
         props:{
-            orders: Object
+            returns: Object
         }
     })
 </script>

@@ -25,6 +25,9 @@
                             <table class="min-w-full divide-y divide-gray-200">
                               <thead class="bg-gray-50">
                                 <tr>
+                                  <th>
+                                    #
+                                  </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Date
                                   </th>
@@ -48,6 +51,10 @@ s                                  </th>
                               </thead>
                               <tbody class="bg-white divide-y divide-gray-200">
                                 <tr v-for="delivery in deliveries.data" :key="delivery.id">
+                                  <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ delivery.id }}</div>
+                                  </td>
+
                                   <td class="px-6 py-4 whitespace-nowrap">
                                     <Edit-link :edit="{route: 'supplierOrder.edit', to:delivery.id }" >
                                     <div class="text-sm text-gray-500">{{ delivery.date }}</div>

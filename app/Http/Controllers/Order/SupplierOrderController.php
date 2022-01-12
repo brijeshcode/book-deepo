@@ -8,6 +8,7 @@ use App\Models\Orders\SchoolOrderItem;
 use App\Models\Orders\SupplierOrder;
 use App\Models\Orders\SupplierOrderDelivery;
 use App\Models\Orders\SupplierOrderItem;
+use App\Models\Orders\SupplierOrderReturn;
 use App\Models\Setup\Supplier;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -117,6 +118,18 @@ class SupplierOrderController extends Controller
     {
         $deliveries = SupplierOrderDelivery::with('book', 'supplier')->paginate(10);
         return Inertia::render('Order/Suppliers/DeliveryIndex', compact('deliveries'));
+    }
 
+    public function returnIndex(Request $request)
+    {
+        $returns = SupplierOrderReturn::with('supplier')->paginate(10);
+        return Inertia::render('Order/Suppliers/ReturnIndex', compact('returns'));
+    }
+
+    public function returnShow(Request $request, $return_id)
+    {
+        dd($return_id);
+        $returns = SupplierOrderReturn::with('supplier')->paginate(10);
+        return Inertia::render('Order/Suppliers/DeliveryIndex', compact('returns'));
     }
 }

@@ -54,6 +54,9 @@
                                         <jet-dropdown-link :href="route('publisher.delivery.index')">
                                             Deliveires
                                         </jet-dropdown-link>
+                                        <jet-dropdown-link :href="route('publisher.returns.index')">
+                                            Returns
+                                        </jet-dropdown-link>
                                     </template>
                                 </jet-dropdown>
                             </div>
@@ -76,6 +79,10 @@
 
                                         <jet-dropdown-link :href="route('supplier.delivery.index')">
                                             Deliveires
+                                        </jet-dropdown-link>
+
+                                        <jet-dropdown-link :href="route('supplier.returns.index')">
+                                            Returns
                                         </jet-dropdown-link>
 
 
