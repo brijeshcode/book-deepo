@@ -142,6 +142,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/school/orders/create', [SchoolOrderController::class, 'create'])->name('schoolOrder.create');
     Route::post('/school/orders', [SchoolOrderController::class, 'store'])->name('schoolOrder.store');
     Route::get('/school/orders/{order}/edit', [SchoolOrderController::class, 'edit'])->name('schoolOrder.edit');
+    Route::get('/school/orders/{order}/show', [SchoolOrderController::class, 'show'])->name('schoolOrder.show');
     Route::put('/school/orders/{order}', [SchoolOrderController::class, 'update'])->name('schoolOrder.update');
     Route::delete('/school/order/item/{item}/delete', [SchoolOrderController::class, 'deleteItem'])->name('schoolOrderItem.delete');
 

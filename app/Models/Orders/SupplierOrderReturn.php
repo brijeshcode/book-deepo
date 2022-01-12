@@ -22,7 +22,7 @@ class SupplierOrderReturn extends Model
 
     public function order()
     {
-        return $this->belongsTo(SupplierOrder::class );
+        return $this->belongsTo(SupplierOrder::class, 'supplier_order_id' );
     }
 
     public function supplier()

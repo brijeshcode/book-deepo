@@ -122,7 +122,7 @@ class SupplierOrderController extends Controller
 
     public function returnIndex(Request $request)
     {
-        $returns = SupplierOrderReturn::with('supplier')->paginate(10);
+        $returns = SupplierOrderReturn::with('supplier', 'order', 'order.school')->paginate(10);
         return Inertia::render('Order/Suppliers/ReturnIndex', compact('returns'));
     }
 

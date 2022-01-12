@@ -32,7 +32,10 @@
                                     Supplier
 s                                  </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Suppler order #
+                                    School
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    School order #
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Quantity
@@ -49,15 +52,19 @@ s                                  </th>
                               <tbody class="bg-white divide-y divide-gray-200">
                                 <tr v-for="returnData in returns.data" :key="returnData.id">
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <Edit-link :edit="{route: 'supplierOrder.edit', to:returnData.id }" >
                                     <div class="text-sm text-gray-500">{{ returnData.date }}</div>
-                                  </Edit-link>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ returnData.supplier.name }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ returnData.supplier_order_id }}</div>
+                                   <!--  <show-link :edit="{route: 'schoolOrder.show', to:returnData.order.school_order_id }" >
+                                      <div class="text-sm text-gray-900">{{ returnData.order.school.name }}</div>
+                                    </show-link> -->
+                                      <div class="text-sm text-gray-900">{{ returnData.order.school.name }}</div>
+                                  </td>
+                                  <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ returnData.order.school_order_id }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-500">{{ returnData.quantity }}</div>
@@ -84,13 +91,14 @@ s                                  </th>
     import Pagination from '@/Shared/Components/Pagination/Simple.vue'
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import AddLink from '@/Shared/Components/Links/Add.vue'
+    import ShowLink from '@/Shared/Components/Links/Edit.vue'
     import DeliverLink from '@/Shared/Components/Links/Delivery.vue'
     import Search from '@/Shared/Components/Filters/Search.vue'
 
 
     export default defineComponent({
         components: {
-            AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination
+            AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination, ShowLink
         },
         props:{
             returns: Object

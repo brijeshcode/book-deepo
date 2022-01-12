@@ -56,6 +56,15 @@ class SchoolOrderController extends Controller
         return Inertia::render('Order/Schools/Create', compact('schools', 'order', 'books'))->with('type', 'success')->with('message', 'Order generated successfully !!');
     }
 
+    public function show(Request $request, $order_id)
+    {
+
+        $order = SchoolOrder::with('items', 'school')
+            ->where('id',$order_id)->first();
+
+        return Inertia::render('Order/Schools/Show', compact('order'));
+    }
+
     public function store(Request $request)
     {
         // dd($request->items);
