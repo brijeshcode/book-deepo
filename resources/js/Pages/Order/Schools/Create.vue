@@ -45,31 +45,31 @@
                         </div>
 
                         <div v-if="form.items.length" class="book-item-details">
-                            <div class="flex flex-row">
+                            <div class="flex flex-row mb-4">
                                 <p>Add books to list:
                                     <span @click="addBook" class="bg-green-400 hover:bg-green-700 hover:text-white p-2 pb-1 pl-2 pt-1 rounded cursor-pointer">Add Book</span>
                                 </p>
                             </div>
-                            <table>
-                                <thead>
+                            <table class="min-w-full divide-y divide-gray-200 border mb-4">
+                                <thead class="bg-gray-50">
                                     <tr>
-                                        <th><jet-label value="Select Book" /></th>
-                                        <th><jet-label value="Details" /></th>
-                                        <th><jet-label value="Publishers" /></th>
-                                        <th><jet-label value="Suppliers" /></th>
-                                        <th><jet-label value="Order To" /></th>
-                                        <th><jet-label value="Quantity" /></th>
-                                        <th><jet-label value="Action" /></th>
+                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Select Book" /></th>
+                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Details" /></th>
+                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Publishers" /></th>
+                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Suppliers" /></th>
+                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Order To" /></th>
+                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Quantity" /></th>
+                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Action" /></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item,index) in form.items">
-                                        <td>
+                                        <td class="px-4 py-4 whitespace-nowrap">
                                             <select v-model="item.book_id" @change="changeBook($event)" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
                                                 <option v-for="book in books" :value="book.id">{{ book.name }} - {{ book.quantity }}</option>
                                             </select>
                                         </td>
-                                        <td>
+                                        <td class="px-4 py-4 whitespace-nowrap">
                                             <div v-if="item.book.sku_no" class="flex text-gray-800">
                                                 <Edit-link :edit="{route: 'books.edit', to:item.book.id }" target="_blank" > View Detail </Edit-link>
 
@@ -118,32 +118,32 @@
                                             </div>
                                         </td>
 
-                                        <td>
+                                        <td class="px-4 py-4 whitespace-nowrap">
                                             <div v-if="item.book.publisher">
                                                 {{ item.book.publisher.name  }}
                                             </div>
                                         </td>
 
-                                        <td>
+                                        <td class="px-4 py-4 whitespace-nowrap">
                                             <select v-model="item.supplier_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
                                                 <option v-for="supplier in item.book.suppliers" :value="supplier.id">{{ supplier.name }}</option>
                                             </select>
                                         </td>
 
-                                        <td>
+                                        <td class="px-4 py-4 whitespace-nowrap">
                                             <select v-model="item.order_to" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
                                                 <option value="Supplier">Supplier</option>
                                                 <option value="Publisher">Publisher</option>
                                             </select>
                                         </td>
 
-                                        <td>
+                                        <td class="px-4 py-4 whitespace-nowrap">
                                             <jet-input type="number" style="width:70px" step="1" min="0" class="mt-1 block" v-model="item.quantity" />
                                             <!-- <group-input prefixlabel="Qty:" :prefix="item.book.quantity" type="number" class="mt-1 block" v-model="item.quantity" /> -->
                                         </td>
 
 
-                                        <td>
+                                        <td class="px-4 py-4 whitespace-nowrap">
                                             <button type="button" v-on:click="removeRow(index, item.id)" v-if="index > 0" >
                                           <span class="material-icons text-sm text-red-500">Delete</span>
                                         </button>
@@ -152,13 +152,13 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><jet-input type="number" class="mt-1 block" style="width:70px" readonly v-model="computeQuantity" /></td>
-                                        <td></td>
+                                        <td class="px-4 py-4 whitespace-nowrap"></td>
+                                        <td class="px-4 py-4 whitespace-nowrap"></td>
+                                        <td class="px-4 py-4 whitespace-nowrap"></td>
+                                        <td class="px-4 py-4 whitespace-nowrap"></td>
+                                        <td class="px-4 py-4 whitespace-nowrap"></td>
+                                        <td class="px-4 py-4 whitespace-nowrap"><jet-input type="number" class="mt-1 block" style="width:70px" readonly v-model="computeQuantity" /></td>
+                                        <td class="px-4 py-4 whitespace-nowrap"></td>
                                     </tr>
                                 </tfoot>
                             </table>

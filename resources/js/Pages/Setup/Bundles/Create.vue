@@ -41,25 +41,25 @@
 
                     </div>
                     <div class="flex flex-row mb-4" v-if="schoolBooks.length > 0">
-                        <table>
-                            <thead>
+                        <table class="min-w-full divide-y divide-gray-200 border mb-4">
+                            <thead class="bg-gray-50">
                                 <tr>
-                                    <th>Book</th>
-                                    <th>Quantity</th>
-                                    <th><span @click="addBooks" ><add-icon /></span></th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><span @click="addBooks" ><add-icon /></span></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(item , index) in form.books">
-                                    <td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         <select v-model="item.book_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
                                             <option v-for="(book) in schoolBooks" :value="book.id">{{ book.class }} - {{ book.subject }} - {{ book.name }}</option>
                                         </select>
                                     </td>
-                                    <td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         <jet-input type="number" min="1" setp="1" class="mt-1 block" v-model="item.quantity" />
                                     </td>
-                                    <td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         <button type="button" @click="remove(index)" class="ml-4" v-if="index > 0">
                                           <span class="text-sm text-red-500 "><remove-icon /></span>
                                         </button>

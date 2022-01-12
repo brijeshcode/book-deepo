@@ -24,59 +24,73 @@
                         </div>
 
                         <div v-if="form.items.length" class="book-item-details">
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg mb-2">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <jet-label value="Book" />
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <jet-label value="Request Quantity" />
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <jet-label value="Recived Quantity" />
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <jet-label value="Delivery By" />
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <jet-label value="Delivery Quantity" />
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <jet-label value="Unit Price" />
+                                            </th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <jet-label value="Total Price" />
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item,index) in form.items">
+                                            <td class="px-4 py-4 whitespace-nowrap"> {{ item.book_name }} </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">{{ item.request_quantity }}</td>
+                                            <td class="px-4 py-4 whitespace-nowrap">{{ item.recived_quantity }}</td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <div v-if="item.order_to === 'Supplier'">
+                                                    {{ item.supplier_name  }}
+                                                </div>
+                                                <div v-else>
+                                                    {{ item.publisher_name  }}
+                                                </div>
+                                            </td>
 
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th><jet-label value="Book" /></th>
-                                        <th><jet-label value="Request Quantity" /></th>
-                                        <th><jet-label value="Recived Quantity" /></th>
-                                        <th><jet-label value="Delivery By" /></th>
-                                        <th><jet-label value="Delivery Quantity" /></th>
-                                        <th><jet-label value="Unit Price" /></th>
-                                        <th><jet-label value="Total Price" /></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(item,index) in form.items">
-                                        <td> {{ item.book_name }} </td>
-                                        <td>{{ item.request_quantity }}</td>
-                                        <td>{{ item.recived_quantity }}</td>
-                                        <td>
-                                            <div v-if="item.order_to === 'Supplier'">
-                                                {{ item.supplier_name  }}
-                                            </div>
-                                            <div v-else>
-                                                {{ item.publisher_name  }}
-                                            </div>
-                                        </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <jet-input type="number" style="width:120px" step="1" min="0" :max="item.request_quantity - item.recived_quantity" class="mt-1 block" v-model="item.quantity" />
+                                            </td>
 
-                                        <td>
-                                            <jet-input type="number" style="width:120px" step="1" min="0" :max="item.request_quantity - item.recived_quantity" class="mt-1 block" v-model="item.quantity" />
-                                        </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <jet-input type="number" @change="priceChange(index)" style="width:120px" step="1" min="0" class="mt-1 block" v-model="item.price" />
+                                            </td>
+                                            <td class="px-4 py-4 whitespace-nowrap">
+                                                <jet-input type="number"  @change="amountChange(index)" style="width:120px" step="1" min="0" class="mt-1 block" v-model="item.amount" />
 
-                                        <td>
-                                            <jet-input type="number" @change="priceChange(index)" style="width:120px" step="1" min="0" class="mt-1 block" v-model="item.price" />
-                                        </td>
-                                        <td>
-                                            <jet-input type="number"  @change="amountChange(index)" style="width:120px" step="1" min="0" class="mt-1 block" v-model="item.amount" />
-
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><jet-input type="number" class="mt-1 block" style="width:120px" readonly v-model="computeDeliveryQuantity" /></td>
-                                        <td></td>
-                                        <td><!-- <jet-input type="number" class="mt-1 block" style="width:120px" readonly v-model="computeTotalAmount" /> --></td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="px-4 py-4 whitespace-nowrap"><jet-input type="number" class="mt-1 block" style="width:120px" readonly v-model="computeDeliveryQuantity" /></td>
+                                            <td></td>
+                                            <td><!-- <jet-input type="number" class="mt-1 block" style="width:120px" readonly v-model="computeTotalAmount" /> --></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
 
                         <div class="mb-4">

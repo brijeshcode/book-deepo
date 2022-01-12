@@ -65,55 +65,55 @@
                          <!-- <p>Add books to list:
                             <span @click="addItem" class="bg-green-400 hover:bg-green-700 hover:text-white p-2 pb-1 pl-2 pt-1 rounded cursor-pointer">Add Book</span>
                             </p> -->
-                        <table>
-                            <thead>
+                        <table class="min-w-full divide-y divide-gray-200 border mb-4">
+                            <thead class="bg-gray-50">
                                 <tr>
-                                    <th>Books</th>
-                                    <th>Class</th>
-                                    <th>Subject</th>
-                                    <th>Quantity</th>
-                                    <th>Cost </th>
-                                    <th>Action</th>
+                                    <th scope="col" class="  py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Books</th>
+                                    <th scope="col" class="  py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Class</th>
+                                    <th scope="col" class="  py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+                                    <th scope="col" class="  py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                    <th scope="col" class=" py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cost </th>
+                                    <th scope="col" class="  py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(item,index) in form.items">
-                                    <td>
+                                    <td class="  py-4 whitespace-nowrap">
                                         <!-- <select v-model="item.book_id" readonly @change="itemChange($event)" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
                                             <option v-for="book in books" :value="book.id" v-text="book.name"></option>
                                         </select> -->
                                         <jet-input type="text" v-model="item.book_name" disabled  />
 
                                     </td>
-                                    <td>
+                                    <td class="  py-4 whitespace-nowrap">
                                         <jet-input type="text" class="mt-1 block" v-model="item.class" readonly  />
                                     </td>
-                                    <td>
+                                    <td class="  py-4 whitespace-nowrap">
                                         <jet-input type="text" class="mt-1 block" v-model="item.subject" readonly />
                                     </td>
-                                    <td>
-                                        <input-group type="number" class="mt-1 block" :prefix="item.system_quantity" prefixlabel="Qty:" v-model="item.quantity" />
+                                    <td class="  py-4 whitespace-nowrap">
+                                        <input-group type="number" class="mt-1 block" style="width:150px" :prefix="item.system_quantity" prefixlabel="Qty:" v-model="item.quantity" />
                                     </td>
-                                    <td>
-                                        <jet-input type="number" class="mt-1 block" v-model="item.cost" />
+                                    <td class=" py-4 whitespace-nowrap">
+                                        <jet-input type="number" class="mt-1 block" style="width:120px" v-model="item.cost" />
                                     </td>
-                                    <td>
+                                    <td class="  py-4 whitespace-nowrap">
                                        <button type="button" v-on:click="removeRow(index, item.id)" v-if="index > 0" >
                                           <span class="material-icons text-sm text-red-500"><remove-icon /></span>
                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                        <jet-input type="number" class="mt-1 block" readonly v-model="computeQuantity" />
+                                    <td class="  py-4 whitespace-nowrap"></td>
+                                    <td class="  py-4 whitespace-nowrap"></td>
+                                    <td class="  py-4 whitespace-nowrap"></td>
+                                    <td class="  py-4 whitespace-nowrap">
+                                        <jet-input type="number" class="mt-1 block" readonly style="width:150px" v-model="computeQuantity" />
                                     </td>
-                                    <td>
-                                        <jet-input type="number" class="mt-1 block" readonly v-model="computeCost" />
+                                    <td class="  py-4 whitespace-nowrap">
+                                        <jet-input type="number" class="mt-1 block" readonly style="width:120px" v-model="computeCost" />
                                     </td>
-                                    <td></td>
+                                    <td class="  py-4 whitespace-nowrap"></td>
                                 </tr>
                             </tbody>
                         </table>
