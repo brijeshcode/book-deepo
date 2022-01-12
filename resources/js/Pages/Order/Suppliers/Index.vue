@@ -43,7 +43,7 @@ s                                  </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Note
                                   </th>
-                                  <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                  <!-- <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th> -->
                                 </tr>
                               </thead>
                               <tbody class="bg-white divide-y divide-gray-200">
@@ -70,11 +70,9 @@ s                                  </th>
                                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     <div class="text-sm text-gray-500">{{ order.note }}</div>
                                   </td>
-                                  <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
+                                  <!-- <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
                                   <deliver-link :order="{route: 'supplier.order.delivery', id:order.id }" title="Update delivery" showicon />
-                                   <!--  <Edit-link :edit="{route: 'supplierOrder.edit', to:order.id }" showicon /> -->
-
-                                  </td>
+                                  </td> -->
                                 </tr>
                               </tbody>
                             </table>
