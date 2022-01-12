@@ -31,9 +31,9 @@
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Name
                           </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Class
-                          </th>
+                          </th> -->
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             School
                           </th>
@@ -56,9 +56,9 @@
                               in-Active
                             </span>
                           </td>
-                          <td class="px-4 py-4 whitespace-nowrap">
+                          <!-- <td class="px-4 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-500">{{ bundle.class }}</div>
-                          </td>
+                          </td> -->
                           <td class="px-4 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-500">{{ bundle.school.name }}</div>
                           </td>

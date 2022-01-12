@@ -25,6 +25,9 @@
                       <thead class="bg-gray-50">
                         <tr>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            #
+                          </th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Date
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -40,13 +43,16 @@
                             Amount
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Note
+                            Status
                           </th>
                           <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                         </tr>
                       </thead>
                       <tbody class="bg-white divide-y divide-gray-200">
                         <tr v-for="order in orders.data" :key="order.id">
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">{{ order.id }}</div>
+                          </td>
                           <td class="px-6 py-4 whitespace-nowrap">
                             <Edit-link :edit="{route: 'schoolOrder.edit', to:order.id }" >
                               <div class="text-sm text-gray-500">{{ order.date }}</div>
@@ -57,20 +63,24 @@
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-900">{{ order.school.name }}</div>
-                            <div class="text-sm text-gray-500">{{ order.email }}</div>
-                            <div class="text-sm text-gray-500">{{ order.mobile }}</div>
+                            <div class="text-sm text-gray-500">{{ order.school.email }}</div>
+                            <div class="text-sm text-gray-500">{{ order.school.mobile }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500">{{ order.total_quantity }}</div>
+                            <div class="text-sm text-gray-500">{{ order.quantity }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div class="text-sm text-gray-500">{{ order.total_amount }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm text-gray-500">{{ order.note }}</div>
+                            <!-- <div class="text-sm text-gray-500">{{ order.note }}</div> -->
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                {{ order.status }}
+                              </span>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                            <Edit-link :edit="{route: 'schoolOrder.edit', to:order.id }" showicon />
+                            <deliver-link v-if="order.status != 'Completed'" :order="{route: 'school.order.delivery', id:order.id }" title="Update delivery" showicon />
+                            <return-link v-if="order.status != 'Pending'"  :order="{route: 'school.order.return', id:order.id }" showicon />
                           </td>
                         </tr>
                       </tbody>
@@ -93,10 +103,12 @@
     import AddLink from '@/Shared/Components/Links/Add.vue'
     import EditLink from '@/Shared/Components/Links/Edit.vue'
     import Search from '@/Shared/Components/Filters/Search.vue'
+    import DeliverLink from '@/Shared/Components/Links/Delivery.vue'
+    import ReturnLink from '@/Shared/Components/Links/Return.vue'
 
     export default defineComponent({
         components: {
-            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination
+            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination,DeliverLink,ReturnLink
         },
         props:{
             orders: Object

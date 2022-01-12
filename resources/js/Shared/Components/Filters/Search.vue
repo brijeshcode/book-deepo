@@ -1,5 +1,5 @@
 <template>
-    <jet-input id="search" class="h-11 my-1" v-model="search" type="text" placeholder="Search..." autocomplete="search" />
+    <jet-input class="h-11 my-1" v-model="search" type="text" placeholder="Search..." autocomplete="search" />
 </template>
 
 <script>

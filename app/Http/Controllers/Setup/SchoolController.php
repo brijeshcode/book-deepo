@@ -52,12 +52,6 @@ class SchoolController extends Controller
         return Inertia::render('Setup/Schools/Create', compact('warehouses'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validateFull($request);
@@ -65,23 +59,11 @@ class SchoolController extends Controller
         return redirect(route('schools'))->with('type', 'success')->with('message', 'School added successfully !!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(School $school)
     {
         $warehouses = Warehouse::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
@@ -89,13 +71,6 @@ class SchoolController extends Controller
         return Inertia::render('Setup/Schools/Create', compact('school', 'warehouses'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, School $school)
     {
         $this->validateFull($request);
@@ -133,8 +108,8 @@ class SchoolController extends Controller
 
     public function bookList(School $school)
     {
-        return $books = $school->books()->select('id','name', 'class','subject')
-        ->with('warehouse:id,name,city,state,email,pincode,mobile,contact_person', 'publisher:id,name')->get();
+        return $books = $school->books()->select('id','name', 'quantity', 'sku_no' ,'class','subject','publisher_id', 'warehouse_id')
+        ->with('warehouse:id,name,city,state,email,pincode,mobile,contact_person', 'publisher:id,name,email,contact_person,mobile', 'suppliers:id,name,email,contact_person,mobile')->get();
     }
 
     public function bundleList(School $school)
@@ -170,7 +145,7 @@ class SchoolController extends Controller
                 'state.required' => $tempName .' State is empty.' ,
                 'pincode.required' => $tempName .' Pincode is empty.' ,
                 'mobile.required' => $tempName .' Moible is empty.',
-                'mobile.digits' => $tempName .' Moible number must be 10 digits.',
+                'mobile.digits' => $tempName .' Moible# must number and 10 digits long.',
                 'email.required' => 'Enter valid Email.'
             ]
         );

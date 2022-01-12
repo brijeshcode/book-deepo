@@ -18,7 +18,7 @@
                         <div class="flex flex-row mb-4">
 
                             <div class="basis-1/4">
-                                <jet-label for="school_id" required="true" value="School" />
+                                <jet-label for="school_id" required value="School" />
                                 <select id="school_id" @change="changeSchool($event)" v-model="form.school_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
                                     <option v-for="school in schools" v-bind:value="school.id">{{ school.name }}</option>
                                 </select>
@@ -32,13 +32,13 @@
                             </div>
 
                             <div class="mb-4 basis-1/4">
-                                <jet-label for="mobile" value="Mobile#" required="true" />
+                                <jet-label for="mobile" value="Mobile#" required />
                                 <jet-input id="mobile" type="text" class="mt-1 block" v-model="form.mobile" autocomplete="mobile" readonly />
                                 <jet-input-error :message="form.errors.mobile" class="mt-2" />
                             </div>
 
                             <div class="mb-4 basis-1/4">
-                                <jet-label for="email" value="Email" required="true" />
+                                <jet-label for="email" value="Email" required />
                                 <jet-input id="email" type="text" class="mt-1 block" v-model="form.email" autocomplete="email" readonly />
                                 <jet-input-error :message="form.errors.email" class="mt-2" />
                             </div>
@@ -47,7 +47,7 @@
                         <div v-if="form.items.length" class="book-item-details">
                             <div class="flex flex-row">
                                 <p>Add books to list:
-                                <span @click="addBook" class="bg-green-400 hover:bg-green-700 hover:text-white p-2 pb-1 pl-2 pt-1 rounded cursor-pointer">Add Book</span>
+                                    <span @click="addBook" class="bg-green-400 hover:bg-green-700 hover:text-white p-2 pb-1 pl-2 pt-1 rounded cursor-pointer">Add Book</span>
                                 </p>
                             </div>
                             <table>
@@ -55,22 +55,25 @@
                                     <tr>
                                         <th><jet-label value="Select Book" /></th>
                                         <th><jet-label value="Details" /></th>
-                                        <th><jet-label value="Quantity" /></th>
+                                        <th><jet-label value="Publishers" /></th>
+                                        <th><jet-label value="Suppliers" /></th>
                                         <th><jet-label value="Order To" /></th>
+                                        <th><jet-label value="Quantity" /></th>
                                         <th><jet-label value="Action" /></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item,index) in form.items">
                                         <td>
-                                            <select v-model="item.book_id" @change="itemChange($event)" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
+                                            <select v-model="item.book_id" @change="changeBook($event)" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
                                                 <option v-for="book in books" :value="book.id">{{ book.name }} - {{ book.quantity }}</option>
                                             </select>
                                         </td>
                                         <td>
                                             <div v-if="item.book.sku_no" class="flex text-gray-800">
+                                                <Edit-link :edit="{route: 'books.edit', to:item.book.id }" target="_blank" > View Detail </Edit-link>
 
-                                                <div class=" flex-1 rounded-md shadow-lg shadow-sm mr-2  ">
+                                                <!-- <div class=" flex-1 rounded-md shadow-lg shadow-sm mr-2  ">
                                                     <div class=" card">
                                                         <div class="card-head pt-2 pb-2 border-b text-center flex">
                                                             <div class="font-bold w-full">Book</div>
@@ -83,9 +86,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
-                                                <div v-if="item.book.supplier" class="flex-1 rounded-md shadow-lg mr-2">
+                                                <!-- <div v-if="item.book.suppliers" class="flex-1 rounded-md shadow-lg mr-2">
                                                     <div class=" card">
                                                         <div class="card-head pt-2 pb-2 border-b text-center flex">
                                                             <div class="font-bold w-full">Supplier</div>
@@ -97,9 +100,9 @@
                                                             <div class="block text-sm ">{{ item.book.supplier.mobile }}</div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
-                                                <div v-if="item.book.publisher" class="flex-1 rounded-md shadow-lg  ">
+                                                <!-- <div v-if="item.book.publisher" class="flex-1 rounded-md shadow-lg  ">
                                                     <div class=" card">
                                                         <div class="card-head pt-2 pb-2 border-b text-center flex">
                                                             <div class="font-bold w-full">Publisher</div>
@@ -110,24 +113,39 @@
                                                             <div class="block">{{ item.book.publisher.mobile }}</div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
                                             </div>
                                         </td>
 
                                         <td>
-                                            <jet-input type="number" style="width:70px" step="1" min="0" class="mt-1 block" v-model="item.quantity" />
-                                            <!-- <group-input prefixlabel="Qty:" :prefix="item.book.quantity" type="number" class="mt-1 block" v-model="item.quantity" /> -->
+                                            <div v-if="item.book.publisher">
+                                                {{ item.book.publisher.name  }}
+                                            </div>
                                         </td>
+
+                                        <td>
+                                            <select v-model="item.supplier_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
+                                                <option v-for="supplier in item.book.suppliers" :value="supplier.id">{{ supplier.name }}</option>
+                                            </select>
+                                        </td>
+
                                         <td>
                                             <select v-model="item.order_to" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
                                                 <option value="Supplier">Supplier</option>
                                                 <option value="Publisher">Publisher</option>
                                             </select>
                                         </td>
+
+                                        <td>
+                                            <jet-input type="number" style="width:70px" step="1" min="0" class="mt-1 block" v-model="item.quantity" />
+                                            <!-- <group-input prefixlabel="Qty:" :prefix="item.book.quantity" type="number" class="mt-1 block" v-model="item.quantity" /> -->
+                                        </td>
+
+
                                         <td>
                                             <button type="button" v-on:click="removeRow(index, item.id)" v-if="index > 0" >
-                                          <span class="material-icons text-sm text-red-500">delete</span>
+                                          <span class="material-icons text-sm text-red-500">Delete</span>
                                         </button>
                                         </td>
                                     </tr>
@@ -136,8 +154,10 @@
                                     <tr>
                                         <td></td>
                                         <td></td>
-                                        <td><jet-input type="number" class="mt-1 block" style="width:70px" readonly v-model="computeQuantity" /></td>
                                         <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><jet-input type="number" class="mt-1 block" style="width:70px" readonly v-model="computeQuantity" /></td>
                                         <td></td>
                                     </tr>
                                 </tfoot>
@@ -165,12 +185,14 @@
     import { useForm } from '@inertiajs/inertia-vue3'
     import JetCheckbox from '@/Jetstream/Checkbox.vue'
     import { Link } from '@inertiajs/inertia-vue3';
+    import EditLink from '@/Shared/Components/Links/Edit.vue'
     // import BookList from '@/Pages/Order/School/BookList.vue'
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import { Inertia } from '@inertiajs/inertia'
 
     export default defineComponent({
         components: {
+            EditLink,
             Link,
             JetInputError,
             JetInput,
@@ -182,9 +204,10 @@
             GroupInput
             // BookList
         },
-        props: ['schools','order', 'books'],
+        props: ['schools','order'],
         data: () => ({
-            edit: false
+            edit: false,
+            books: []
         }),
         setup () {
             const form = useForm({
@@ -214,8 +237,12 @@
                 Object.keys(this.order).forEach((index) => {
                     this.form[index] = this.order[index];
                 });
+                this.getBooks(this.order.school_id)
+
                 this.edit = true;
                 this.onEditBook();
+
+                 console.log('test');
             }
         },
         methods:{
@@ -223,6 +250,7 @@
                 this.form.items = [];
                 this.schools.forEach((school, index) => {
                     if (school.id == event.target.value ) {
+                        this.getBooks(school.id);
                         this.form.mobile = school.mobile;
                         this.form.email = school.email;
                         this.form.contact_person = school.contact_person;
@@ -245,12 +273,18 @@
                 this.form.items.push(item);
 
             },
+            getBooks(school_id){
+                axios.get(route('schools.books', school_id)).then(books =>{
+                    this.books = books.data;
+                });
+            },
 
-            itemChange(event){
+            changeBook(event){
                 this.refreshBook(event.target.value);
             },
             refreshBook(book_id = ''){
                 let book = {};
+
                 this.books.forEach((bookData) =>{
                     if (bookData.id == book_id) {
                         book = bookData;
@@ -266,17 +300,43 @@
                             this.form.items[index].book = book;
                         }
                     });
+
                 }
             },
-            onEditBook(){
+            /*onEditBook(){
+                console.log('in this fiunction body');
+                console.log(this.form.items);
                 this.books.forEach((bookData) =>{
+                console.log('in books loop');
+                console.log('in books loop');
                     this.form.items.forEach((item, index) =>{
+                console.log('in item loop');
+                        console.log(bookData.class);
                         if(item.book_id == bookData.id){
                             this.form.items[index].class= bookData.class;
                             this.form.items[index].subject= bookData.subject;
                             this.form.items[index].book = bookData;
                             this.form.items[index].publisher_id = bookData.publisher_id;
                             this.form.items[index].supplier_id = bookData.supplier_id;
+                        }
+                    });
+                });
+            },*/
+            onEditBook(){
+                console.log('in this fiunction body');
+                console.log(this.form.items);
+                this.order.items.forEach((orderItem) =>{
+                console.log('book data id: ');
+                console.log(orderItem);
+                    this.form.items.forEach((item, index) =>{
+
+                        if(item.book_id == orderItem.book.id){
+                            this.form.items[index].class= orderItem.book.class;
+                            this.form.items[index].subject= orderItem.book.subject;
+                            this.form.items[index].book = orderItem.book;
+                            this.form.items[index].publisher_id = orderItem.publisher_id;
+                            this.form.items[index].supplier_id = orderItem.supplier_id;
+                            this.form.items[index].order_to = orderItem.order_to;
                         }
                     });
                 });

@@ -17,7 +17,7 @@
                     <div class="flex flex-row mb-4">
 
                         <div class="basis-1/4">
-                            <jet-label for="publisher_id" required="true" value="Publisher" />
+                            <jet-label for="publisher_id" required value="Publisher" />
                             <select id="publisher_id" @change="changePublisher($event)" v-model="form.publisher_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
                                 <option v-for="publisher in publishers" v-bind:value="publisher.id">{{ publisher.name }}</option>
                             </select>
@@ -31,13 +31,13 @@
                         </div>
 
                         <div class="mb-4 basis-1/4">
-                            <jet-label for="mobile" value="Mobile#" required="true" />
+                            <jet-label for="mobile" value="Mobile#" required />
                             <jet-input id="mobile" type="text" class="mt-1 block" v-model="form.mobile" autocomplete="mobile" readonly />
                             <jet-input-error :message="form.errors.mobile" class="mt-2" />
                         </div>
 
                         <div class="mb-4 basis-1/4">
-                            <jet-label for="email" value="Email" required="true" />
+                            <jet-label for="email" value="Email" required />
                             <jet-input id="email" type="text" class="mt-1 block" v-model="form.email" autocomplete="email" readonly />
                             <jet-input-error :message="form.errors.email" class="mt-2" />
                         </div>

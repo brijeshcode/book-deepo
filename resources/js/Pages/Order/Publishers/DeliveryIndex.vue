@@ -1,18 +1,18 @@
 <template>
-    <app-layout title="Supplier Orders">
+    <app-layout title="Publisher Deliveries">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Supplier Orders
-                <!-- <add-link createRoute="supplierOrder.create" isbutton >Generate</add-link> -->
+                Publisher Deliveries
+                <!-- <add-link createRoute="publisherOrder.create" isbutton >Generate</add-link> -->
             </h2>
         </template>
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplierOrder', name:'Orders'} ]" />
+            <bread-simple :items="[ { route: 'publishers'}, {route: 'publisherOrder', name:'Deliveries'} ]" />
         </template>
 
         <template #actions>
             <div class="flex">
-              <!-- <Add-link createRoute="supplierOrder.create" title="Add new supplier order" withIcon /> -->
+              <!-- <Add-link createRoute="publisherOrder.create" title="Add new publisher order" withIcon /> -->
             </div>
         </template>
 
@@ -29,57 +29,50 @@
                                     Date
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Supplier
+                                    Publisher
 s                                  </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Contact Person
+                                    Book
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Quantity
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Amount
+                                    Unit Price
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Note
+                                    Total
                                   </th>
-                                  <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                 </tr>
+
                               </thead>
                               <tbody class="bg-white divide-y divide-gray-200">
-                                <tr v-for="order in orders.data" :key="order.id">
+                                <tr v-for="delivery in deliveries.data" :key="delivery.id">
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <Edit-link :edit="{route: 'supplierOrder.edit', to:order.id }" >
-                                    <div class="text-sm text-gray-500">{{ order.date }}</div>
+                                    <Edit-link :edit="{route: 'publisherOrder.edit', to:delivery.id }" >
+                                    <div class="text-sm text-gray-500">{{ delivery.date }}</div>
                                   </Edit-link>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ order.supplier.name }}</div>
+                                    <div class="text-sm text-gray-900">{{ delivery.publisher.name }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ order.contact_person }}</div>
-                                    <div class="text-sm text-gray-500">{{ order.email }}</div>
-                                    <div class="text-sm text-gray-500">{{ order.mobile }}</div>
+                                    <div class="text-sm text-gray-900">{{ delivery.book.name }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-500">{{ order.quantity }}</div>
+                                    <div class="text-sm text-gray-500">{{ delivery.quantity }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <div class="text-sm text-gray-500">{{ order.amount }}</div>
+                                    <div class="text-sm text-gray-500">{{ delivery.unit_price }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <div class="text-sm text-gray-500">{{ order.note }}</div>
-                                  </td>
-                                  <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                                  <deliver-link :order="{route: 'supplier.order.delivery', id:order.id }" title="Update delivery" showicon />
-                                   <!--  <Edit-link :edit="{route: 'supplierOrder.edit', to:order.id }" showicon /> -->
-
+                                    <div class="text-sm text-gray-500">{{ delivery.price }}</div>
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
 
-                            <Pagination :pageData="orders" pageof=" Suppliers Orders" />
+                            <Pagination :pageData="deliveries" pageof=" Publishers Deliveries" />
                           </div>
                         </div>
                       </div>
@@ -105,7 +98,7 @@ s                                  </th>
             AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination
         },
         props:{
-            orders: Object
+            deliveries: Object
         }
     })
 </script>

@@ -15,7 +15,7 @@
                 <form  @submit.prevent=" publisher ? form.put(route('publishers.update', publisher.id)) : form.post(route('publishers.store'))">
                     <div class="flex flex-row">
                         <div class="mb-4 basis-1/4">
-                            <jet-label for="name" required="true" value="Name" />
+                            <jet-label for="name" required value="Name" />
                             <jet-input id="name" type="text" class="mt-1 block" v-model="form.name" autocomplete="name" />
                             <jet-input-error :message="form.errors.name" class="mt-2" />
                         </div>
@@ -27,13 +27,13 @@
                         </div>
 
                         <div class="mb-4 basis-1/4">
-                            <jet-label for="mobile" value="Mobile#" required="true" />
+                            <jet-label for="mobile" value="Mobile#" required />
                             <jet-input id="mobile" type="text" class="mt-1 block" v-model="form.mobile" autocomplete="mobile" />
                             <jet-input-error :message="form.errors.mobile" class="mt-2" />
                         </div>
 
                         <div class="mb-4 basis-1/4">
-                            <jet-label for="email" value="Email" required="true" />
+                            <jet-label for="email" value="Email" required />
                             <jet-input id="email" type="text" class="mt-1 block" v-model="form.email" autocomplete="email" />
                             <jet-input-error :message="form.errors.email" class="mt-2" />
                         </div>
@@ -41,7 +41,7 @@
 
                     <div class="flex flex-row">
                         <div class="mb-4 basis-1/4">
-                            <jet-label for="location_id" required="true" value="Location" />
+                            <jet-label for="location_id" required value="Location" />
                             <select id="location_id" @change="newLocation($event)" v-model="form.location_id" class="w-3/4 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
                                 <!-- <option>Select location</option> -->
                                 <option v-for="location in locations" v-bind:value="location.id">{{ location.name }}</option>
@@ -50,19 +50,19 @@
                         </div>
 
                         <div class="mb-4 basis-1/4">
-                            <jet-label for="city" required="true" value="City" />
+                            <jet-label for="city" required value="City" />
                             <jet-input id="city" type="text" class="mt-1 block" readonly v-model="form.city" autocomplete="city" />
                             <jet-input-error :message="form.errors.city" class="mt-2" />
                         </div>
 
                         <div class="mb-4 basis-1/4">
-                            <jet-label for="state" required="true" value="State" />
+                            <jet-label for="state" required value="State" />
                             <jet-input id="state" type="text" class="mt-1 block" readonly v-model="form.state" autocomplete="state" />
                             <jet-input-error :message="form.errors.state" class="mt-2" />
                         </div>
 
                         <div class="mb-4 basis-1/4">
-                            <jet-label for="pincode" required="true" value="Pincode" />
+                            <jet-label for="pincode" required value="Pincode" />
                             <jet-input id="pincode" type="text" class="mt-1 block" v-model="form.pincode" autocomplete="pincode" />
                             <jet-input-error :message="form.errors.pincode" class="mt-2" />
                         </div>

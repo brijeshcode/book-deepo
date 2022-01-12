@@ -2,7 +2,7 @@
     <app-layout title="Supplier Order">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Supplier Order <span v-if="edit">Edit</span> <span v-else>Generate</span>
+                Supplier Order Delivery
             </h2>
         </template>
 
@@ -18,7 +18,7 @@
 
                         <div class="basis-1/4">
                             <jet-label for="supplier_id" required value="Supplier" />
-                            <select id="supplier_id" required @change="changeSupplier($event)" v-model="form.supplier_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
+                            <select id="supplier_id" required  v-model="form.supplier_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
                                 <option v-for="supplier in suppliers" v-bind:value="supplier.id">{{ supplier.name }}</option>
                             </select>
                             <jet-input-error :message="form.errors.supplier_id" class="mt-2" />
@@ -45,21 +45,20 @@
 
                     <div v-if="form.items.length" class="book-item-details">
                         <div class="book-item-header">
-                            <p>Add books to list:
-                            <span @click="addBook" class="bg-green-400 hover:bg-green-700 hover:text-white p-2 pb-1 pl-2 pt-1 rounded cursor-pointer">Add Book</span>
-                            </p>
+
                             <div class="flex flex-row">
                                 <div class="basis-1/4"><jet-label value="Select Book" /></div>
                                 <div class="basis-1/4"><jet-label value="Class" /></div>
                                 <div class="basis-1/4"><jet-label value="Subject" /></div>
                                 <div class="basis-1/4"><jet-label value="Quantity" /></div>
+                                <div class="basis-1/4"><jet-label value="Delivery" /></div>
                             </div>
                         </div>
 
                         <div class="book-item-body">
                             <div v-for="(item,index) in form.items" class="flex flex-row row1">
                                 <div class="basis-1/4">
-                                    <select v-model="item.book_id" @change="itemChange($event)" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
+                                    <select v-model="item.book_id"   class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
                                         <option v-for="book in books" :value="book.id" v-text="book.name"></option>
                                     </select>
                                 </div>
@@ -76,6 +75,9 @@
                                     <jet-input type="number" class="mt-1 block" v-model="item.quantity" />
                                 </div>
                                 <div class="basis-1/4">
+                                    <jet-input type="number" class="mt-1 block" value="0" />
+                                </div>
+                                <div class="basis-1/4">
                                     <button type="button" v-on:click="removeRow(index, item.id)" v-if="index > 0" >
                                       <span class="material-icons text-sm text-red-500">delete</span>
                                     </button>
@@ -87,6 +89,7 @@
 
                                 <div class="basis-1/4"></div>
 
+                                <div class="basis-1/4"></div>
                                 <div class="basis-1/4"></div>
 
                                 <div class="basis-1/4">
@@ -178,54 +181,6 @@
             }
         },
         methods:{
-            changeSupplier(event){
-                this.form.items = [];
-                this.suppliers.forEach((supplier, index) => {
-                    if (supplier.id == event.target.value ) {
-                        axios.get(route('suppliers.books', this.form.supplier_id)).then(supplierBooks =>{
-                            if(supplierBooks.data.books.length > 0){
-                                this.books = supplierBooks.data.books;
-                                this.form.mobile = supplier.mobile;
-                                this.form.email = supplier.email;
-                                this.form.contact_person = supplier.contact_person;
-                                this.addBook();
-                            }else{
-                                this.books = null;
-                            }
-                        });
-                    }
-                });
-            },
-            addBook(){
-                const item = {
-                    supplier_id : this.form.supplier_id,
-                    publisher_id : '',
-                    book_id : null,
-                    class: '',
-                    subject: '',
-                    quantity: 0,
-                };
-                this.form.items.push(item);
-            },
-
-            itemChange(event){
-                let book_id = event.target.value;
-                let book = {};
-                this.books.forEach((bookData) =>{
-                    if (bookData.id == event.target.value) {
-                        book = bookData;
-                    }
-                });
-                if (book) {
-                    this.form.items.forEach((item, index) =>{
-                        if(item.book_id == event.target.value){
-                            this.form.items[index].class= book.class;
-                            this.form.items[index].subject= book.subject;
-                            this.form.items[index].publisher_id= book.publisher_id;
-                        }
-                    });
-                }
-            },
 
             removeRow(index, item_id = null) {
                 if (confirm('Are you sure?')) {

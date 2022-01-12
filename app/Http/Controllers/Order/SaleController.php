@@ -32,6 +32,8 @@ class SaleController extends Controller
         $schools = School::select('id', 'name', 'email' ,'mobile', 'contact_person')->where('active', 1)
             ->orderBy('name')
             ->has('bundles')->get();
+
+
         return Inertia::render('Order/Sales/Create', compact('schools', 'sale'));
     }
 
@@ -43,7 +45,9 @@ class SaleController extends Controller
 
             $order = Sale::create($request->only('name', 'school_id', 'bundle_id', 'date', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'total_quantity','note'))->items()->createMany($request->items);
         });
-        return redirect(route('sales.create'))->with('type', 'success')->with('message', 'Sales generated successfully !!');
+
+        return redirect()->back()->with('type', 'success')->with('message', 'Sales generated successfully !!');
+        // return redirect(route('sales.create'))->with('type', 'success')->with('message', 'Sales generated successfully !!');
     }
 
 

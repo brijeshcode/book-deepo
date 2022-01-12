@@ -122,16 +122,12 @@
 
                     <div class="mb-4">
                         <jet-button :class="{ 'opacity-25': form.processing }" >Save</jet-button>
-                        <jet-button class="ml-4" >Save & Pring</jet-button>
+                        <jet-button class="ml-4" >Save & Print</jet-button>
                     </div>
                 </form>
             </div>
         </div>
-        <!-- <div class="notifications" v-if="$page.props.flash.message">
-            <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8  ">
-                <Alerts :type="$page.props.flash.type" :message="$page.props.flash.message" />
-            </div>
-        </div> -->
+
     </app-layout>
 </template>
 

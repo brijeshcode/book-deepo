@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PublisherOrderItem extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['publisher_id', 'order_id', 'book_id', 'class', 'subject' ,'quantity', 'user_id','user_ip'];
+    protected $fillable = ['publisher_order_id', 'school_order_item_id', 'book_id', 'quantity', 'status' , 'user_id','user_ip'];
 
     public function order()
     {
-        return $this->belongsTo(PublisherOrder::class, 'order_id' );
+        return $this->belongsTo(PublisherOrder::class );
     }
 }

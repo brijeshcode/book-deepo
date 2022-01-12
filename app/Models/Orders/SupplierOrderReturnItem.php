@@ -2,18 +2,22 @@
 
 namespace App\Models\Orders;
 
-use App\Models\Orders\SupplierOrder;
-use App\Models\Setup\Publisher;
-use App\Models\Setup\Supplier;
+use App\Models\Orders\SupplierOrderReturn;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SupplierOrderItem extends Model
+class SupplierOrderReturnItem extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['supplier_order_id', 'school_order_item_id', 'book_id', 'quantity', 'status'     , 'user_id','user_ip'];
 
+    protected $fillable = ['date', 'supplier_order_return_id', 'supplier_order_item_id', 'book_id', 'unit_price', 'quantity', 'price' , 'user_id','user_ip'];
+
+    public function order()
+    {
+        return $this->belongsTo(SupplierOrderReturn::class );
+    }
+/*
     public function order()
     {
         return $this->belongsTo(SupplierOrder::class );
@@ -22,10 +26,6 @@ class SupplierOrderItem extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
-    }
+    }*/
 
-    public function publisher()
-    {
-        return $this->belongsTo(Publisher::class);
-    }
 }

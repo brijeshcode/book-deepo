@@ -113,11 +113,9 @@ class SupplierController extends Controller
         //
     }
 
-    public function books($publisher)
+    public function books($supplier_id)
     {
-        return Supplier::select('id', 'name')->with('books:id,supplier_id,publisher_id,name,class,subject,author_name')->where('id' , $publisher)->first();
-
-        // return response()->json($books);
+        return Supplier::select('id', 'name')->with('books:id,publisher_id,warehouse_id,name,class,subject,author_name')->where('id' , $supplier_id)->first();
     }
 
     private function validateFull($request)

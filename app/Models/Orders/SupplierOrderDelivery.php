@@ -3,16 +3,18 @@
 namespace App\Models\Orders;
 
 use App\Models\Orders\SupplierOrder;
-use App\Models\Setup\Publisher;
+use App\Models\Setup\Book;
 use App\Models\Setup\Supplier;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SupplierOrderItem extends Model
+class SupplierOrderDelivery extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['supplier_order_id', 'school_order_item_id', 'book_id', 'quantity', 'status'     , 'user_id','user_ip'];
+
+    protected $fillable = ['date', 'supplier_id', 'supplier_order_id', 'supplier_order_item_id',
+    'school_order_id', 'school_order_item_id', 'book_id', 'quantity', 'unit_price' , 'price', 'user_id','user_ip'];
 
     public function order()
     {
@@ -24,8 +26,9 @@ class SupplierOrderItem extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-    public function publisher()
+    public function book()
     {
-        return $this->belongsTo(Publisher::class);
+        return $this->belongsTo(Book::class);
     }
+
 }

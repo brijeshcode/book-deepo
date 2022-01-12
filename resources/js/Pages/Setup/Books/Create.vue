@@ -38,13 +38,13 @@
 
                         <div class="basis-1/4">
                             <jet-label for="class" required value="Class" />
-                            <jet-input id="class" type="text" required="true"  class="mt-1 block" v-model="form.book.class" autocomplete="class" />
+                            <jet-input id="class" type="text" required  class="mt-1 block" v-model="form.book.class" autocomplete="class" />
                             <jet-input-error :message="form.errors.class" class="mt-2" />
                         </div>
 
                         <div class="basis-1/4">
                             <jet-label for="subject" required value="Subject" />
-                            <jet-input id="subject" type="text" required="true" class="mt-1 block" v-model="form.book.subject" autocomplete="class" />
+                            <jet-input id="subject" type="text" required class="mt-1 block" v-model="form.book.subject" autocomplete="class" />
                             <jet-input-error :message="form.errors.subject" class="mt-2" />
                         </div>
                     </div>

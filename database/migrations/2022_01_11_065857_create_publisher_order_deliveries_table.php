@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePublisherOrderItemsTable extends Migration
+class CreatePublisherOrderDeliveriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,19 @@ class CreatePublisherOrderItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('publisher_order_items', function (Blueprint $table) {
+        Schema::create('publisher_order_deliveries', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->unsignedBigInteger('publisher_id');
             $table->unsignedBigInteger('publisher_order_id');
+            $table->unsignedBigInteger('publisher_order_item_id');
+            $table->unsignedBigInteger('school_order_id');
             $table->unsignedBigInteger('school_order_item_id');
             $table->unsignedBigInteger('book_id');
-
             $table->integer('quantity')->default(0);
-            $table->enum('status', ['Requested','Partial','Completed', 'Cancelled'])->default('Requested');
+            $table->double('unit_price', 10,2)->default(0);
+            $table->double('price', 10,2)->default(0)->comment('quantity x unit_price');
 
-            $table->foreign('publisher_order_id')->references('id')->on('publisher_orders')->onDelete('cascade');
 
             $table->unsignedBigInteger('user_id')->default('1');
             $table->ipAddress('user_ip')->default('127.0.0.1');
@@ -38,6 +41,6 @@ class CreatePublisherOrderItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('publisher_order_items');
+        Schema::dropIfExists('publisher_order_deliveries');
     }
 }

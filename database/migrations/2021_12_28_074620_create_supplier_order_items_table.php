@@ -15,16 +15,14 @@ class CreateSupplierOrderItemsTable extends Migration
     {
         Schema::create('supplier_order_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('supplier_id');
-            $table->unsignedBigInteger('publisher_id');
+            $table->unsignedBigInteger('supplier_order_id');
             $table->unsignedBigInteger('book_id');
-            $table->string('class')->nullable();
-            $table->string('subject')->nullable();
+            $table->unsignedBigInteger('school_order_item_id');
             $table->integer('quantity')->default(0);
 
-            $table->foreign('order_id')->references('id')->on('supplier_orders')->onDelete('cascade');
+            $table->enum('status', ['Requested','Partial','Completed', 'Cancelled'])->default('Requested');
 
+            // $table->foreign('supplier_order_id')->references('id')->on('supplier_orders')->onDelete('cascade');
 
             $table->unsignedBigInteger('user_id')->default('1');
             $table->ipAddress('user_ip')->default('127.0.0.1');

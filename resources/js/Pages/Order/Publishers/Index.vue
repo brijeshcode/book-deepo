@@ -3,7 +3,7 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Publisher Order
-                <add-link createRoute="publishersOrder.create" isbutton >Generate</add-link>
+                <!-- <add-link createRoute="publishersOrder.create" isbutton >Generate</add-link> -->
             </h2>
         </template>
 
@@ -12,7 +12,7 @@
         </template>
         <template #actions>
             <div class="flex">
-              <Add-link createRoute="publishersOrder.create" title="Add new publisher order" withIcon />
+              <!-- <Add-link createRoute="publishersOrder.create" title="Add new publisher order" withIcon /> -->
             </div>
         </template>
 
@@ -61,17 +61,16 @@
                             <div class="text-sm text-gray-500">{{ order.mobile }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500">{{ order.total_quantity }}</div>
+                            <div class="text-sm text-gray-500">{{ order.quantity }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm text-gray-500">{{ order.total_amount }}</div>
+                            <div class="text-sm text-gray-500">{{ order.amount }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div class="text-sm text-gray-500">{{ order.note }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                            <Edit-link :edit="{route: 'publishersOrder.edit', to:order.id }" showicon />
-
+                            <deliver-link :order="{route: 'publisher.order.delivery', id:order.id }" title="Update delivery" showicon />
                           </td>
                         </tr>
                       </tbody>
@@ -91,12 +90,12 @@
     import Pagination from '@/Shared/Components/Pagination/Simple.vue'
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import AddLink from '@/Shared/Components/Links/Add.vue'
-    import EditLink from '@/Shared/Components/Links/Edit.vue'
+    import DeliverLink from '@/Shared/Components/Links/Delivery.vue'
     import Search from '@/Shared/Components/Filters/Search.vue'
 
     export default defineComponent({
         components: {
-            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination
+            AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination
         },
         props:{ orders: Object }
     })

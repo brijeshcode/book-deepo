@@ -18,25 +18,25 @@
                     <div class="flex flex-row mb-4">
 
                         <div class="basis-1/4">
-                            <jet-label for="name" required="true" value="Name" />
+                            <jet-label for="name" required value="Name" />
                             <jet-input id="name" type="text" class="mt-1 block" v-model="form.name" autocomplete="name" />
                             <jet-input-error :message="form.errors.name" class="mt-2" />
                         </div>
 
                         <div class="basis-1/4">
-                            <jet-label for="city" required="true" value="City"/>
+                            <jet-label for="city" required value="City"/>
                             <jet-input id="city" type="text" class="mt-1 block" v-model="form.city" autocomplete="city" />
                             <jet-input-error :message="form.errors.city" class="mt-2" />
                         </div>
 
                         <div class="basis-1/4">
-                            <jet-label for="state" required="true" value="State" />
+                            <jet-label for="state" required value="State" />
                             <jet-input id="state" type="text" class="mt-1 block" v-model="form.state" autocomplete="state" />
                             <jet-input-error :message="form.errors.state" class="mt-2" />
                         </div>
 
                         <div class="basis-1/4">
-                            <jet-label for="pincode" required="true" value="Pincode" />
+                            <jet-label for="pincode" required value="Pincode" />
                             <jet-input id="pincode" type="text" class="mt-1 block" v-model="form.pincode" autocomplete="pincode" />
                             <jet-input-error :message="form.errors.pincode" class="mt-2" />
                         </div>

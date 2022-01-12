@@ -105,6 +105,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/publishers/{publisher}/books/', [PublisherController::class, 'books'])->name('publishers.books');
 
 
+
     Route::get('/publisher/orders', [PublisherOrderController::class, 'index'])->name('publishersOrder');
     Route::get('/publisher/orders/create', [PublisherOrderController::class, 'create'])->name('publishersOrder.create');
     Route::post('/publisher/orders', [PublisherOrderController::class, 'store'])->name('publishersOrder.store');
@@ -112,12 +113,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('/publisher/orders/{order}', [PublisherOrderController::class, 'update'])->name('publishersOrder.update');
     Route::delete('/publisher/order/item/{item}/delete', [PublisherOrderController::class, 'deleteItem'])->name('publisherOrderItem.delete');
 
+    Route::get('/publisher/orders/{order}/delivery', [PublisherOrderController::class, 'delivery'])->name('publisher.order.delivery');
+
+    Route::get('/publisher/order/deliveries', [PublisherOrderController::class, 'deliveryIndex'])->name('publisher.delivery.index');
+
     Route::get('/supplier/orders', [SupplierOrderController::class, 'index'])->name('supplierOrder');
     Route::get('/supplier/order/create', [SupplierOrderController::class, 'create'])->name('supplierOrder.create');
     Route::post('/supplier/order', [SupplierOrderController::class, 'store'])->name('supplierOrder.store');
     Route::get('/supplier/order/{order}/edit', [SupplierOrderController::class, 'edit'])->name('supplierOrder.edit');
     Route::put('/supplier/order/{order}', [SupplierOrderController::class, 'update'])->name('supplierOrder.update');
     Route::delete('/supplier/orde/item/{item}/delete', [SupplierOrderController::class, 'deleteItem'])->name('supplierOrderItem.delete');
+    Route::get('/supplier/orders/{order}/delivery', [SupplierOrderController::class, 'delivery'])->name('supplier.order.delivery');
+    Route::get('/supplier/order/deliveries', [SupplierOrderController::class, 'deliveryIndex'])->name('supplier.delivery.index');
 
 
 
@@ -128,12 +135,17 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::put('/school/orders/{order}', [SchoolOrderController::class, 'update'])->name('schoolOrder.update');
     Route::delete('/school/order/item/{item}/delete', [SchoolOrderController::class, 'deleteItem'])->name('schoolOrderItem.delete');
 
+    Route::get('/school/orders/{order}/delivery', [SchoolOrderController::class, 'delivery'])->name('school.order.delivery');
+    Route::post('/school/order/delivery', [SchoolOrderController::class, 'storeDelivery'])->name('school.delivery.store');
+    Route::get('/school/orders/{order}/return', [SchoolOrderController::class, 'createReturn'])->name('school.order.return');
+
+    Route::post('/school/order/return', [SchoolOrderController::class, 'storeReturn'])->name('school.order.return.store');
+
 
     Route::get('/warehouse/{warehouse_id}/schools', [WarehouseController::class, 'schools'])->name('warehouse.schools');
     Route::get('/location/{location_id}/warehouses', [LocationsController::class, 'warehouses'])->name('location.warehouses');
     Route::get('/location/{location_id}/suppliers', [LocationsController::class, 'suppliers'])->name('location.suppliers');
     Route::get('/location/{location_id}/publishers', [LocationsController::class, 'publishers'])->name('location.publishers');
-
 
 
     Route::get('/setup/bundles', [BundleController::class, 'index'])->name('bundles');
@@ -157,6 +169,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/order/supplier', [SupplierOrderController::class, 'store'])->name('publishersOrder.store');
     Route::get('/order/supplier/{publisher}/edit', [SupplierOrderController::class, 'edit'])->name('publishersOrder.edit');
     Route::put('/order/supplier/{publisher}', [SupplierOrderController::class, 'update'])->name('publishersOrder.update');*/
-
-
 });
