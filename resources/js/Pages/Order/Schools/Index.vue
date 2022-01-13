@@ -79,8 +79,9 @@
                               </span>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                            <deliver-link v-if="order.status != 'Completed'" :order="{route: 'school.order.delivery', id:order.id }" title="Update delivery" showicon />
-                            <return-link v-if="order.status != 'Pending'"  :order="{route: 'school.order.return', id:order.id }" showicon />
+                            <show-link class="p-1" :show="{route: 'schoolOrder.show', id:order.id }" showicon />
+                            <deliver-link class="p-1" v-if="order.status != 'Completed'" :order="{route: 'school.order.delivery', id:order.id }" title="Update delivery" showicon />
+                            <return-link class="p-1" v-if="order.status != 'Pending'"  :order="{route: 'school.order.return', id:order.id }" showicon />
                           </td>
                         </tr>
                       </tbody>
@@ -105,10 +106,11 @@
     import Search from '@/Shared/Components/Filters/Search.vue'
     import DeliverLink from '@/Shared/Components/Links/Delivery.vue'
     import ReturnLink from '@/Shared/Components/Links/Return.vue'
+    import ShowLink from '@/Shared/Components/Links/Show.vue'
 
     export default defineComponent({
         components: {
-            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination,DeliverLink,ReturnLink
+            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination,DeliverLink,ReturnLink,ShowLink
         },
         props:{
             orders: Object

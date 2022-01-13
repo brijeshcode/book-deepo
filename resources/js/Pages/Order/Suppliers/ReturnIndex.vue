@@ -58,13 +58,15 @@ s                                  </th>
                                     <div class="text-sm text-gray-900">{{ returnData.supplier.name }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                   <!--  <show-link :edit="{route: 'schoolOrder.show', to:returnData.order.school_order_id }" >
+                                    <show-link :show="{route: 'schoolOrder.show', id:returnData.order.school_order_id }" >
                                       <div class="text-sm text-gray-900">{{ returnData.order.school.name }}</div>
-                                    </show-link> -->
-                                      <div class="text-sm text-gray-900">{{ returnData.order.school.name }}</div>
+                                    </show-link>
+                                      <!-- <div class="text-sm text-gray-900">{{ returnData.order.school.name }}</div> -->
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ returnData.order.school_order_id }}</div>
+                                    <show-link :show="{route: 'schoolOrder.show', id:returnData.order.school_order_id }" >
+                                      <div class="text-sm text-gray-900">{{ returnData.order.school_order_id }}</div>
+                                  </show-link>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-500">{{ returnData.quantity }}</div>
@@ -91,7 +93,7 @@ s                                  </th>
     import Pagination from '@/Shared/Components/Pagination/Simple.vue'
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import AddLink from '@/Shared/Components/Links/Add.vue'
-    import ShowLink from '@/Shared/Components/Links/Edit.vue'
+    import ShowLink from '@/Shared/Components/Links/Show.vue'
     import DeliverLink from '@/Shared/Components/Links/Delivery.vue'
     import Search from '@/Shared/Components/Filters/Search.vue'
 

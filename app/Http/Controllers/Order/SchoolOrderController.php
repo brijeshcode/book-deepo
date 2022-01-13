@@ -58,8 +58,7 @@ class SchoolOrderController extends Controller
 
     public function show(Request $request, $order_id)
     {
-
-        $order = SchoolOrder::with('items', 'school')
+        $order = SchoolOrder::with('items', 'items.book', 'supplierDelivery', 'publisherDelivery', 'items.supplier', 'items.book.publisher', 'school', 'school.warehouse')
             ->where('id',$order_id)->first();
 
         return Inertia::render('Order/Schools/Show', compact('order'));

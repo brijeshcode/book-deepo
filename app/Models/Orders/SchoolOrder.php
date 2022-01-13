@@ -15,6 +15,11 @@ class SchoolOrder extends Model
     use HasFactory,SoftDeletes;
     protected $fillable = [ 'school_id', 'status', 'date','quantity', 'amount', 'note', 'user_id', 'user_ip'];
 
+    public function getCreatedAtAttribute($value)
+    {
+        return date('d-m-Y @ H:i A', strtotime($value));
+    }
+
     public function items()
     {
         return $this->hasMany(SchoolOrderItem::class);
