@@ -16,7 +16,21 @@ class Bundle extends Model
     protected $casts = [
       'active' => 'boolean',
     ];
+    protected $appends = ['count'];
 
+    public function getCountAttribute()
+    {
+        $id = $this->id;
+        $bundleCounts = 0;
+        $bookQtyByBundle = array();
+        $items = BundleBooks::where('bundle_id', $id)->with('book:id,quantity')->get();
+        foreach ($items as $key => $item) {
+            if ($item->book->quantity <= 0 || $item->quantity <= 0 ) return $bundleCounts = 0;
+            $bookQtyByBundle[] = $item->book->quantity / $item->quantity;
+        }
+
+        return  min($bookQtyByBundle);
+    }
     public function school()
     {
         return $this->belongsTo(School::class);

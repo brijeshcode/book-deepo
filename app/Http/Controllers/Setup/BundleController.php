@@ -14,7 +14,7 @@ class BundleController extends Controller
     public function index(Request $request)
     {
         $bundles = Bundle::select('id', 'name', 'school_id', 'note', 'active')
-            ->with('school')
+            ->with('school:id,name')
             ->when($request->search, function ($query, $search){
                 $query->where('name', 'like', '%'. $search . '%');
                 $query->orWhere( 'like', '%'. $search . '%');

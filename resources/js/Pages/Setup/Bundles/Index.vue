@@ -31,11 +31,11 @@
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Name
                           </th>
-                          <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Class
-                          </th> -->
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             School
+                          </th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Count
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Note
@@ -56,11 +56,11 @@
                               in-Active
                             </span>
                           </td>
-                          <!-- <td class="px-4 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500">{{ bundle.class }}</div>
-                          </td> -->
                           <td class="px-4 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-500">{{ bundle.school.name }}</div>
+                          </td>
+                          <td class="px-4 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-500">{{ bundle.count }}</div>
                           </td>
                           <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div class="text-sm text-gray-500">{{ bundle.note }}</div>

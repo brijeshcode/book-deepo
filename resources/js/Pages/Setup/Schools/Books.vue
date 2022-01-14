@@ -30,9 +30,13 @@
                       <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Book
                       </th>
-                      <!-- <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        School
-                      </th> -->
+                      <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Quantity
+                      </th>
+
+                      <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Cost
+                      </th>
                       <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Warehouse
                       </th>
@@ -49,6 +53,14 @@
                         <div class="text-sm text-gray-900"> <span class="font-bold">{{ book.name }}</span> by, <span class="italic">{{ book.author_name }}</span></div>
                         <div class="text-sm text-gray-700">{{ book.class }}, {{ book.subject }}</div>
                       </td>
+                      <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-700">{{ book.quantity }}</div>
+                      </td>
+
+                      <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-700">{{ book.cost }}</div>
+                      </td>
+
                       <!-- <td class="px-4 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900">  {{ book.school.name }}, {{ book.school.contact_person }}</div>
                         <div class="text-sm text-gray-700">

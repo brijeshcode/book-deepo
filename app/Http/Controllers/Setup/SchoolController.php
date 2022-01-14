@@ -119,7 +119,7 @@ class SchoolController extends Controller
 
     public function books(School $school)
     {
-        $books = $school->books()->select('id')
+        $books = $school->books()
         ->with('warehouse:id,name,city,state,email,pincode,mobile,contact_person', 'publisher:id,name')
         ->paginate(10);
         $school = $school->only('id','name') ;

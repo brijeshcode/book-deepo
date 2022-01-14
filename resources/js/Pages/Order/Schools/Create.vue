@@ -364,7 +364,9 @@
                });
                if (canSubmit) {
                     this.form.total_quantity = this.computeQuantity;
-                    this.order ? this.form.put(route('schoolOrder.update', this.order.id)) : this.form.post(route('schoolOrder.store'));
+                    if (confirm('Are you sure you want to place this order')) {
+                        this.order ? this.form.put(route('schoolOrder.update', this.order.id)) : this.form.post(route('schoolOrder.store'));
+                    }
                }else{
                     alert('Order items are not set properly, "please select the book in the list" ');
                }

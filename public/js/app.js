@@ -2368,7 +2368,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (canSubmit) {
         this.form.total_quantity = this.computeQuantity;
-        this.order ? this.form.put(route('schoolOrder.update', this.order.id)) : this.form.post(route('schoolOrder.store'));
+
+        if (confirm('Are you sure you want to place this order')) {
+          this.order ? this.form.put(route('schoolOrder.update', this.order.id)) : this.form.post(route('schoolOrder.store'));
+        }
       } else {
         alert('Order items are not set properly, "please select the book in the list" ');
       }
@@ -16393,10 +16396,13 @@ var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
   "class": "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-}, " Name "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th scope=\"col\" class=\"px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider\">\n                            Class\n                          </th> "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+}, " Name "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
   "class": "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
 }, " School "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  scope: "col",
+  "class": "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+}, " Count "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
   "class": "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
 }, " Note "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
@@ -16430,12 +16436,18 @@ var _hoisted_18 = {
   "class": "text-sm text-gray-500"
 };
 var _hoisted_19 = {
-  "class": "px-4 py-4 whitespace-nowrap text-sm text-gray-500"
+  "class": "px-4 py-4 whitespace-nowrap"
 };
 var _hoisted_20 = {
   "class": "text-sm text-gray-500"
 };
 var _hoisted_21 = {
+  "class": "px-4 py-4 whitespace-nowrap text-sm text-gray-500"
+};
+var _hoisted_22 = {
+  "class": "text-sm text-gray-500"
+};
+var _hoisted_23 = {
   "class": "px-4 py-4 whitespace-nowrap text-sm flex justify-end text-right font-medium"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -16504,11 +16516,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
         }, 1032
         /* PROPS, DYNAMIC_SLOTS */
-        , ["edit"]), bundle.active ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_15, " Active ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_16, " in-Active "))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td class=\"px-4 py-4 whitespace-nowrap\">\n                            <div class=\"text-sm text-gray-500\">{{ bundle.class }}</div>\n                          </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(bundle.school.name), 1
+        , ["edit"]), bundle.active ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_15, " Active ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_16, " in-Active "))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(bundle.school.name), 1
         /* TEXT */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(bundle.note), 1
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(bundle.count), 1
         /* TEXT */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Edit_link, {
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(bundle.note), 1
+        /* TEXT */
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Edit_link, {
           edit: {
             route: 'bundles.edit',
             to: bundle.id
@@ -17644,7 +17658,13 @@ var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 }, " SKU # "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
   "class": "px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-}, " Book "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th scope=\"col\" class=\"px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider\">\n                        School\n                      </th> "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+}, " Book "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  scope: "col",
+  "class": "px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+}, " Quantity "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  scope: "col",
+  "class": "px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+}, " Cost "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
   "class": "px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
 }, " Warehouse "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
@@ -17685,34 +17705,46 @@ var _hoisted_21 = {
   "class": "px-4 py-4 whitespace-nowrap"
 };
 var _hoisted_22 = {
-  "class": "text-sm text-gray-900"
+  "class": "text-sm text-gray-700"
 };
 var _hoisted_23 = {
+  "class": "px-4 py-4 whitespace-nowrap"
+};
+var _hoisted_24 = {
+  "class": "text-sm text-gray-700"
+};
+var _hoisted_25 = {
+  "class": "px-4 py-4 whitespace-nowrap"
+};
+var _hoisted_26 = {
+  "class": "text-sm text-gray-900"
+};
+var _hoisted_27 = {
   "class": "text-sm text-gray-700"
 };
 
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_25 = {
+var _hoisted_29 = {
   "class": "text-sm text-gray-500"
 };
-var _hoisted_26 = {
+var _hoisted_30 = {
   "class": "px-4 py-2 whitespace-nowrap text-right text-sm flex justify-end font-medium"
 };
-var _hoisted_27 = {
+var _hoisted_31 = {
   key: 0
 };
 
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   colspan: "6",
   "class": "text-gray-500 text-lg text-center"
 }, "No books(active) present in this school", -1
 /* HOISTED */
 );
 
-var _hoisted_29 = [_hoisted_28];
+var _hoisted_33 = [_hoisted_32];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_bread_simple = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("bread-simple");
 
@@ -17768,21 +17800,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* TEXT */
         )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book["class"]) + ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book.subject), 1
         /* TEXT */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td class=\"px-4 py-4 whitespace-nowrap\">\n                        <div class=\"text-sm text-gray-900\">  {{ book.school.name }}, {{ book.school.contact_person }}</div>\n                        <div class=\"text-sm text-gray-700\">\n                          <MailIcon class=\"inline-flex w-4 h-4\" /> {{ book.school.email }},<br/>\n                          <MobileIcon class=\"inline-flex w-4 h-4\" /> {{ book.school.mobile }}\n                        </div>\n                        <div class=\"text-sm text-gray-500\">\n                        <MapIcon class=\"inline-flex w-4 h-4\" /> {{ book.school.city }}, {{ book.school.state }} ({{ book.school.pincode }})</div>\n                      </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book.warehouse.name) + ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book.warehouse.contact_person), 1
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book.quantity), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MailIcon, {
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book.cost), 1
+        /* TEXT */
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td class=\"px-4 py-4 whitespace-nowrap\">\n                        <div class=\"text-sm text-gray-900\">  {{ book.school.name }}, {{ book.school.contact_person }}</div>\n                        <div class=\"text-sm text-gray-700\">\n                          <MailIcon class=\"inline-flex w-4 h-4\" /> {{ book.school.email }},<br/>\n                          <MobileIcon class=\"inline-flex w-4 h-4\" /> {{ book.school.mobile }}\n                        </div>\n                        <div class=\"text-sm text-gray-500\">\n                        <MapIcon class=\"inline-flex w-4 h-4\" /> {{ book.school.city }}, {{ book.school.state }} ({{ book.school.pincode }})</div>\n                      </td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book.warehouse.name) + ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book.warehouse.contact_person), 1
+        /* TEXT */
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MailIcon, {
           "class": "inline-flex w-4 h-4"
         }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book.warehouse.email) + ",", 1
         /* TEXT */
-        ), _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MobileIcon, {
+        ), _hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MobileIcon, {
           "class": "inline-flex w-4 h-4"
         }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book.warehouse.mobile), 1
         /* TEXT */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MapIcon, {
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MapIcon, {
           "class": "inline-flex w-4 h-4"
         }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book.warehouse.city) + ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book.warehouse.state) + " (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(book.warehouse.pincode) + ")", 1
         /* TEXT */
-        )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Edit_link, {
+        )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Edit_link, {
           edit: {
             route: 'books.edit',
             to: book.id
@@ -17793,7 +17829,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         , ["edit"])])]);
       }), 128
       /* KEYED_FRAGMENT */
-      )), _ctx.books.data.length == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_27, _hoisted_29)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Pagination, {
+      )), _ctx.books.data.length == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_31, _hoisted_33)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Pagination, {
         pageData: _ctx.books,
         pageof: ' Books of ' + _ctx.school.name
       }, null, 8
