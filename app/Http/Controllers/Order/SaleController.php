@@ -47,13 +47,11 @@ class SaleController extends Controller
         });
 
         return redirect()->back()->with('type', 'success')->with('message', 'Sales generated successfully !!');
-        // return redirect(route('sales.create'))->with('type', 'success')->with('message', 'Sales generated successfully !!');
     }
 
 
     public function update(Request $request, Sale $sale)
     {
-
         $this->validateFull($request);
         \DB::transaction(function() use ($request, $sale) {
             $allItems = array();

@@ -11,13 +11,13 @@ class MailPublisherOrder extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    public $order ;
+    public $tries = 2;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public $order ;
-
     public function __construct($order)
     {
         $this->afterCommit();
