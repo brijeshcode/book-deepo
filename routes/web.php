@@ -122,14 +122,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/publisher/order/deliveries', [PublisherOrderController::class, 'deliveryIndex'])->name('publisher.delivery.index');
     Route::get('/publisher/order/returns', [PublisherOrderController::class, 'returnIndex'])->name('publisher.returns.index');
 
-
-
-
     Route::get('/supplier/orders', [SupplierOrderController::class, 'index'])->name('supplierOrder');
     Route::get('/supplier/order/create', [SupplierOrderController::class, 'create'])->name('supplierOrder.create');
     Route::post('/supplier/order', [SupplierOrderController::class, 'store'])->name('supplierOrder.store');
     Route::get('/supplier/order/{order}/edit', [SupplierOrderController::class, 'edit'])->name('supplierOrder.edit');
-    Route::put('/supplier/order/{order}', [SupplierOrderController::class, 'update'])->name('supplierOrder.update');
+    // Route::put('/supplier/order/{order}', [SupplierOrderController::class, 'update'])->name('supplierOrder.update');
     Route::delete('/supplier/orde/item/{item}/delete', [SupplierOrderController::class, 'deleteItem'])->name('supplierOrderItem.delete');
     Route::get('/supplier/orders/{order}/delivery', [SupplierOrderController::class, 'delivery'])->name('supplier.order.delivery');
     Route::get('/supplier/order/deliveries', [SupplierOrderController::class, 'deliveryIndex'])->name('supplier.delivery.index');

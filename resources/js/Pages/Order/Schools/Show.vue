@@ -94,7 +94,7 @@
                                                 <div class="text-gray-500">
                                                     <span class="font-bold text-sm text-gray-700">Publisher: </span> {{ item.book.publisher.name }}
                                                 </div>
-                                                <div class="text-gray-500">
+                                                <div class="text-gray-500" v-if="item.supplier">
                                                     <span class="font-bold text-sm text-gray-700">Supplier: </span> {{ item.supplier.name }}
                                                 </div>
                                             </div>

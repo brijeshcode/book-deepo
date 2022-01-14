@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Order\PublisherOrderController;
 use App\Models\Orders\PublisherOrder;
 use App\Models\Orders\PublisherOrderDelivery;
 use App\Models\Orders\PublisherOrderItem;
@@ -18,6 +19,7 @@ use App\Models\Setup\Publisher;
 use App\Models\Setup\School;
 use App\Models\Setup\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class SchoolOrderController extends Controller
@@ -26,7 +28,9 @@ class SchoolOrderController extends Controller
     {
 
         // $orders = SchoolOrder::with('school:id,name')->select('id', 'school_id','email' , 'date', 'mobile', 'fax', 'contact_person',  'note', 'total_quantity', 'total_amount' )->orderBy('id', 'desc')->paginate(5);
+        // Mail::to('Cloudways@Cloudways.com')->send(new SendMailable($name));
         $orders = SchoolOrder::with('school:id,name,email,mobile')->orderBy('id', 'desc')->paginate(5);
+
         return Inertia::render('Order/Schools/Index', compact('orders'));
     }
 
@@ -60,9 +64,9 @@ class SchoolOrderController extends Controller
     {
         $order = SchoolOrder::with('items', 'items.book', 'supplierDelivery', 'publisherDelivery', 'items.supplier', 'items.book.publisher', 'school', 'school.warehouse')
             ->where('id',$order_id)->first();
-
         return Inertia::render('Order/Schools/Show', compact('order'));
     }
+
 
     public function store(Request $request)
     {
@@ -82,71 +86,13 @@ class SchoolOrderController extends Controller
             $schoolOrderId = $order->id;
             $order->items()->createMany($request->items);
             // dd($order->items);
-            foreach ($order->items as $key => $item) {
-                $school = School::where('id', $request->school_id)->first();
-
-                if ($item['order_to'] == 'Supplier') {
-
-                    $supplier = Supplier::where('id', $item['supplier_id'])->first();
-                    if (!isset($suppleirOrders[$item['supplier_id']])) {
-                        $suppleirOrders[$item['supplier_id']] = [
-                            'school_order_id' => $item['school_order_id'],
-                            'date' => now(),
-                            'supplier_id' => $item['supplier_id'],
-                            'school_id'  => $request->school_id ,
-                            'quantity' => 0,
-                            'amount' => 0,
-                        ];
-                    }
-
-                    $suppleirOrders[$item['supplier_id']]['items'][] = [
-                        'school_order_item_id' => $item['id'],
-                        'book_id' => $item['book_id'],
-                        'quantity' => $item['quantity'],
-                    ];
-
-                    $suppleirOrders[$item['supplier_id']]['quantity'] += $item['quantity'];
-
-                }else{
-
-                    $publisher = Publisher::where('id', $item['publisher_id'])->first();
-                    if (!isset($publisherOrders[$item['publisher_id']])) {
-                        $publisherOrders[$item['publisher_id']] = [
-                            'school_order_id' => $item['school_order_id'],
-                            'publisher_id' => $item['publisher_id'],
-                            'school_order_item_id' => $item['school_order_item_id'],
-                            'date' => now(),
-                            'quantity' => 0,
-                            'amount' => 0,
-                        ];
-                    }
-                    $publisherOrders[$item['publisher_id']]['items'][] = [
-                        'school_order_item_id' => $item['id'],
-                        'book_id' => $item['book_id'],
-                        'quantity' => $item['quantity'],
-                    ];
-                    $publisherOrders[$item['publisher_id']]['quantity'] += $item['quantity'];
-                }
-            }
-
-            if (count($suppleirOrders) > 0) {
-                // dd($suppleirOrders);
-                foreach ($suppleirOrders as $key => $supplierOrder) {
-                    $supplierOrder = SupplierOrder::create($supplierOrder)->items()->createMany($supplierOrder['items']);
-                }
-            }
-
-            if (count($publisherOrders) > 0) {
-                foreach ($publisherOrders as $key => $publisherOrder) {
-                    $publisherOrder = PublisherOrder::create($publisherOrder)->items()->createMany($publisherOrder['items']);
-                }
-            }
-
-            // dd($suppleirOrders);
+            (new SupplierOrderController())->generateOrder($order);
+            (new PublisherOrderController())->generateOrder($order);
         });
 
         return redirect(route('schoolOrder'))->with('type', 'success')->with('message', 'Order generated successfully !!');
     }
+
 
     public function update(Request $request, SchoolOrder $order)
     {

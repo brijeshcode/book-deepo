@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Mail\MailPublisherOrder;
 use App\Models\Orders\PublisherOrder;
 use App\Models\Orders\PublisherOrderDelivery;
 use App\Models\Orders\PublisherOrderItem;
@@ -11,6 +12,7 @@ use App\Models\Setup\Book;
 use App\Models\Setup\Publisher;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Mail;
 
 // edit, store , update has been blocked for time been, due to logic confliction .
 class PublisherOrderController extends Controller
@@ -56,7 +58,7 @@ class PublisherOrderController extends Controller
     public function store(Request $request)
     {
         return abort(404);
-        $this->validateFull($request);
+        /*$this->validateFull($request);
         \DB::transaction(function() use ($request) {
             $order= [
                 'publisher_id' => $request->publisher_id,
@@ -71,8 +73,56 @@ class PublisherOrderController extends Controller
             ];
             $order = PublisherOrder::create($order)->items()->createMany($request->items);
         });
-        return redirect(route('publishersOrder'))->with('type', 'success')->with('message', 'Order generated successfully !!');
+        return redirect(route('publishersOrder'))->with('type', 'success')->with('message', 'Order generated successfully !!');*/
     }
+
+    public function generateOrder($schoolOrder)
+    {
+        $orders = array();
+        foreach ($schoolOrder->items as $key => $item) {
+            if ($item['order_to'] == 'Supplier') continue;
+
+            if (!isset($orders[$item['publisher_id']])) {
+                $orders[$item['publisher_id']] = [
+                    'school_order_id' => $item['school_order_id'],
+                    'date' => now(),
+                    'publisher_id' => $item['publisher_id'],
+                    'school_id'  => $schoolOrder->school_id ,
+                    'quantity' => 0,
+                    'amount' => 0,
+                ];
+            }
+
+            $orders[$item['publisher_id']]['items'][] = [
+                'school_order_item_id' => $item['id'],
+                'book_id' => $item['book_id'],
+                'quantity' => $item['quantity'],
+            ];
+
+            $orders[$item['publisher_id']]['quantity'] += $item['quantity'];
+        }
+
+        if (count($orders) > 0) {
+            foreach ($orders as $key => $order) {
+                $this->createOrder($order);
+            }
+        }
+    }
+
+    public function createOrder($order)
+    {
+        $suppOrder = PublisherOrder::create($order);
+        $orderId = $suppOrder->id;
+        $suppOrder->items()->createMany($order['items']);
+        $this->sendMail($orderId);
+    }
+
+    public function sendMail($publisherOrderId)
+    {
+        $publisherOrder = PublisherOrder::with('items', 'items.book', 'items.book.publisher', 'publisher')->where('id', $publisherOrderId)->first();
+        Mail::to($publisherOrder->publisher->email)->send(new MailPublisherOrder($publisherOrder));
+    }
+
     public function update(Request $request, PublisherOrder $order)
     {
         return abort(404);

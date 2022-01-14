@@ -2,6 +2,7 @@
 
 namespace App\Models\Orders;
 
+use App\Models\Setup\Book;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,5 +15,10 @@ class PublisherOrderItem extends Model
     public function order()
     {
         return $this->belongsTo(PublisherOrder::class );
+    }
+
+    public function book()
+    {
+        return $this->belongsTo(Book::class );
     }
 }

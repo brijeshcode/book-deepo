@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SupplierOrderMail;
 use App\Models\Orders\SchoolOrder;
 use App\Models\Orders\SchoolOrderItem;
 use App\Models\Orders\SupplierOrder;
@@ -12,6 +13,7 @@ use App\Models\Orders\SupplierOrderReturn;
 use App\Models\Setup\Supplier;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Mail;
 
 // edit, store , update has been blocked for time been, due to logic confliction .
 class SupplierOrderController extends Controller
@@ -56,41 +58,58 @@ class SupplierOrderController extends Controller
     public function store(Request $request)
     {
         return abort(404);
-        $this->validateFull($request);
+       /* $this->validateFull($request);
         \DB::transaction(function() use ($request) {
             $order = SupplierOrder::create($request->only('supplier_id',  'email', 'date', 'mobile', 'fax', 'contact_person', 'note', 'total_quantity', 'total_amount'))->items()->createMany($request->items);
         });
-        return redirect(route('supplierOrder'))->with('type', 'success')->with('message', 'Order generated successfully !!');
+        return redirect(route('supplierOrder'))->with('type', 'success')->with('message', 'Order generated successfully !!');*/
     }
-    public function update(Request $request, SupplierOrder $order)
+
+    public function generateOrder($schoolOrder)
     {
-        return abort(404);
-        $this->validateFull($request);
-        \DB::transaction(function() use ($request, $order) {
-            $orderData= [
-                'supplier_id' => $request->supplier_id,
-                'mobile' => $request->mobile,
-                'email' => $request->email,
-                'date' => $request->date,
-                'fax' => $request->fax,
-                'contact_person' => $request->contact_person,
-                'note' => $request->note,
-                'total_quantity' => $request->total_quantity,
-                'total_amount' => $request->total_amount
+        $orders = array();
+        foreach ($schoolOrder->items as $key => $item) {
+            if ($item['order_to'] != 'Supplier') continue;
+
+            if (!isset($orders[$item['supplier_id']])) {
+                $orders[$item['supplier_id']] = [
+                    'school_order_id' => $item['school_order_id'],
+                    'date' => now(),
+                    'supplier_id' => $item['supplier_id'],
+                    'school_id'  => $schoolOrder->school_id ,
+                    'quantity' => 0,
+                    'amount' => 0,
+                ];
+            }
+
+            $orders[$item['supplier_id']]['items'][] = [
+                'school_order_item_id' => $item['id'],
+                'book_id' => $item['book_id'],
+                'quantity' => $item['quantity'],
             ];
 
-            $order->update($orderData);
+            $orders[$item['supplier_id']]['quantity'] += $item['quantity'];
+        }
 
-            foreach ($request->items as $reqKey => $item) {
-                if (isset($item['id'])) {
-                    SupplierOrderItem::where('id', $item['id'])->update($item);
-                }else{
-                    $order->items()->create($item);
-                }
+        if (count($orders) > 0) {
+            foreach ($orders as $key => $order) {
+                $this->createOrder($order);
             }
-        });
+        }
+    }
 
-        return redirect(route('supplierOrder'))->with('type', 'success')->with('message', 'Order updated successfully !!');
+    public function createOrder($order)
+    {
+        $suppOrder = SupplierOrder::create($order);
+        $orderId = $suppOrder->id;
+        $suppOrder->items()->createMany($order['items']);
+        $this->sendMail($orderId);
+    }
+
+    public function sendMail($supplierOrderId)
+    {
+        $supplierOrder = SupplierOrder::with('items', 'items.book', 'items.book.publisher', 'supplier')->where('id', $supplierOrderId)->first();
+        Mail::to($supplierOrder->supplier->email)->send(new SupplierOrderMail($supplierOrder));
     }
 
     public function deleteItem(SupplierOrderItem $item)

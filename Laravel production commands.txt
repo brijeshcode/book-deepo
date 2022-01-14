@@ -1,0 +1,18 @@
+container_commands:
+
+	01-install-onproduction:
+		command: "composer install --optimize-autoloader --no-dev"
+	02-clear-compiled:
+		command: "php artisan clear-compiled"
+	03-recreate-compiled:
+    	command: "php artisan optimize"
+  	04-migrate:
+    	command: "php artisan migrate
+  	05-createStoreLink:
+    	command: "php artisan storage:link"
+  	06-addpermission:
+    	command: "chmod -R 777 ./storage"
+ 	07-startworker:
+    	command: "php artisan queue:work"
+  	08-clearcache:
+    	command: "php . config:cache"
