@@ -25,6 +25,9 @@
                       <thead class="bg-gray-50">
                         <tr>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Order #
+                          </th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Date
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -49,6 +52,11 @@
                         <tr v-for="sale in sales.data" :key="sale.id">
                           <td class="px-6 py-4 whitespace-nowrap">
                             <Edit-link :edit="{route: 'sales.edit', to:sale.id }" >
+                              <div class="text-sm text-gray-500">{{ sale.id }}</div>
+                            </Edit-link>
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <Edit-link :edit="{route: 'sales.edit', to:sale.id }" >
                               <div class="text-sm text-gray-500">{{ sale.date }}</div>
                             </Edit-link>
                           </td>
@@ -68,7 +76,8 @@
                             <div class="text-sm text-gray-500">{{ sale.note }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                            <Edit-link :edit="{route: 'sales.edit', to:sale.id }" showicon />
+                            <Show-link class="p-1" :show="{route: 'sales.show', id:sale.id }" showicon />
+                            <Edit-link class="p-1" :edit="{route: 'sales.edit', to:sale.id }" showicon />
                           </td>
                         </tr>
                       </tbody>
@@ -89,11 +98,12 @@
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import AddLink from '@/Shared/Components/Links/Add.vue'
     import EditLink from '@/Shared/Components/Links/Edit.vue'
+    import ShowLink from '@/Shared/Components/Links/Show.vue'
     import Search from '@/Shared/Components/Filters/Search.vue'
 
     export default defineComponent({
         components: {
-            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination
+            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination, ShowLink
         },
         props:{ sales: Object }
     })

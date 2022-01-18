@@ -3,6 +3,7 @@
 namespace App\Models\Orders;
 
 use App\Models\Orders\SaleItem;
+use App\Models\Setup\Bundle;
 use App\Models\Setup\School;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,11 @@ class Sale extends Model
     use HasFactory,SoftDeletes;
     protected $fillable = [ 'date' , 'school_id', 'bundle_id', 'student_name','student_email', 'student_mobile', 'total_amount' ,'total_quantity', 'note', 'user_id', 'user_ip'];
 
+    public function getDateAttribute()
+    {
+        return date('d-m-Y @ H:i A', strtotime($this->created_at));
+    }
+
     public function items()
     {
         return $this->hasMany(SaleItem::class);
@@ -21,5 +27,10 @@ class Sale extends Model
     public function school()
     {
         return $this->belongsTo(School::class);
+    }
+
+    public function bundle()
+    {
+        return $this->belongsTo(Bundle::class);
     }
 }

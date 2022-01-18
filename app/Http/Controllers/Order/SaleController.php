@@ -37,6 +37,14 @@ class SaleController extends Controller
         return Inertia::render('Order/Sales/Create', compact('schools', 'sale'));
     }
 
+    public function show(Sale $sale)
+    {
+        $sale = $sale->load( 'school:id,name,address,city,state,pincode,warehouse_id' , 'school.warehouse' , 'bundle:id,name', 'items:id,sale_id,book_id,quantity,cost,class,subject,book_name,system_quantity', 'items.book:id,sku_no,name,author_name,class,subject,publisher_id', 'items.book.publisher:id,name')
+        ->only('id', 'date', 'bundle_id', 'school_id', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'total_quantity', 'bundle', 'school', 'items');
+
+        return Inertia::render('Order/Sales/Show', compact('sale'));
+    }
+
 
     public function store(Request $request)
     {

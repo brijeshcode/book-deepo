@@ -68,6 +68,7 @@
                         <table class="min-w-full divide-y divide-gray-200 border mb-4">
                             <thead class="bg-gray-50">
                                 <tr>
+                                    <th scope="col" class="  py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S. No.</th>
                                     <th scope="col" class="  py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Books</th>
                                     <th scope="col" class="  py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Class</th>
                                     <th scope="col" class="  py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
@@ -78,7 +79,8 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(item,index) in form.items">
-                                    <td class="  py-4 whitespace-nowrap">
+                                    <td class="py-4 whitespace-nowrap px-3">{{ index }}</td>
+                                    <td class="py-4 whitespace-nowrap" >
                                         <!-- <select v-model="item.book_id" readonly @change="itemChange($event)" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
                                             <option v-for="book in books" :value="book.id" v-text="book.name"></option>
                                         </select> -->
@@ -288,8 +290,6 @@
                     if(!item.book_id){
                         canSubmit = false;
                     }
-                    /*delete this.form.items[key].system_quantity;
-                    delete this.form.items[key].book_name;*/
                });
                if (canSubmit) {
                     this.form.total_quantity = this.computeQuantity;

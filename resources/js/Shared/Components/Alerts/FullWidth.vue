@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full text-white transition delay-100" :class="class">
+	<div v-show="show" class="w-full text-white transition delay-100 " :class="class">
         <div class="container flex items-center justify-between px-6 py-4 mx-auto">
             <div class="flex">
                 <tick v-if="type === 'success'" />
@@ -32,7 +32,8 @@
         components:{Tick,Alert,Bolt,Notify},
         props: { message:String , type: String},
         data: () => ({
-            class: ''
+            class: '',
+            show: false,
          }),
         created(){
         	if (this.type.toLowerCase() === 'success') {
@@ -45,13 +46,13 @@
         		this.class = 'bg-red-500';
         	}else{
         		this.class = 'bg-gray-500';
-        		console.log((this.class));
         	}
+            this.show = true;
+            setTimeout(() => this.show = false, 2500)
+            // setTimeout(() => this.class = 'hidden', 1000)
         },
         methods:{
-            hideme(){
-                this.class = 'hidden';
-            }
+            hideme(){ this.show = false; }
         }
     };
 </script>

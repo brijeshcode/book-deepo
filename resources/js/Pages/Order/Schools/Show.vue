@@ -16,7 +16,7 @@
                     <!-- Introduction section -->
                     <div class="flex flex-row w-full justify-between border-b">
                         <div class="flex-col px-4 py-2">
-                            <p class="text-gray-500 mb-4">Created: {{ order.created_at }}</p>
+                            <p class="text-gray-500 mb-4">Created: {{ order.date }}</p>
                             <p class="text-gray-700 text-sm uppercase font-bold">
                                 Status<br/>
                                 <span class="text-green-600 text-xl ">{{ order.status }}</span>

@@ -114,18 +114,23 @@ class SchoolController extends Controller
 
     public function bundleList(School $school)
     {
-        return $books = $school->bundles()->with('items:id,book_id,bundle_id,quantity', 'items.book:id,name,quantity,cost,class,subject')->get();
+        return $school->bundles()
+            ->with('items:id,book_id,bundle_id,quantity', 'items.book:id,name,quantity,cost,class,subject')
+            ->whereActive( true)
+            ->get();
     }
 
     public function books(School $school)
     {
         $books = $school->books()
         ->with('warehouse:id,name,city,state,email,pincode,mobile,contact_person', 'publisher:id,name')
+        ->whereActive( true)
         ->paginate(10);
         $school = $school->only('id','name') ;
 
         return Inertia::render('Setup/Schools/Books' , compact('books', 'school'));
     }
+
     private function validateFull($request)
     {
         $tempName = 'School';

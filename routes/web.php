@@ -168,6 +168,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
     Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
     Route::get('/sales/{sale}/edit', [SaleController::class, 'edit'])->name('sales.edit');
+    Route::get('/sales/{sale}/show', [SaleController::class, 'show'])->name('sales.show');
     Route::put('/sales/{sale}', [SaleController::class, 'update'])->name('sales.update');
     Route::delete('/sales/item/{item}/delete', [SaleController::class, 'deleteItem'])->name('sales.Item.delete');
 

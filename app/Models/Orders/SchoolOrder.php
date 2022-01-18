@@ -15,9 +15,9 @@ class SchoolOrder extends Model
     use HasFactory,SoftDeletes;
     protected $fillable = [ 'school_id', 'status', 'date','quantity', 'amount', 'note', 'user_id', 'user_ip'];
 
-    public function getCreatedAtAttribute($value)
+    public function getDateAttribute()
     {
-        return date('d-m-Y @ H:i A', strtotime($value));
+        return date('d-m-Y @ H:i A', strtotime($this->created_at));
     }
 
     public function items()
