@@ -44,6 +44,21 @@ class PublisherOrderController extends Controller
         return Inertia::render('Order/Publishers/Create', compact('publishers', 'order'));
     }
 
+    public function show(PublisherOrder $order)
+    {
+        // return abort(404);
+        return $order->load(
+                'schoolOrder:id,school_id,date,status',
+                'schoolOrder.school:id,name',
+                'publisher:id,name,mobile,email,contact_person',
+                'items:id,publisher_order_id,book_id,quantity',
+                'items.book:id,name,class,sku_no,subject'
+            )
+        ->only('id','date' ,'amount', 'quantity', 'publisher_id', 'school_order_id', 'status', 'publisher','schoolOrder', 'items');
+
+        return Inertia::render('Order/Publishers/Show', compact('publishers', 'order'));
+    }
+
     public function delivery(Request $request, $order_id)
     {
         // return abort(404);
@@ -73,7 +88,7 @@ class PublisherOrderController extends Controller
             ];
             $order = PublisherOrder::create($order)->items()->createMany($request->items);
         });
-        return redirect(route('publishersOrder'))->with('type', 'success')->with('message', 'Order generated successfully !!');*/
+        return redirect(route('publisher.order'))->with('type', 'success')->with('message', 'Order generated successfully !!');*/
     }
 
     public function generateOrder($schoolOrder)
@@ -149,7 +164,7 @@ class PublisherOrderController extends Controller
                 }
             }
         });
-        return redirect(route('publishersOrder'))->with('type', 'success')->with('message', 'Order updated successfully !!');
+        return redirect(route('publisher.order'))->with('type', 'success')->with('message', 'Order updated successfully !!');
     }
 
     public function deleteItem(PublisherOrderItem $item)

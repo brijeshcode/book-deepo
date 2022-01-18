@@ -110,11 +110,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 
 
-    Route::get('/publisher/orders', [PublisherOrderController::class, 'index'])->name('publishersOrder');
-    Route::get('/publisher/orders/create', [PublisherOrderController::class, 'create'])->name('publishersOrder.create');
-    Route::post('/publisher/orders', [PublisherOrderController::class, 'store'])->name('publishersOrder.store');
-    Route::get('/publisher/orders/{order}/edit', [PublisherOrderController::class, 'edit'])->name('publishersOrder.edit');
-    Route::put('/publisher/orders/{order}', [PublisherOrderController::class, 'update'])->name('publishersOrder.update');
+    Route::get('/publisher/orders', [PublisherOrderController::class, 'index'])->name('publisher.order');
+    Route::get('/publisher/order/create', [PublisherOrderController::class, 'create'])->name('publisher.order.create');
+    Route::post('/publisher/order', [PublisherOrderController::class, 'store'])->name('publisher.order.store');
+    Route::get('/publisher/order/{order}/edit', [PublisherOrderController::class, 'edit'])->name('publisher.order.edit');
+    Route::get('/publisher/order/{order}/show', [PublisherOrderController::class, 'show'])->name('publisher.order.show');
+    Route::put('/publisher/order/{order}', [PublisherOrderController::class, 'update'])->name('publisher.order.update');
     Route::delete('/publisher/order/item/{item}/delete', [PublisherOrderController::class, 'deleteItem'])->name('publisherOrderItem.delete');
 
     Route::get('/publisher/orders/{order}/delivery', [PublisherOrderController::class, 'delivery'])->name('publisher.order.delivery');
@@ -173,9 +174,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::delete('/sales/item/{item}/delete', [SaleController::class, 'deleteItem'])->name('sales.Item.delete');
 
 
-    /*Route::get('/order/supplier', [SupplierOrderController::class, 'index'])->name('publishersOrder');
-    Route::get('/order/supplier/create', [SupplierOrderController::class, 'create'])->name('publishersOrder.create');
-    Route::post('/order/supplier', [SupplierOrderController::class, 'store'])->name('publishersOrder.store');
-    Route::get('/order/supplier/{publisher}/edit', [SupplierOrderController::class, 'edit'])->name('publishersOrder.edit');
-    Route::put('/order/supplier/{publisher}', [SupplierOrderController::class, 'update'])->name('publishersOrder.update');*/
 });

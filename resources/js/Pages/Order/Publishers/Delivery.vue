@@ -7,8 +7,8 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple v-if="delivery" :items="[  { route: 'publishers'}, {route: 'publishersOrder', name:'Orders'} , { name:'Delivery'} ]" />
-            <bread-simple v-else :items="[ { route: 'publishers'}, {route: 'publishersOrder', name:'Orders'} , {route: 'publishersOrder.create', name:'Generate'} ]" />
+            <bread-simple v-if="delivery" :items="[  { route: 'publishers'}, {route: 'publisher.order', name:'Orders'} , { name:'Delivery'} ]" />
+            <bread-simple v-else :items="[ { route: 'publishers'}, {route: 'publisher.order', name:'Orders'} , {route: 'publisher.order.create', name:'Generate'} ]" />
         </template>
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -230,7 +230,7 @@
                });
                if (canSubmit) {
                     this.form.total_quantity = this.computeQuantity;
-                    this.order ? this.form.put(route('publishersOrder.update', this.order.id)) : this.form.post(route('publishersOrder.store'));
+                    this.order ? this.form.put(route('publisher.order.update', this.order.id)) : this.form.post(route('publisher.order.store'));
                }else{
                     alert('Order items are not set properly, "please select the book in the list" ');
                }

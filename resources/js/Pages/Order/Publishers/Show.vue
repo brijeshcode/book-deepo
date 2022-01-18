@@ -1,8 +1,8 @@
 <template>
-    <app-layout title="Sales">
+    <app-layout title="Publisher Order Details">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Sales Details
+                Order Details
             </h2>
         </template>
 

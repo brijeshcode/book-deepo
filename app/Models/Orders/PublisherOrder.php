@@ -22,4 +22,9 @@ class PublisherOrder extends Model
     {
         return $this->belongsTo(Publisher::class);
     }
+
+    public function schoolOrder()
+    {
+        return $this->belongsTo(SchoolOrder::class);
+    }
 }

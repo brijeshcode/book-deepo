@@ -3,16 +3,16 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Publisher Order
-                <!-- <add-link createRoute="publishersOrder.create" isbutton >Generate</add-link> -->
+                <!-- <add-link createRoute="publisher.order.create" isbutton >Generate</add-link> -->
             </h2>
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'publishers'}, {route: 'publishersOrder', name:'Orders'} ]" />
+            <bread-simple :items="[ { route: 'publishers'}, {route: 'publisher.order', name:'Orders'} ]" />
         </template>
         <template #actions>
             <div class="flex">
-              <!-- <Add-link createRoute="publishersOrder.create" title="Add new publisher order" withIcon /> -->
+              <!-- <Add-link createRoute="publisher.order.create" title="Add new publisher order" withIcon /> -->
             </div>
         </template>
 
@@ -42,13 +42,13 @@
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Note
                           </th>
-                          <!-- <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th> -->
+                          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                         </tr>
                       </thead>
                       <tbody class="bg-white divide-y divide-gray-200">
                         <tr v-for="order in orders.data" :key="order.id">
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <Edit-link :edit="{route: 'publishersOrder.edit', to:order.id }" >
+                            <Edit-link :edit="{route: 'publisher.order.edit', to:order.id }" >
                               <div class="text-sm text-gray-500">{{ order.date }}</div>
                             </Edit-link>
                           </td>
@@ -69,9 +69,10 @@
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div class="text-sm text-gray-500">{{ order.note }}</div>
                           </td>
-                          <!-- <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                            <deliver-link :order="{route: 'publisher.order.delivery', id:order.id }" title="Update delivery" showicon />
-                          </td> -->
+                          <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
+                            <Show-link class="p-1" :show="{route: 'publisher.order.show', id:order.id }" showicon />
+                            <!-- <deliver-link :order="{route: 'publisher.order.delivery', id:order.id }" title="Update delivery" showicon /> -->
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -91,11 +92,12 @@
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import AddLink from '@/Shared/Components/Links/Add.vue'
     import DeliverLink from '@/Shared/Components/Links/Delivery.vue'
+    import ShowLink from '@/Shared/Components/Links/Show.vue'
     import Search from '@/Shared/Components/Filters/Search.vue'
 
     export default defineComponent({
         components: {
-            AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination
+            AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination,ShowLink
         },
         props:{ orders: Object }
     })

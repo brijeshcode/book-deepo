@@ -47,7 +47,7 @@
                                             List
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link :href="route('publishersOrder')">
+                                        <jet-dropdown-link :href="route('publisher.order')">
                                             Orders
                                         </jet-dropdown-link>
 
@@ -142,7 +142,7 @@
                             </div>
 
                             <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('publishersOrder')" :active="route().current('publishersOrder')">
+                                <jet-nav-link :href="route('publisher.order')" :active="route().current('publisher.order')">
                                     Publisher Order
                                 </jet-nav-link>
                             </div> -->
