@@ -7,6 +7,7 @@ use App\Models\Setup\Book;
 use App\Models\Setup\Bundle;
 use App\Models\Setup\Location;
 use App\Models\Setup\Warehouse;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -29,6 +30,11 @@ class School extends Model
     {
         return $this->belongsToMany(Book::class);
         // return $this->hasMany(Book::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 
     public function bundles()

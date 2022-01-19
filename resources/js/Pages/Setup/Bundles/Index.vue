@@ -3,7 +3,7 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Bundles
-                <add-link createRoute="bundles.create" isbutton >Add</add-link>
+                <add-link v-if="($page.props.user.permissions.includes('create bundles'))"  createRoute="bundles.create" isbutton >Add</add-link>
             </h2>
         </template>
 
@@ -14,7 +14,7 @@
         <template #actions>
             <div class="flex">
               <search searchRoute='bundles' />
-              <Add-link createRoute="bundles.create" withIcon  />
+              <Add-link v-if="($page.props.user.permissions.includes('create bundles'))"  createRoute="bundles.create" withIcon  />
             </div>
         </template>
         <!-- <alert-success  message="Location added successfuly" /> -->
@@ -40,7 +40,7 @@
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Note
                           </th>
-                          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                          <th v-if="($page.props.user.permissions.includes('edit bundles'))"  scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                         </tr>
                       </thead>
                       <tbody class="bg-white divide-y divide-gray-200">
@@ -65,7 +65,7 @@
                           <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div class="text-sm text-gray-500">{{ bundle.note }}</div>
                           </td>
-                          <td class="px-4 py-4 whitespace-nowrap  text-sm flex justify-end text-right  font-medium">
+                          <td v-if="($page.props.user.permissions.includes('edit bundles'))"  class="px-4 py-4 whitespace-nowrap  text-sm flex justify-end text-right  font-medium">
                             <Edit-link :edit="{route: 'bundles.edit', to:bundle.id }" showicon />
                           </td>
                         </tr>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Orders\Sale;
 use App\Models\Orders\SaleItem;
 use App\Models\Setup\School;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -20,7 +21,19 @@ class SaleController extends Controller
 
     public function create(Request $request)
     {
-        $schools = School::select('id', 'name')->where('active', 1)->orderBy('name')->has('bundles')->get();
+        // $user = User::with('schools:id,name,active')->has('schools')->find(8);
+        $user = User::with('schools:id,name,active')->has('schools')->find(\Auth::id());
+        $checkSchool = [];
+        if ($user) {
+            foreach ($user->schools as $key => $school) {
+                $checkSchool[] = $school->id;
+            }
+        }
+        if (empty($checkSchool)) {
+            $schools = School::select('id', 'name')->where('active', 1)->orderBy('name')->has('bundles')->get();
+        }else{
+            $schools = School::select('id', 'name')->whereIn('id' , $checkSchool)->where('active', 1)->orderBy('name')->has('bundles')->get();
+        }
         return Inertia::render('Order/Sales/Create', compact('schools'));
     }
 

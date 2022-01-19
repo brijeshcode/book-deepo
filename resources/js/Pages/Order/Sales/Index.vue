@@ -3,7 +3,7 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Sales
-                <add-link createRoute="sales.create" isbutton >Generate</add-link>
+                <add-link v-if="($page.props.user.permissions.includes('create sales'))" createRoute="sales.create" isbutton >Generate</add-link>
             </h2>
         </template>
 
@@ -12,7 +12,7 @@
         </template>
         <template #actions>
             <div class="flex">
-              <Add-link createRoute="sales.create" title="Add new Sales" withIcon />
+              <Add-link v-if="($page.props.user.permissions.includes('create sales'))" createRoute="sales.create" title="Add new Sales" withIcon />
             </div>
         </template>
 
@@ -77,7 +77,7 @@
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
                             <Show-link class="p-1" :show="{route: 'sales.show', id:sale.id }" showicon />
-                            <Edit-link class="p-1" :edit="{route: 'sales.edit', to:sale.id }" showicon />
+                            <Edit-link v-if="($page.props.user.permissions.includes('edit sales'))" class="p-1" :edit="{route: 'sales.edit', to:sale.id }" showicon />
                           </td>
                         </tr>
                       </tbody>

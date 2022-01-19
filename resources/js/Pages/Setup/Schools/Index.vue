@@ -3,7 +3,7 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Schools
-                <add-link createRoute="schools.create" isbutton >Add</add-link>
+                <add-link v-if="($page.props.user.permissions.includes('create schools'))"  createRoute="schools.create" isbutton >Add</add-link>
             </h2>
         </template>
 
@@ -14,7 +14,7 @@
         <template #actions>
             <div class="flex">
               <search searchRoute='schools' />
-              <Add-link createRoute="schools.create" withIcon />
+              <Add-link v-if="($page.props.user.permissions.includes('create schools'))"  createRoute="schools.create" withIcon />
               <!-- <FilterIcon class="cursor-pointer" @click="showpink" /> -->
             </div>
         </template>
@@ -70,7 +70,7 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
                           <BookLink :book="{route: 'schools.books.show', of:school.id }" showicon />
-                          <Edit-link :edit="{route: 'schools.edit', to:school.id }" showicon />
+                          <Edit-link v-if="($page.props.user.permissions.includes('edit schools'))"  :edit="{route: 'schools.edit', to:school.id }" showicon />
                         </td>
                       </tr>
                     </tbody>

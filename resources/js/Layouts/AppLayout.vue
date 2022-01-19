@@ -47,21 +47,21 @@
                                             List
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link :href="route('publisher.order')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers orders'))"  :href="route('publisher.order')">
                                             Orders
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link :href="route('publisher.delivery.index')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers deliveries'))" :href="route('publisher.delivery.index')">
                                             Deliveires
                                         </jet-dropdown-link>
-                                        <jet-dropdown-link :href="route('publisher.returns.index')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers returns'))" :href="route('publisher.returns.index')">
                                             Returns
                                         </jet-dropdown-link>
                                     </template>
                                 </jet-dropdown>
                             </div>
 
-                            <div  v-if="($page.props.user.permissions.includes('access suppliers'))" class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div v-if="($page.props.user.permissions.includes('access suppliers'))" class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-dropdown align="left" width="48">
                                     <template #trigger>
                                            <div class="items-center py-6 cursor-pointer text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">Suppliers</div>
@@ -73,15 +73,15 @@
                                             List
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link :href="route('supplierOrder')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access suppliers orders'))"  :href="route('supplierOrder')">
                                             Orders
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link :href="route('supplier.delivery.index')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access suppliers deliveries'))"  :href="route('supplier.delivery.index')">
                                             Deliveires
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link :href="route('supplier.returns.index')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access suppliers returns'))"  :href="route('supplier.returns.index')">
                                             Returns
                                         </jet-dropdown-link>
 
@@ -107,14 +107,14 @@
                                             List
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link :href="route('schoolOrder')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access school orders'))" :href="route('schoolOrder')">
                                             Orders
                                         </jet-dropdown-link>
                                     </template>
                                 </jet-dropdown>
                             </div>
 
-                            <div v-if="($page.props.user.permissions.includes('access Books'))"  class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div v-if="($page.props.user.permissions.includes('access books'))"  class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-dropdown align="left" width="48">
                                     <template #trigger>
                                            <div  class="items-center py-6 cursor-pointer text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">Books</div>

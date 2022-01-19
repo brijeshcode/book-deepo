@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Setup;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setup\School;
 use App\Models\User;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
@@ -21,9 +22,10 @@ class UsersController extends Controller
 
     public function create()
     {
+        $schools = School::select('id', 'name')->whereActive(1)->get();
         $roles = Role::select('id', 'name')->with('permissions:id')->orderBy('name')->get();
         $permissions = Permission::select('id', 'name')->orderBy('id' , 'asc')->get();
-        return Inertia::render('Setup/Users/Create', compact('roles', 'permissions'));
+        return Inertia::render('Setup/Users/Create', compact('roles', 'permissions','schools'));
     }
 
     public function store(Request $request)
@@ -37,6 +39,9 @@ class UsersController extends Controller
                 'active' => $request->active,
                 'note' => $request->note,
             ]);
+            if ($request->has('userSchools')) {
+                $user->schools()->sync(array_column($request->userSchools, 'id'));
+            }
             $user->assignRole($request->role);
             // $user->syncPermissions($request->permission);
         });
@@ -47,10 +52,11 @@ class UsersController extends Controller
 
     public function edit(Request $request, $user)
     {
-        $editUser = User::with('roles:id,name')->findorFail($user);
+        $schools = School::select('id', 'name')->whereActive(1)->get();
+        $editUser = User::with('schools:id,name' , 'roles:id,name' )->findorFail($user);
         $roles = Role::select('id', 'name')->with('permissions:id')->orderBy('name')->get();
         $permissions = Permission::select('id', 'name')->orderBy('id' , 'asc')->get();
-        return Inertia::render('Setup/Users/Create', compact('editUser', 'roles', 'permissions'));
+        return Inertia::render('Setup/Users/Create', compact('editUser', 'schools', 'roles', 'permissions'));
     }
 
     public function update(Request $request, $user)
@@ -65,7 +71,9 @@ class UsersController extends Controller
             }else{
                 $user->update($request->only('name', 'email', 'password', 'note', 'active'));
             }
-
+            if ($request->has('userSchools')) {
+                $user->schools()->sync(array_column($request->userSchools, 'id'));
+            }
 
         });
         return redirect(route('users'))->with('type', 'success')->with('message', 'User updated successfully !!');

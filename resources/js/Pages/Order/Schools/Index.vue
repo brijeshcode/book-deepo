@@ -3,7 +3,7 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 School Order
-                <add-link createRoute="schoolOrder.create" isbutton >Generate</add-link>
+                <add-link v-if="($page.props.user.permissions.includes('create school orders'))" createRoute="schoolOrder.create" isbutton >Generate</add-link>
             </h2>
         </template>
 
@@ -12,7 +12,7 @@
         </template>
         <template #actions>
             <div class="flex">
-              <Add-link createRoute="schoolOrder.create" title="Add new school order" withIcon />
+              <Add-link v-if="($page.props.user.permissions.includes('create school orders'))" createRoute="schoolOrder.create" title="Add new school order" withIcon />
             </div>
         </template>
 
@@ -80,8 +80,11 @@
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
                             <show-link class="p-1" :show="{route: 'schoolOrder.show', id:order.id }" showicon />
-                            <deliver-link class="p-1" v-if="order.status != 'Completed'" :order="{route: 'school.order.delivery', id:order.id }" title="Update delivery" showicon />
-                            <return-link class="p-1" v-if="order.status != 'Pending'"  :order="{route: 'school.order.return', id:order.id }" showicon />
+                            <div v-if="($page.props.user.permissions.includes('edit school orders'))">
+
+                              <deliver-link class="p-1" v-if="order.status != 'Completed'" :order="{route: 'school.order.delivery', id:order.id }" title="Update delivery" showicon />
+                              <return-link class="p-1" v-if="order.status != 'Pending'"  :order="{route: 'school.order.return', id:order.id }" showicon />
+                            </div>
                           </td>
                         </tr>
                       </tbody>

@@ -52,8 +52,30 @@
                             <jet-input id="note" type="text" class="mt-1 block" v-model="form.note" autocomplete="note" />
                             <jet-input-error :message="form.errors.note" class="mt-2" />
                         </div>
+
+
+
                     </div>
 
+                    <div v-if="schools.length > 0">
+                        <div class="mb-4">
+                            <span @click="addSchool" class=" mb-4 bg-indigo-500 text-white hover:bg-indigo-600 font-bold p-2 pb-1 pl-2 pt-1 rounded cursor-pointer">Add Sale invoice School</span>
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-4 mb-4">
+                            <div v-for="(schoolList,index) in form.userSchools">
+                                <div class="flex">
+                                    <select  v-model="schoolList.id" class="w-60 my-2 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
+                                        <option v-for="school in schools" v-bind:value="school.id">{{ school.name }}</option>
+                                    </select>
+                                    <button type="button" @click="removeSchool(index)" class="ml-4">
+                                      <span class="material-icons text-sm text-red-500 "><remove-icon /></span>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- <div class="text-xl uppercase  mb-4 mt-4">
                         Permissions
                         <div class="h-0.5 w-20 bg-gray-500 rounded"></div>
@@ -97,6 +119,7 @@
     import { useForm } from '@inertiajs/inertia-vue3'
     import JetCheckbox from '@/Jetstream/Checkbox.vue'
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
+    import RemoveIcon from '@/Shared/Components/Icons/svg/Trash.vue'
     // import { Link } from '@inertiajs/inertia-vue3';
 
     export default defineComponent({
@@ -107,11 +130,13 @@
             AppLayout,
             JetButton,
             JetLabel,
-            JetCheckbox
+            JetCheckbox,
+            RemoveIcon
         },
-        props: ['editUser', 'roles', 'permissions'],
+        props: ['editUser', 'roles', 'permissions', 'schools'],
          data: () => ({
             edit: false,
+            userSchools : []
          }),
         setup () {
             const form = useForm({
@@ -121,7 +146,8 @@
               note: '',
               // permissions: [],
               role: '',
-              active: false
+              active: false,
+              userSchools: []
             })
 
             return { form  }
@@ -129,7 +155,6 @@
 
         created(){
             if (this.editUser) {
-                console.log(this.editUser.roles);
                 Object.keys(this.editUser).forEach((index) => {
                     this.form[index] = this.editUser[index];
                 });
@@ -137,10 +162,17 @@
                 if (this.editUser.roles.length > 0) {
                     this.form.role = this.editUser.roles[0].id;
                 }
+                if (this.editUser.schools.length > 0) {
+                    this.editUser.schools.forEach((school) => {
+                        this.form.userSchools.push( { 'id' : school.id});
+                    });
+                }
                 this.edit = true;
             }
         },
         methods:{
+            addSchool(){ this.form.userSchools.push({id: ''}); },
+            removeSchool(index){ if (confirm('Are you sure?')) this.form.userSchools.splice(index, 1); },
             roleChange(event){
                 let role = {};
                 this.form.permissions = [];

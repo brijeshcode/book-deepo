@@ -3,7 +3,7 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Books
-                <add-link createRoute="books.create" isbutton >Add</add-link>
+                <add-link v-if="($page.props.user.permissions.includes('create books'))"  createRoute="books.create" isbutton >Add</add-link>
             </h2>
         </template>
 
@@ -14,7 +14,7 @@
         <template #actions>
             <div class="flex">
               <search searchRoute='books' />
-              <Add-link createRoute="books.create" withIcon />
+              <Add-link v-if="($page.props.user.permissions.includes('create books'))"  createRoute="books.create" withIcon />
             </div>
         </template>
 
@@ -43,7 +43,7 @@
                       <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Note
                       </th>
-                      <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                      <th v-if="($page.props.user.permissions.includes('edit books'))"  scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                     </tr>
                   </thead>
                   <tbody class="bg-white divide-y divide-gray-200">
@@ -98,7 +98,7 @@
                       <td>
                         <div class="truncate w-20">{{ book.note }}</div>
                       </td>
-                      <td class="px-4 py-2 whitespace-nowrap text-right text-sm flex justify-end font-medium">
+                      <td v-if="($page.props.user.permissions.includes('edit books'))"  class="px-4 py-2 whitespace-nowrap text-right text-sm flex justify-end font-medium">
                         <Edit-link :edit="{route: 'books.edit', to:book.id }" showicon />
                       </td>
                     </tr>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Setup\School;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -75,5 +76,10 @@ class User extends Authenticatable
             return $role[0]->permissions->pluck('name');
         }
         return [];
+    }
+
+    public function schools()
+    {
+        return $this->belongsToMany(School::class)->withTimestamps();
     }
 }

@@ -48,7 +48,10 @@
         		this.class = 'bg-gray-500';
         	}
             this.show = true;
-            setTimeout(() => this.show = false, 2500)
+
+            if (this.type.toLowerCase() !== 'error' && this.type.toLowerCase() !== 'danger') {
+                setTimeout(() => this.show = false, 2500)
+            }
             // setTimeout(() => this.class = 'hidden', 1000)
         },
         methods:{

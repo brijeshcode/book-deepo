@@ -3,7 +3,7 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Publishers
-                <add-link createRoute="publishers.create" isbutton >Add</add-link>
+                <add-link v-if="($page.props.user.permissions.includes('create publishers'))" createRoute="publishers.create" isbutton >Add</add-link>
             </h2>
         </template>
 
@@ -14,7 +14,7 @@
         <template #actions>
             <div class="flex">
               <search searchRoute='publishers' />
-              <Add-link createRoute="publishers.create" withIcon />
+              <Add-link v-if="($page.props.user.permissions.includes('create publishers'))" createRoute="publishers.create" withIcon />
             </div>
         </template>
 
@@ -36,7 +36,7 @@
                               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Location
                               </th>
-                              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                              <th v-if="($page.props.user.permissions.includes('edit publishers'))" scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                             </tr>
                           </thead>
                           <tbody class="bg-white divide-y divide-gray-200">
@@ -64,7 +64,7 @@
                                 <div class="text-sm text-gray-800">{{ publisher.city }}, {{ publisher.state }}</div>
                                   <div class="text-sm text-gray-500"> ({{ publisher.pincode }})</div>
                               </td>
-                              <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
+                              <td v-if="($page.props.user.permissions.includes('edit publishers'))" class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
                                 <Edit-link :edit="{route: 'publishers.edit', to:publisher.id }" showicon />
                               </td>
                             </tr>
