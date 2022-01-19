@@ -38,6 +38,11 @@ class PublisherController extends Controller
     public function create()
     {
         $locations = Location::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
+
+        if ($locations->isEmpty()) {
+            return redirect()->back()->with('type', 'warning')->with('message', 'First Add locations And make sure atleast one location is active.');
+        }
+
         return Inertia::render('Setup/Publishers/Create', compact('locations'));
     }
 
@@ -56,6 +61,12 @@ class PublisherController extends Controller
     public function edit(Publisher $publisher)
     {
         $locations = Location::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
+
+        if ($locations->isEmpty()) {
+            return redirect()->back()->with('type', 'warning')->with('message', 'First Add locations And make sure atleast one location is active.');
+        }
+
+
         $publisher = $publisher->only('id','name', 'address', 'email', 'city', 'state', 'mobile', 'location_id', 'contact_person', 'pincode', 'note', 'active');
         return Inertia::render('Setup/Publishers/Create', compact('publisher', 'locations'));
     }

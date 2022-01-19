@@ -49,6 +49,10 @@ class SchoolController extends Controller
     public function create()
     {
         $warehouses = Warehouse::select('id', 'name', 'city', 'state' , 'pincode')->where('active', 1)->orderBy('name')->get();
+
+        if ($warehouses->isEmpty()) {
+            return redirect()->back()->with('type', 'warning')->with('message', 'First Add warehouses And make sure atleast one warehouse is active.');
+        }
         return Inertia::render('Setup/Schools/Create', compact('warehouses'));
     }
 
@@ -67,6 +71,11 @@ class SchoolController extends Controller
     public function edit(School $school)
     {
         $warehouses = Warehouse::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
+
+        if ($warehouses->isEmpty()) {
+            return redirect()->back()->with('type', 'warning')->with('message', 'First Add warehouses And make sure atleast one warehouse is active.');
+        }
+
         $school = $school->only('id','name', 'email', 'address', 'city', 'state', 'mobile', 'warehouse_id', 'contact_person', 'pincode', 'note', 'active');
         return Inertia::render('Setup/Schools/Create', compact('school', 'warehouses'));
     }

@@ -73,6 +73,10 @@ class WarehouseController extends Controller
     public function create()
     {
         $locations = Location::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
+
+        if ($locations->isEmpty()) {
+            return redirect()->back()->with('type', 'warning')->with('message', 'First Add locations And make sure atleast one location is active.');
+        }
         return Inertia::render('Setup/Warehouses/Create', compact('locations'));
     }
 
@@ -91,6 +95,10 @@ class WarehouseController extends Controller
     public function edit(Warehouse $warehouse)
     {
         $locations = Location::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
+
+        if ($locations->isEmpty()) {
+            return redirect()->back()->with('type', 'warning')->with('message', 'First Add locations And make sure atleast one location is active.');
+        }
         $warehouse = $warehouse->only('id','name', 'address', 'email', 'city', 'state', 'mobile', 'location_id', 'contact_person', 'pincode', 'note', 'active');
         return Inertia::render('Setup/Warehouses/Create', compact('warehouse', 'locations'));
     }

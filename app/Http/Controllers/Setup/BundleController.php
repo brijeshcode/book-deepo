@@ -30,6 +30,10 @@ class BundleController extends Controller
     public function create(Request $request)
     {
         $schools = School::where('active', true)->has('books')->get();
+
+        if ($schools->isEmpty()) {
+            return redirect()->back()->with('type', 'warning')->with('message', 'Before adding bundle, add schools and books , then check books are attached to schools and they are active.');
+        }
         return Inertia::render('Setup/Bundles/Create', compact('schools'));
     }
 
@@ -45,6 +49,11 @@ class BundleController extends Controller
     public function edit($bundle)
     {
         $bundle = Bundle::select('id','name', 'school_id', 'note', 'active')->with('items:id,bundle_id,class,quantity,book_id')->where('id', $bundle)->first();
+
+        if ($schools->isEmpty()) {
+            return redirect()->back()->with('type', 'warning')->with('message', 'Before adding bundle, add schools and books , then check books are attached to schools and they are active.');
+        }
+
         $schools = School::where('active', true)->has('books')->get();
         return Inertia::render('Setup/Bundles/Create', compact('bundle', 'schools'));
     }

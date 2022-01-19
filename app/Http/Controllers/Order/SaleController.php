@@ -34,6 +34,10 @@ class SaleController extends Controller
         }else{
             $schools = School::select('id', 'name')->whereIn('id' , $checkSchool)->where('active', 1)->orderBy('name')->has('bundles')->get();
         }
+
+        if ($schools->isEmpty()) {
+            return redirect()->back()->with('type', 'warning')->with('message', 'Check shcool have alteast one active bundle.');
+        }
         return Inertia::render('Order/Sales/Create', compact('schools'));
     }
 

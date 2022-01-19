@@ -46,12 +46,19 @@ class BookController extends Controller
 
     public function create()
     {
-        $suppliers = Supplier::select('id', 'name')->where('active', 1)->orderBy('name')->get();
         $publishers = Publisher::select('id', 'name')->where('active', 1)->orderBy('name')->get();
-        $warehouses = Warehouse::select('id', 'name')->where('active', 1)->has('schools')->orderBy('name')->get();
-        $locations = Location::select('id', 'name')->where('active', 1)->has('publishers')->has('warehouses')->orderBy('name')->get();
-        $book = Warehouse::select('id', 'name')->where('active', 1)->orderBy('name')->get();
+        if ($publishers->isEmpty()) {
+            return redirect()->back()->with('type', 'warning')->with('message', 'First Add publishers And make sure atleast one publisher is active.');
+        }
 
+        $warehouses = Warehouse::select('id', 'name')->where('active', 1)->has('schools')->orderBy('name')->get();
+        if ($warehouses->isEmpty()) {
+            return redirect()->back()->with('type', 'warning')->with('message', 'Before adding books, add warehouses, then check schools are attached to warehouses and they are active.');
+        }
+
+        $suppliers = Supplier::select('id', 'name')->where('active', 1)->orderBy('name')->get();
+
+        $locations = Location::select('id', 'name')->where('active', 1)->has('publishers')->has('warehouses')->orderBy('name')->get();
         return Inertia::render('Setup/Books/Create', compact('suppliers', 'locations','publishers', 'warehouses') );
     }
 

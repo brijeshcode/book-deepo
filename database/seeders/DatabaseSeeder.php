@@ -36,12 +36,11 @@ class DatabaseSeeder extends Seeder
         //
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // User::factory(3)->create();
-        Location::factory(10)->create();
-        Warehouse::factory(5)->create();
-        School::factory(50)->create();
-        Supplier::factory(50)->create();
-        Publisher::factory(50)->create();
+        // Location::factory(10)->create();
+        // Warehouse::factory(5)->create();
+        // School::factory(50)->create();
+        // Supplier::factory(50)->create();
+        // Publisher::factory(50)->create();
         // Book::factory(5)->create();
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 

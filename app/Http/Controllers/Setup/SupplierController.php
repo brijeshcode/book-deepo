@@ -48,6 +48,10 @@ class SupplierController extends Controller
     public function create()
     {
         $locations = Location::select('id', 'name', 'city', 'state', 'pincode')->where('active', 1)->orderBy('name')->get();
+
+        if ($locations->isEmpty()) {
+            return redirect()->back()->with('type', 'warning')->with('message', 'First Add locations And make sure atleast one location is active.');
+        }
         return Inertia::render('Setup/Supplier/Create', compact('locations'));
     }
 

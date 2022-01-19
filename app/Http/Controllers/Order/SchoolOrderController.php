@@ -37,6 +37,11 @@ class SchoolOrderController extends Controller
     public function create(Request $request)
     {
         $schools = School::select('id', 'name', 'email' ,'mobile', 'contact_person')->where('active', 1)->orderBy('name')->has('books')->get();
+
+        if ($schools->isEmpty()) {
+            return redirect()->back()->with('type', 'info')->with('message', 'First Add books to any school And make sure school atleast one school is active.');
+        }
+
         $books = Book::with('suppliers', 'publisher:id,name,mobile,email')
                 ->select( 'id', 'publisher_id', 'sku_no','name', 'author_name' ,'description', 'quantity', 'cost', 'class' , 'note', 'subject')->where('active' , true)->orderBy('name')->get();
         return Inertia::render('Order/Schools/Create', compact('schools', 'books'));
