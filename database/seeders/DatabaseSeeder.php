@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::query()->truncate();
         Location::query()->truncate();
         Warehouse::query()->truncate();
         \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -29,16 +28,22 @@ class DatabaseSeeder extends Seeder
         Supplier::query()->truncate();
         Publisher::query()->truncate();
         Book::query()->truncate();
-        \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        //
+        User::query()->truncate();
         $this->call(UserSeeder::class);
         $this->call(PermissionSeeder::class);
+        //
+        \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        User::factory(3)->create();
+        // User::factory(3)->create();
         Location::factory(10)->create();
         Warehouse::factory(5)->create();
         School::factory(50)->create();
         Supplier::factory(50)->create();
         Publisher::factory(50)->create();
         // Book::factory(5)->create();
+        \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
     }
 }
