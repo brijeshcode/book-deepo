@@ -9,8 +9,10 @@ use App\Http\Controllers\Setup\BookController;
 use App\Http\Controllers\Setup\BundleController;
 use App\Http\Controllers\Setup\LocationsController;
 use App\Http\Controllers\Setup\PublisherController;
+use App\Http\Controllers\Setup\RolesController;
 use App\Http\Controllers\Setup\SchoolController;
 use App\Http\Controllers\Setup\SupplierController;
+use App\Http\Controllers\Setup\UsersController;
 use App\Http\Controllers\Setup\WarehouseController;
 use App\Models\Orders\PublisherOrder;
 use App\Models\Orders\Sale;
@@ -172,6 +174,22 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/sales/{sale}/show', [SaleController::class, 'show'])->name('sales.show');
     Route::put('/sales/{sale}', [SaleController::class, 'update'])->name('sales.update');
     Route::delete('/sales/item/{item}/delete', [SaleController::class, 'deleteItem'])->name('sales.Item.delete');
+
+
+    Route::get('/users', [UsersController::class, 'index'])->name('users');
+    Route::get('/users/create', [UsersController::class, 'create'])->name('users.create');
+    Route::post('/users', [UsersController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}/edit', [UsersController::class, 'edit'])->name('users.edit');
+    // Route::get('/users/{user}/show', [UsersController::class, 'show'])->name('users.show');
+    Route::put('/users/{user}', [UsersController::class, 'update'])->name('users.update');
+    // Route::delete('/users/item/{item}/delete', [UsersController::class, 'deleteItem'])->name('users.Item.delete');
+
+    Route::get('/roles', [RolesController::class, 'index'])->name('roles');
+    Route::get('/roles/create', [RolesController::class, 'create'])->name('roles.create');
+    Route::post('/roles', [RolesController::class, 'store'])->name('roles.store');
+    Route::get('/roles/{role}/edit', [RolesController::class, 'edit'])->name('roles.edit');
+    // Route::get('/roles/{role}/show', [RolesController::class, 'show'])->name('roles.show');
+    Route::put('/roles/{role}', [RolesController::class, 'update'])->name('roles.update');
 
 
 });

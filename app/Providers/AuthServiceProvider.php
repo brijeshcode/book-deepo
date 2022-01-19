@@ -14,6 +14,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        // 'App\Models\Setup\Location' => 'App\Policies\LocationPolicy',
+        // 'App\Models\Setup\Location' => 'App\Policies\LocationPolicy',
     ];
 
     /**
@@ -25,6 +27,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // Implicitly grant "Super-Admin" role all permission checks using can()
+        Gate::before(function ($user, $ability) {
+           if ($user->hasRole('Super-Admin')) {
+               return true;
+           }
+        });
     }
 }

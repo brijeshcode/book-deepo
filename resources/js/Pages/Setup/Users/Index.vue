@@ -1,21 +1,20 @@
 <template>
-    <app-layout title="Locations">
+    <app-layout title="Users">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Locations
-
-                <add-link v-if="($page.props.user.permissions.includes('create locations'))"  createRoute="locations.create" isbutton >Add</add-link>
+                Users
+                <add-link createRoute="users.create" isbutton >Add</add-link>
             </h2>
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'locations'} ]" />
+            <bread-simple :items="[ { route: 'users'} ]" />
         </template>
 
         <template #actions>
             <div class="flex">
-              <search searchRoute='locations' />
-              <Add-link v-if="($page.props.user.permissions.includes('create locations'))" createRoute="locations.create" withIcon  />
+              <search searchRoute='users' />
+              <Add-link createRoute="users.create" withIcon  />
             </div>
         </template>
         <!-- <alert-success  message="Location added successfuly" /> -->
@@ -33,27 +32,24 @@
                             Name
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            City
+                            Email
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            State
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Pincode
+                            Role
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Note
                           </th>
-                          <th  v-if="($page.props.user.permissions.includes('edit locations'))" scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                         </tr>
                       </thead>
                       <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="location in locations.data" :key="location.id">
+                        <tr v-for="user in users.data" :key="user.id">
                           <td class="px-4 py-4 whitespace-nowrap">
-                            <Edit-link :edit="{route: 'locations.edit', to:location.id }"  >
-                              <div class="text-sm text-gray-900">{{ location.name }}</div>
+                            <Edit-link :edit="{route: 'users.edit', to:user.id }"  >
+                              <div class="text-sm text-gray-900">{{ user.name }}</div>
                             </Edit-link>
-                            <span v-if="location.active" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            <span v-if="user.active" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                               Active
                             </span>
                             <span v-else class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
@@ -61,25 +57,24 @@
                             </span>
                           </td>
                           <td class="px-4 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500">{{ location.city }}</div>
+                            <div class="text-sm text-gray-500">{{ user.email }}</div>
                           </td>
                           <td class="px-4 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500">{{ location.state }}</div>
+                            <div v-on="user.roles">
+                            <div class="text-sm text-gray-500" v-for="role in user.roles" >{{ role.name }}</div>
+                            </div>
                           </td>
                           <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm text-gray-500">{{ location.pincode }}</div>
+                            <div class="text-sm text-gray-500">{{ user.note }}</div>
                           </td>
-                          <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm text-gray-500">{{ location.note }}</div>
-                          </td>
-                          <td  v-if="($page.props.user.permissions.includes('edit locations'))" class="px-4 py-4 whitespace-nowrap  text-sm flex justify-end text-right  font-medium">
-                            <Edit-link  :edit="{route: 'locations.edit', to:location.id }" showicon />
+                          <td class="px-4 py-4 whitespace-nowrap  text-sm flex justify-end text-right  font-medium">
+                            <Edit-link :edit="{route: 'users.edit', to:user.id }" showicon />
                           </td>
                         </tr>
                       </tbody>
                     </table>
 
-                    <Pagination :pageData="locations" pageof=" Locations" />
+                    <Pagination :pageData="users" pageof=" Users" />
                   </div>
                 </div>
               </div>
@@ -104,7 +99,7 @@
           AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination
         },
         props:{
-            locations: Object,
+            users: Object,
         }
     })
 </script>

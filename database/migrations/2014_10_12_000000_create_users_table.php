@@ -22,6 +22,12 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
+            $table->boolean('active')->default(true);
+            $table->text('note')->nullable();
+
+            $table->unsignedBigInteger('user_id')->default('1');
+            $table->ipAddress('user_ip')->default('127.0.0.1');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

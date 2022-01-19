@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
         Book::query()->truncate();
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $this->call(UserSeeder::class);
+        $this->call(PermissionSeeder::class);
 
         User::factory(3)->create();
         Location::factory(10)->create();

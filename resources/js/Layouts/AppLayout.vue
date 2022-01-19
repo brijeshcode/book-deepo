@@ -24,18 +24,18 @@
                                 </jet-nav-link>
                             </div>
 
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div v-if="($page.props.user.permissions.includes('access locations'))" class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('locations')" :active="route().current('locations')">
                                     Locations
                                 </jet-nav-link>
                             </div>
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div v-if="($page.props.user.permissions.includes('access warehouses'))" class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('warehouses')" :active="route().current('warehouses')">
                                     Warehouses
                                 </jet-nav-link>
                             </div>
 
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div v-if="($page.props.user.permissions.includes('access publishers'))" class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-dropdown align="left" width="48">
                                     <template #trigger>
                                            <div class="items-center py-6 cursor-pointer text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">Publishers</div>
@@ -61,7 +61,7 @@
                                 </jet-dropdown>
                             </div>
 
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div  v-if="($page.props.user.permissions.includes('access suppliers'))" class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-dropdown align="left" width="48">
                                     <template #trigger>
                                            <div class="items-center py-6 cursor-pointer text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">Suppliers</div>
@@ -95,7 +95,7 @@
 
 
 
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div v-if="($page.props.user.permissions.includes('access schools'))"  class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-dropdown align="left" width="48">
                                     <template #trigger>
                                            <div class="items-center py-6 cursor-pointer text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">Schools</div>
@@ -114,7 +114,7 @@
                                 </jet-dropdown>
                             </div>
 
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div v-if="($page.props.user.permissions.includes('access Books'))"  class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-dropdown align="left" width="48">
                                     <template #trigger>
                                            <div  class="items-center py-6 cursor-pointer text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">Books</div>
@@ -135,12 +135,32 @@
                                 </jet-dropdown>
                             </div>
 
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div v-if="($page.props.user.permissions.includes('access sales'))" class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('sales')" :active="route().current('sales')">
                                     Sales
                                 </jet-nav-link>
                             </div>
 
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-dropdown align="right" width="48">
+                                    <template #trigger>
+                                           <div  class="items-center py-6 cursor-pointer text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">Settings</div>
+                                    </template>
+
+                                    <template #content>
+
+                                        <jet-dropdown-link :href="route('users')">
+                                            Users
+                                        </jet-dropdown-link>
+
+                                        <jet-dropdown-link :href="route('roles')">
+                                            Roles
+                                        </jet-dropdown-link>
+
+
+                                    </template>
+                                </jet-dropdown>
+                            </div>
                             <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('publisher.order')" :active="route().current('publisher.order')">
                                     Publisher Order
