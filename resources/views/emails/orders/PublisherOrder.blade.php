@@ -17,7 +17,9 @@ Hi {{ $order->publisher->name }},
 @endforeach
 
 @endcomponent
-
+@component('mail::button', ['url' => $url])
+Recive confirmation
+@endcomponent
 
 Thanks,<br>
 {{ config('app.name') }}

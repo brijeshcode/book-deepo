@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SchoolOrder extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = [ 'school_id', 'status', 'date','quantity', 'amount', 'note', 'user_id', 'user_ip'];
+    protected $fillable = [ 'school_id', 'status', 'date','quantity', 'expected_delivery_date', 'amount', 'note', 'user_id', 'user_ip'];
 
     public function getDateAttribute()
     {

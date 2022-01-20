@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePublisherOrdersTable extends Migration
+class CreateSchoolEmailLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,23 @@ class CreatePublisherOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('publisher_orders', function (Blueprint $table) {
+        Schema::create('school_email_logs', function (Blueprint $table) {
+
             $table->id();
-            $table->date('date');
-            $table->unsignedBigInteger('publisher_id');
             $table->unsignedBigInteger('school_order_id');
-            $table->enum('status', ['Requested','Partial','Completed', 'Cancelled'])->default('Requested');
-            $table->unsignedBigInteger('quantity')->default(0);
-            $table->double('amount', 10,2)->default(0);
-            $table->text('note')->nullable();
-            $table->boolean('order_recived_confirmation')->default(false);
+            $table->unsignedBigInteger('reciver_id');
+            $table->string('reciver_type' )->comment('this is for who recived mail like supplier, publisher, school, student or any other module');
+
+            $table->string('reciver_email');
+            $table->string('reciver_name');
+            $table->string('subject');
+            $table->text('body');
 
             $table->unsignedBigInteger('user_id')->default('1');
             $table->ipAddress('user_ip')->default('127.0.0.1');
             $table->softDeletes();
             $table->timestamps();
+
         });
     }
 
@@ -38,6 +40,6 @@ class CreatePublisherOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('publisher_orders');
+        Schema::dropIfExists('school_email_logs');
     }
 }

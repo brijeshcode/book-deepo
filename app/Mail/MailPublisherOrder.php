@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\URL;
 
 class MailPublisherOrder extends Mailable implements ShouldQueue
 {
@@ -31,6 +32,7 @@ class MailPublisherOrder extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('New Order From School Megamart')->markdown('emails.orders.PublisherOrder', ['order' , $this->order]);
+        $url = URL::signedRoute('orderRecived', ['order' => $this->order->id, 'type' => 'Publisher']);
+        return $this->subject('New Order From School Megamart')->markdown('emails.orders.PublisherOrder', ['order' , $this->order, 'url' => $url]);
     }
 }

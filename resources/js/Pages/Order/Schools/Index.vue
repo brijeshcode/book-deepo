@@ -80,11 +80,11 @@
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
                             <show-link class="p-1" :show="{route: 'schoolOrder.show', id:order.id }" showicon />
-                            <div v-if="($page.props.user.permissions.includes('edit school orders'))">
+                            <MailLink class="p-1" :link="{route: 'school.order.manual_email_notification', id:order.id }" showicon />
 
-                              <deliver-link class="p-1" v-if="order.status != 'Completed'" :order="{route: 'school.order.delivery', id:order.id }" title="Update delivery" showicon />
-                              <return-link class="p-1" v-if="order.status != 'Pending'"  :order="{route: 'school.order.return', id:order.id }" showicon />
-                            </div>
+                              <deliver-link class="p-1" v-if="order.status != 'Completed' && $page.props.user.permissions.includes('edit school orders')" :order="{route: 'school.order.delivery', id:order.id }" title="Update delivery" showicon />
+
+                              <return-link class="p-1" v-if="order.status != 'Pending' && $page.props.user.permissions.includes('edit school orders')"  :order="{route: 'school.order.return', id:order.id }" showicon />
                           </td>
                         </tr>
                       </tbody>
@@ -110,10 +110,11 @@
     import DeliverLink from '@/Shared/Components/Links/Delivery.vue'
     import ReturnLink from '@/Shared/Components/Links/Return.vue'
     import ShowLink from '@/Shared/Components/Links/Show.vue'
+    import MailLink from '@/Shared/Components/Links/OrderManualMail.vue'
 
     export default defineComponent({
         components: {
-            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination,DeliverLink,ReturnLink,ShowLink
+            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination,DeliverLink,ReturnLink,ShowLink,MailLink
         },
         props:{
             orders: Object

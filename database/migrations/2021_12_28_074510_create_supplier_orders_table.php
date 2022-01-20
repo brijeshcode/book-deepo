@@ -24,6 +24,8 @@ class CreateSupplierOrdersTable extends Migration
             $table->double('amount', 10,2)->default(0);
             $table->text('note')->nullable();
 
+            $table->boolean('order_recived_confirmation')->default(false);
+
             // $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
             // $table->foreign('school_order_id')->references('id')->on('school_orders')->onDelete('cascade');
 

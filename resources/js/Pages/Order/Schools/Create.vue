@@ -14,6 +14,7 @@
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-2">
+
                     <form  @submit.prevent="submitData">
                         <div class="flex flex-row mb-4">
 
@@ -41,6 +42,12 @@
                                 <jet-label for="email" value="Email" required />
                                 <jet-input id="email" type="text" class="mt-1 block" v-model="form.email" autocomplete="email" readonly />
                                 <jet-input-error :message="form.errors.email" class="mt-2" />
+                            </div>
+
+                            <div class="mb-4 basis-1/4">
+                                <jet-label for="expected_delivery_date" required value="Expected delivery date" />
+                                <jet-input id="expected_delivery_date" type="date" class="mt-1 block" v-model="form.expected_delivery_date" autocomplete="expected_delivery_date" />
+                                <jet-input-error :message="form.errors.expected_delivery_date" class="mt-2" />
                             </div>
                         </div>
 
@@ -132,8 +139,8 @@
 
                                         <td class="px-4 py-4 whitespace-nowrap">
                                             <select v-model="item.order_to" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
-                                                <option value="Supplier">Supplier</option>
                                                 <option value="Publisher">Publisher</option>
+                                                <option value="Supplier">Supplier</option>
                                             </select>
                                         </td>
 
@@ -212,8 +219,9 @@
         setup () {
             const form = useForm({
               school_id: '',
-              date: '',
+              date: new Date().toISOString().slice(0,10),
               email: '',
+              expected_delivery_date: new Date().toISOString().slice(0,10),
               mobile: '',
               fax : '',
               contact_person: '',
@@ -267,7 +275,7 @@
                     quantity: 0,
                     supplier_id: '',
                     publisher_id: '',
-                    order_to: 'Supplier',
+                    order_to: 'Publisher',
                     book: {}
                 };
                 this.form.items.push(item);

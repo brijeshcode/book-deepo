@@ -72,7 +72,6 @@ class SchoolOrderController extends Controller
         return Inertia::render('Order/Schools/Show', compact('order'));
     }
 
-
     public function store(Request $request)
     {
         // dd($request->items);
@@ -83,7 +82,8 @@ class SchoolOrderController extends Controller
                 'date' => now(),
                 'note' => $request->note,
                 'quantity' => $request->total_quantity,
-                'amount' => $request->total_amount
+                'amount' => $request->total_amount,
+                'expected_delivery_date' => $request->expected_delivery_date
             ];
             $publisherOrders = $suppleirOrders = array();
 
@@ -397,4 +397,5 @@ class SchoolOrderController extends Controller
         });
         return redirect(route('schoolOrder'))->with('type', 'success')->with('message', 'Return save successfully !!');
     }
+
 }

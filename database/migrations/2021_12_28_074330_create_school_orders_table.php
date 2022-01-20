@@ -22,6 +22,7 @@ class CreateSchoolOrdersTable extends Migration
             $table->unsignedBigInteger('quantity')->default(0);
             $table->double('amount', 10,2)->default(0);
 
+            $table->date('expected_delivery_date');
             $table->unsignedBigInteger('user_id')->default('1');
             $table->ipAddress('user_ip')->default('127.0.0.1');
             $table->softDeletes();
