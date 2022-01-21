@@ -16,7 +16,7 @@ class CreateSchoolSampleItemsTable extends Migration
         Schema::create('school_sample_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('school_sample_id');
-            $table->string('item_name');
+            $table->string('name');
             $table->string('class')->nullable();
             $table->string('subject')->nullable();
 
