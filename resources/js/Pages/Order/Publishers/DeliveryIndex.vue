@@ -2,12 +2,12 @@
     <app-layout title="Publisher Deliveries">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Publisher Deliveries
+                Publisher Order Deliveries
                 <!-- <add-link createRoute="publisherOrder.create" isbutton >Generate</add-link> -->
             </h2>
         </template>
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'publishers'}, {route: 'publisher.order', name:'Deliveries'} ]" />
+            <bread-simple :items="[ { route: 'publishers.index'}, {route: 'publisher.order.index', name:'Order'} , {name: 'Deliveries'} ]" />
         </template>
 
         <template #actions>
@@ -49,9 +49,9 @@ s                                  </th>
                               <tbody class="bg-white divide-y divide-gray-200">
                                 <tr v-for="delivery in deliveries.data" :key="delivery.id">
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <Edit-link :edit="{route: 'publisherOrder.edit', to:delivery.id }" >
+                                   <!--  <Edit-link :edit="{route: 'publisherOrder.edit', to:delivery.id }" > -->
                                     <div class="text-sm text-gray-500">{{ delivery.date }}</div>
-                                  </Edit-link>
+                                  <!-- </Edit-link> -->
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ delivery.publisher.name }}</div>

@@ -8,13 +8,13 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'warehouses'} ]" />
+            <bread-simple :items="[ { route: 'warehouses.index'} ]" />
         </template>
 
         <template #actions>
             <div class="flex">
-              <search searchRoute='warehouses' />
-              <!-- <LocationFilter class="h-9 " searchRoute='warehouses' /> -->
+              <search searchRoute='warehouses.index' />
+              <!-- <LocationFilter class="h-9 " searchRoute='warehouses.index' /> -->
               <Add-link v-if="($page.props.user.permissions.includes('create warehouses'))"  createRoute="warehouses.create" withIcon />
             </div>
         </template>

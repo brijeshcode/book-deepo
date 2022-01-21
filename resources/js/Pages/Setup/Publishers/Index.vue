@@ -8,12 +8,12 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'publishers'} ]" />
+            <bread-simple :items="[ { route: 'publishers.index'} ]" />
         </template>
 
         <template #actions>
             <div class="flex">
-              <search searchRoute='publishers' />
+              <search searchRoute='publishers.index' />
               <Add-link v-if="($page.props.user.permissions.includes('create publishers'))" createRoute="publishers.create" withIcon />
             </div>
         </template>

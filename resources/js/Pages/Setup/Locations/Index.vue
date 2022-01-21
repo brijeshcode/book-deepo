@@ -9,12 +9,12 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'locations'} ]" />
+            <bread-simple :items="[ { route: 'locations.index'} ]" />
         </template>
 
         <template #actions>
             <div class="flex">
-              <search searchRoute='locations' />
+              <search searchRoute='locations.index' />
               <Add-link v-if="($page.props.user.permissions.includes('create locations'))" createRoute="locations.create" withIcon  />
             </div>
         </template>

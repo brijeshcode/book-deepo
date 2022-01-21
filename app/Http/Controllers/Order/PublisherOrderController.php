@@ -20,7 +20,6 @@ class PublisherOrderController extends Controller
     //
     public function index(Request $request)
     {
-        // $orders = PublisherOrder::with('publisher:id,name')->select('id', 'publisher_id','email' , 'date', 'mobile', 'fax', 'contact_person',  'note', 'total_quantity', 'total_amount' )->orderBy('id', 'desc')->paginate(5);
         $orders = PublisherOrder::with('publisher:id,name')->orderBy('id', 'desc')->paginate(5);
         return Inertia::render('Order/Publishers/Index', compact('orders'));
     }
@@ -36,7 +35,7 @@ class PublisherOrderController extends Controller
 
     public function edit(Request $request, $order_id)
     {
-        // return abort(404);
+        return abort(404);
         $order = PublisherOrder::select('id', 'date', 'publisher_id', 'total_quantity', 'total_amount', 'fax', 'email' ,'mobile', 'contact_person' )
                 ->with('items:id,publisher_id,order_id,book_id,class,quantity,subject')
                 ->where('id', $order_id)->first();
@@ -59,16 +58,6 @@ class PublisherOrderController extends Controller
         return Inertia::render('Order/Publishers/Show', compact('publishers', 'order'));
     }
 
-    public function delivery(Request $request, $order_id)
-    {
-        // return abort(404);
-        $order = PublisherOrder::select('id', 'date', 'publisher_id', 'total_quantity', 'total_amount', 'fax', 'email' ,'mobile', 'contact_person' )
-                ->with('items:id,publisher_id,order_id,book_id,class,quantity,subject')
-                ->where('id', $order_id)->first();
-        $publishers = Publisher::select('id', 'name', 'email' ,'mobile', 'contact_person')->where('active', 1)->orderBy('name')->has('books')->get();
-        return Inertia::render('Order/Publishers/Delivery', compact('publishers', 'order'));
-    }
-
 
     public function store(Request $request)
     {
@@ -88,7 +77,47 @@ class PublisherOrderController extends Controller
             ];
             $order = PublisherOrder::create($order)->items()->createMany($request->items);
         });
-        return redirect(route('publisher.order'))->with('type', 'success')->with('message', 'Order generated successfully !!');*/
+        return redirect(route('publisher.order.index'))->with('type', 'success')->with('message', 'Order generated successfully !!');*/
+    }
+
+    public function update(Request $request, PublisherOrder $order)
+    {
+        return abort(404);
+        $this->validateFull($request);
+        \DB::transaction(function() use ($request, $order) {
+            $orderData= [
+                'publisher_id' => $request->publisher_id,
+                'mobile' => $request->mobile,
+                'email' => $request->email,
+                'date' => $request->date,
+                'fax' => $request->fax,
+                'contact_person' => $request->contact_person,
+                'note' => $request->note,
+                'total_quantity' => $request->total_quantity,
+                'total_amount' => $request->total_amount
+            ];
+            $order->update($orderData);
+
+            foreach ($request->items as $reqKey => $item) {
+                if (isset($item['id'])) {
+                    PublisherOrderItem::where('id', $item['id'])->update($item);
+                }else{
+                    $order->items()->create($item);
+                }
+            }
+        });
+        return redirect(route('publisher.order.index'))->with('type', 'success')->with('message', 'Order updated successfully !!');
+    }
+
+
+    public function delivery(Request $request, $order_id)
+    {
+        // return abort(404);
+        $order = PublisherOrder::select('id', 'date', 'publisher_id', 'total_quantity', 'total_amount', 'fax', 'email' ,'mobile', 'contact_person' )
+                ->with('items:id,publisher_id,order_id,book_id,class,quantity,subject')
+                ->where('id', $order_id)->first();
+        $publishers = Publisher::select('id', 'name', 'email' ,'mobile', 'contact_person')->where('active', 1)->orderBy('name')->has('books')->get();
+        return Inertia::render('Order/Publishers/Delivery', compact('publishers', 'order'));
     }
 
     public function generateOrder($schoolOrder)
@@ -138,34 +167,6 @@ class PublisherOrderController extends Controller
         Mail::to($publisherOrder->publisher->email)->send(new MailPublisherOrder($publisherOrder));
     }
 
-    public function update(Request $request, PublisherOrder $order)
-    {
-        return abort(404);
-        $this->validateFull($request);
-        \DB::transaction(function() use ($request, $order) {
-            $orderData= [
-                'publisher_id' => $request->publisher_id,
-                'mobile' => $request->mobile,
-                'email' => $request->email,
-                'date' => $request->date,
-                'fax' => $request->fax,
-                'contact_person' => $request->contact_person,
-                'note' => $request->note,
-                'total_quantity' => $request->total_quantity,
-                'total_amount' => $request->total_amount
-            ];
-            $order->update($orderData);
-
-            foreach ($request->items as $reqKey => $item) {
-                if (isset($item['id'])) {
-                    PublisherOrderItem::where('id', $item['id'])->update($item);
-                }else{
-                    $order->items()->create($item);
-                }
-            }
-        });
-        return redirect(route('publisher.order'))->with('type', 'success')->with('message', 'Order updated successfully !!');
-    }
 
     public function deleteItem(PublisherOrderItem $item)
     {

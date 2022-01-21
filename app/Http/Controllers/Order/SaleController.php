@@ -102,13 +102,13 @@ class SaleController extends Controller
         });
 
 
-        return redirect(route('sales'))->with('type', 'success')->with('message', 'Sales updated successfully !!');
+        return redirect(route('sales.index'))->with('type', 'success')->with('message', 'Sales updated successfully !!');
     }
 
-    public function deleteItem(PublisherOrderItem $item)
+    /*public function deleteItem(PublisherOrderItem $item)
     {
         $item->delete();
-    }
+    }*/
 
     private function validateFull($request)
     {

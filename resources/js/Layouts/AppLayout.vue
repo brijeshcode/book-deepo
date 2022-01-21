@@ -25,12 +25,12 @@
                             </div>
 
                             <div v-if="($page.props.user.permissions.includes('access locations'))" class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('locations')" :active="route().current('locations')">
+                                <jet-nav-link :href="route('locations.index')" :active="route().current('locations.index')">
                                     Locations
                                 </jet-nav-link>
                             </div>
                             <div v-if="($page.props.user.permissions.includes('access warehouses'))" class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('warehouses')" :active="route().current('warehouses')">
+                                <jet-nav-link :href="route('warehouses.index')" :active="route().current('warehouses.index')">
                                     Warehouses
                                 </jet-nav-link>
                             </div>
@@ -43,18 +43,18 @@
 
                                     <template #content>
 
-                                        <jet-dropdown-link :href="route('publishers')">
+                                        <jet-dropdown-link :href="route('publishers.index')">
                                             List
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers orders'))"  :href="route('publisher.order')">
+                                       <!--  <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers orders'))"  :href="route('publisher.order.index')">
                                             Orders
-                                        </jet-dropdown-link>
+                                        </jet-dropdown-link> -->
 
-                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers deliveries'))" :href="route('publisher.delivery.index')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers deliveries'))" :href="route('publisher.order.delivery.index')">
                                             Deliveires
                                         </jet-dropdown-link>
-                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers returns'))" :href="route('publisher.returns.index')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers returns'))" :href="route('publisher.order.returns.index')">
                                             Returns
                                         </jet-dropdown-link>
                                     </template>
@@ -88,9 +88,6 @@
 
                                     </template>
                                 </jet-dropdown>
-                                <!-- <jet-nav-link :href="route('suppliers')" :active="route().current('suppliers')">
-                                    Suppliers
-                                </jet-nav-link> -->
                             </div>
 
 
@@ -103,12 +100,16 @@
 
                                     <template #content>
 
-                                        <jet-dropdown-link :href="route('schools')">
+                                        <jet-dropdown-link :href="route('schools.index')">
                                             List
                                         </jet-dropdown-link>
 
                                         <jet-dropdown-link v-if="($page.props.user.permissions.includes('access school orders'))" :href="route('schoolOrder')">
                                             Orders
+                                        </jet-dropdown-link>
+
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access school orders'))" :href="route('samples.index')" :active="route().current('samples.index')">
+                                            Samples
                                         </jet-dropdown-link>
                                     </template>
                                 </jet-dropdown>
@@ -122,7 +123,7 @@
 
                                     <template #content>
 
-                                        <jet-dropdown-link :href="route('books')">
+                                        <jet-dropdown-link :href="route('books.index')">
                                             List
                                         </jet-dropdown-link>
 
@@ -136,7 +137,7 @@
                             </div>
 
                             <div v-if="($page.props.user.permissions.includes('access sales'))" class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('sales')" :active="route().current('sales')">
+                                <jet-nav-link :href="route('sales.index')" :active="route().current('sales.index')">
                                     Sales
                                 </jet-nav-link>
                             </div>
@@ -161,11 +162,7 @@
                                     </template>
                                 </jet-dropdown>
                             </div>
-                            <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('publisher.order')" :active="route().current('publisher.order')">
-                                    Publisher Order
-                                </jet-nav-link>
-                            </div> -->
+
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -289,22 +286,22 @@
                             Dashboard
                         </jet-responsive-nav-link>
 
-                        <jet-responsive-nav-link :href="route('locations')" :active="route().current('locations')">
+                        <jet-responsive-nav-link :href="route('locations.index')" :active="route().current('locations')">
                             Locations
                         </jet-responsive-nav-link>
-                        <jet-responsive-nav-link :href="route('schools')" :active="route().current('schools')">
+                        <jet-responsive-nav-link :href="route('schools.index')" :active="route().current('schools.index')">
                             Schools
                         </jet-responsive-nav-link>
-                        <jet-responsive-nav-link :href="route('warehouses')" :active="route().current('warehouses')">
+                        <jet-responsive-nav-link :href="route('warehouses.index')" :active="route().current('warehouses.index')">
                             Warehouses
                         </jet-responsive-nav-link>
                         <jet-responsive-nav-link :href="route('suppliers')" :active="route().current('suppliers')">
                             Suppliers
                         </jet-responsive-nav-link>
-                        <jet-responsive-nav-link :href="route('publishers')" :active="route().current('publishers')">
+                        <jet-responsive-nav-link :href="route('publishers.index')" :active="route().current('publishers')">
                             Publishers
                         </jet-responsive-nav-link>
-                        <jet-responsive-nav-link :href="route('books')" :active="route().current('books')">
+                        <jet-responsive-nav-link :href="route('books.index')" :active="route().current('books')">
                             Books
                         </jet-responsive-nav-link>
                     </div>

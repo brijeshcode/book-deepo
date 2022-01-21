@@ -12,6 +12,14 @@ use Inertia\Inertia;
 
 class LocationsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['can:access locations'])->except(['locations','warehouses','suppliers','publishers']);
+        $this->middleware(['can:create locations'])->only(['create', 'store']);
+        $this->middleware(['can:edit locations'])->only(['edit', 'update']);
+    }
+
+
     public function index(Request $request)
     {
         $locations = Location::select('id', 'name', 'city', 'state',  'pincode', 'active', 'note')
@@ -38,7 +46,7 @@ class LocationsController extends Controller
     {
         $this->validateFull($request);
         Location::create($request->all());
-        return redirect(route('locations'))->with('type', 'success')->with('message', 'Location added successfully !!');
+        return redirect(route('locations.index'))->with('type', 'success')->with('message', 'Location added successfully !!');
     }
 
     public function edit(Location $location)
@@ -51,12 +59,12 @@ class LocationsController extends Controller
     {
         $this->validateFull($request);
         $location->update($request->all());
-        return redirect(route('locations'))->with('type', 'success')->with('message', 'Location updated successfully !!');
+        return redirect(route('locations.index'))->with('type', 'success')->with('message', 'Location updated successfully !!');
     }
 
     public function locations()
     {
-        return $locations = Location::select('id', 'name', 'city', 'state',  'pincode')
+        return Location::select('id', 'name', 'city', 'state',  'pincode')->whereActive(1)
             ->orderBy('name', 'desc')->get();
     }
 
@@ -70,7 +78,6 @@ class LocationsController extends Controller
     {
         return Publisher::select('id', 'name')->where('location_id' , $location_id)->whereActive('1')->get();
     }
-
 
     public function suppliers($location_id)
     {

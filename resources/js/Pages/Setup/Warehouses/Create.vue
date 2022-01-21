@@ -7,8 +7,8 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple v-if="edit" :items="[ { route: 'warehouses'}, { name:'edit'} ]" />
-            <bread-simple v-else :items="[ { route: 'warehouses'}, {route: 'warehouses.create', name:'add'} ]" />
+            <bread-simple v-if="edit" :items="[ { route: 'warehouses.index'}, { name:'edit'} ]" />
+            <bread-simple v-else :items="[ { route: 'warehouses.index'}, {route: 'warehouses.create', name:'add'} ]" />
         </template>
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">

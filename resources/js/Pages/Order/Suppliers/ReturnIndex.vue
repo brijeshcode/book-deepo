@@ -2,12 +2,12 @@
     <app-layout title="Supplier Returns">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Supplier Returns
+                Supplier Order Returns
                 <!-- <add-link createRoute="supplierOrder.create" isbutton >Generate</add-link> -->
             </h2>
         </template>
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplierOrder', name:'Returns'} ]" />
+            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplierOrder', name: 'Order'}, {name:'Returns'} ]" />
         </template>
 
         <template #actions>

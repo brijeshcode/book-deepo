@@ -22,7 +22,7 @@
 
             <Link v-else-if="link.route" :href="route(link.route)"  :class="route().current(link.route) ? active : inactive ">
                 <span v-if="link.name">{{ link.name }}</span>
-                <span v-else class="capitalize">{{ link.route }}</span>
+                <span v-else class="capitalize">{{ link.route.split(".")[0] }}</span>
             </Link>
 
             <Link v-else href="#"  :class="active">

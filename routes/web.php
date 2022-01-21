@@ -4,6 +4,7 @@ use App\Http\Controllers\Logs\SchoolOrderEmailLogController;
 use App\Http\Controllers\Order\PublisherOrderController;
 use App\Http\Controllers\Order\PurchaseOrderController;
 use App\Http\Controllers\Order\SaleController;
+use App\Http\Controllers\Order\SampleController;
 use App\Http\Controllers\Order\SchoolOrderController;
 use App\Http\Controllers\Order\SupplierOrderController;
 use App\Http\Controllers\Setup\BookController;
@@ -24,10 +25,10 @@ use App\Models\Setup\Bundle;
 use App\Models\Setup\School;
 use App\Models\Setup\Warehouse;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
+use Inertia\Inertia;
 
 
 Route::get('/', function () {
@@ -40,12 +41,8 @@ Route::get('/', function () {
 });
 
 Route::get('/order/recived/confirmation/{order}/{type}', function(Request $request){
-    if (! $request->hasValidSignature()) {
-        abort(401);
-    }else{
         echo 'Order recived confirmed';
-    }
-})->name('orderRecived');
+})->name('orderRecived')->middleware('signed');
 /*Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');*/
@@ -64,30 +61,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return Inertia::render('Dashboard', compact('schools', 'warehouses', 'books', 'schoolOrders', 'bundles', 'supplierOrders', 'publisherOrders', 'sales'));
     })->name('dashboard');
 
-    Route::get('/locations', [LocationsController::class, 'index'])->name('locations')->middleware('can:access locations');
-    Route::get('/locations/create', [LocationsController::class, 'create'])->name('locations.create')->middleware('can:create locations');
-    Route::post('/locations', [LocationsController::class, 'store'])->name('locations.store')->middleware('can:create locations');
-
-    Route::get('/locations/{location}/edit', [LocationsController::class, 'edit'])->name('locations.edit')->middleware('can:edit locations');
-
-    Route::put('/locations/{location}', [LocationsController::class, 'update'])->name('locations.update')->middleware('can:create locations');
     Route::get('/get/locations', [LocationsController::class, 'locations'])->name('locations.list');
+    Route::resource('/locations', LocationsController::class)->except(['destroy']);
 
-    Route::get('/warehouses', [WarehouseController::class, 'index'])->name('warehouses');
-    Route::get('/warehouses/create', [WarehouseController::class, 'create'])->name('warehouses.create');
-    Route::post('/warehouses', [WarehouseController::class, 'store'])->name('warehouses.store');
-    Route::get('/warehouses/{warehouse}/edit', [WarehouseController::class, 'edit'])->name('warehouses.edit');
-    Route::put('/warehouses/{warehouse}', [WarehouseController::class, 'update'])->name('warehouses.update');
+    Route::resource('/warehouses', WarehouseController::class)->except(['destroy']);
 
-
-    Route::get('/schools', [SchoolController::class, 'index'])->name('schools');
-    Route::get('/schools/create', [SchoolController::class, 'create'])->name('schools.create');
-    Route::post('/schools', [SchoolController::class, 'store'])->name('schools.store');
-    Route::get('/schools/{school}/edit', [SchoolController::class, 'edit'])->name('schools.edit');
-    Route::put('/schools/{school}', [SchoolController::class, 'update'])->name('schools.update');
-
-    Route::get('/school/{school}/books/show', [SchoolController::class, 'books'])->name('schools.books.show');
+    Route::resource('schools', SchoolController::class)->except(['destroy']);
     Route::get('/school/{school}/books', [SchoolController::class, 'bookList'])->name('schools.books');
+    Route::get('/school/{school}/books/show', [SchoolController::class, 'books'])->name('schools.books.show');
     Route::get('/school/{school}/bundles', [SchoolController::class, 'bundleList'])->name('schools.bundles');
 
 
@@ -105,37 +86,31 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/supplier/{supplier}/books/', [SupplierController::class, 'books'])->name('suppliers.books');
 
 
-
-    Route::get('/books', [BookController::class, 'index'])->name('books');
-    Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
-    Route::post('/books', [BookController::class, 'store'])->name('books.store');
-    Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
-    Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
-    Route::get('/books/list', [BookController::class, 'list'])->name('books.list');
+    Route::get('books/list', [BookController::class , 'list'])->name('books.list');
+    Route::resource('books', BookController::class)->except(['destroy']);
 
 
 
-    Route::get('/publishers', [PublisherController::class, 'index'])->name('publishers');
-    Route::get('/publishers/create', [PublisherController::class, 'create'])->name('publishers.create');
-    Route::post('/publishers', [PublisherController::class, 'store'])->name('publishers.store');
-    Route::get('/publishers/{publisher}/edit', [PublisherController::class, 'edit'])->name('publishers.edit');
-    Route::put('/publishers/{publisher}', [PublisherController::class, 'update'])->name('publishers.update');
-    Route::get('/publishers/{publisher}/books/', [PublisherController::class, 'books'])->name('publishers.books');
+    Route::get('publishers/{publisher}/books/', [PublisherController::class , 'books'])->name('publishers.books');
+    Route::resource('publishers', PublisherController::class)->except(['destroy']);
+    Route::controller(PublisherOrderController::class)->prefix('/publisher/order')->name('publisher.order.')->group(function () {
+
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{order}/edit', 'edit')->name('edit');
+        Route::get('/{order}/show', 'show')->name('show');
+        Route::put('/{order}', 'update')->name('update');
+
+        Route::delete('/item/{item}/delete', 'deleteItem')->name('item.delete');
+        Route::get('/{order}/delivery', 'delivery')->name('delivery');
+        Route::get('/deliveries', 'deliveryIndex')->name('delivery.index');
+        Route::get('/returns', 'returnIndex')->name('returns.index');
+    });
 
 
 
-    Route::get('/publisher/orders', [PublisherOrderController::class, 'index'])->name('publisher.order');
-    Route::get('/publisher/order/create', [PublisherOrderController::class, 'create'])->name('publisher.order.create');
-    Route::post('/publisher/order', [PublisherOrderController::class, 'store'])->name('publisher.order.store');
-    Route::get('/publisher/order/{order}/edit', [PublisherOrderController::class, 'edit'])->name('publisher.order.edit');
-    Route::get('/publisher/order/{order}/show', [PublisherOrderController::class, 'show'])->name('publisher.order.show');
-    Route::put('/publisher/order/{order}', [PublisherOrderController::class, 'update'])->name('publisher.order.update');
-    Route::delete('/publisher/order/item/{item}/delete', [PublisherOrderController::class, 'deleteItem'])->name('publisherOrderItem.delete');
 
-    Route::get('/publisher/orders/{order}/delivery', [PublisherOrderController::class, 'delivery'])->name('publisher.order.delivery');
-
-    Route::get('/publisher/order/deliveries', [PublisherOrderController::class, 'deliveryIndex'])->name('publisher.delivery.index');
-    Route::get('/publisher/order/returns', [PublisherOrderController::class, 'returnIndex'])->name('publisher.returns.index');
 
     Route::get('/supplier/orders', [SupplierOrderController::class, 'index'])->name('supplierOrder');
     Route::get('/supplier/order/create', [SupplierOrderController::class, 'create'])->name('supplierOrder.create');
@@ -184,14 +159,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // need to update code for bundle item delete on update if removed from list
 
 
-    Route::get('/sales', [SaleController::class, 'index'])->name('sales');
-    Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
-    Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
-    Route::get('/sales/{sale}/edit', [SaleController::class, 'edit'])->name('sales.edit');
-    Route::get('/sales/{sale}/show', [SaleController::class, 'show'])->name('sales.show');
-    Route::put('/sales/{sale}', [SaleController::class, 'update'])->name('sales.update');
-    Route::delete('/sales/item/{item}/delete', [SaleController::class, 'deleteItem'])->name('sales.Item.delete');
-
+    Route::resource('/sales', SaleController::class)->except(['destroy']);
 
     Route::get('/users', [UsersController::class, 'index'])->name('users');
     Route::get('/users/create', [UsersController::class, 'create'])->name('users.create');
@@ -208,5 +176,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Route::get('/roles/{role}/show', [RolesController::class, 'show'])->name('roles.show');
     Route::put('/roles/{role}', [RolesController::class, 'update'])->name('roles.update');
 
-
+    Route::resource('/samples', SampleController::class)->except(['destroy']);
 });

@@ -21,7 +21,7 @@ class PermissionSeeder extends Seeder
 
         $microPermissions = ['access publishers orders' , 'access publishers deliveries' , 'access publishers returns' , 'access suppliers orders', 'access suppliers deliveries' , 'access suppliers returns', 'settings'];
 
-        $modules = ['locations', 'warehouses', 'publishers', 'suppliers', 'schools', 'school orders',  'books', 'bundles', 'sales' , 'users', 'roles' ];
+        $modules = ['locations', 'warehouses', 'publishers', 'suppliers', 'schools', 'samples', 'school orders',  'books', 'bundles', 'sales' , 'users', 'roles' ];
 
         // $accessPoints = ['access', 'create', 'edit', 'delete' , 'export'];
         $accessPoints = ['access', 'create', 'edit' ];
@@ -37,7 +37,8 @@ class PermissionSeeder extends Seeder
         }
 
         // admin role
-        $role = Role::create(['name' => 'Super-Admin']);
+        // $role = Role::create(['name' => 'Super-Admin']);
+        $role = Role::create(['name' => 'super-admin']);
         $role->givePermissionTo(Permission::all());
     }
 }

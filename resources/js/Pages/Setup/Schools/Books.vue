@@ -7,7 +7,7 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'schools' , name: 'School: ' + school.name}, {name:'Books'} ]" />
+            <bread-simple :items="[ { route: 'schools.index' , name: 'School: ' + school.name}, {name:'Books'} ]" />
         </template>
 
         <template #actions>

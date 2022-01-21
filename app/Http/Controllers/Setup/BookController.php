@@ -70,7 +70,7 @@ class BookController extends Controller
             $book->schools()->sync(array_values($request->schools));
             $book->suppliers()->sync(array_values($request->suppliers));
         });
-        return redirect(route('books'))->with('type', 'success')->with('message', 'Book added successfully !!');
+        return redirect(route('books.index'))->with('type', 'success')->with('message', 'Book added successfully !!');
     }
 
 
@@ -95,7 +95,7 @@ class BookController extends Controller
             $book->suppliers()->sync(array_values($request->suppliers));
             $book = $book->update($request->book);
         });
-        return redirect(route('books'))->with('type', 'success')->with('message', 'Book updated successfully !!');
+        return redirect(route('books.index'))->with('type', 'success')->with('message', 'Book updated successfully !!');
     }
 
     public function destroy($id)

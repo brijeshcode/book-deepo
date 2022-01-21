@@ -7,8 +7,8 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple v-if="edit" :items="[ {route: 'sales'} , { name:'edit'} ]" />
-            <bread-simple v-else :items="[ { route: 'sales'}, {route: 'sales.create', name:'Generate'} ]" />
+            <bread-simple v-if="edit" :items="[ {route: 'sales.index'} , { name:'edit'} ]" />
+            <bread-simple v-else :items="[ { route: 'sales.index'}, {route: 'sales.create', name:'Generate'} ]" />
         </template>
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -278,9 +278,6 @@
             removeRow(index, item_id = null) {
                 if (confirm('Are you sure?')) {
                     this.form.items.splice(index, 1);
-                    /*if (item_id) {
-                        axios.delete(route('publisherOrderItem.delete', item_id));
-                    }*/
                 }
             },
 

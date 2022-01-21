@@ -1,18 +1,18 @@
 <template>
-    <app-layout title="Publisher Order">
+    <app-layout title="Sample">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Publisher Order
-                <!-- <add-link createRoute="publisher.order.create" isbutton >Generate</add-link> -->
+                Sample
+                <add-link v-if="($page.props.user.permissions.includes('create samples'))" createRoute="samples.create" isbutton >Generate</add-link>
             </h2>
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'publishers.index'}, {route: 'publisher.order.index', name:'Orders'} ]" />
+            <bread-simple :items="[ { route: 'schools'}, {route: 'samples.index'} ]" />
         </template>
         <template #actions>
             <div class="flex">
-              <!-- <Add-link createRoute="publisher.order.create" title="Add new publisher order" withIcon /> -->
+              <Add-link v-if="($page.props.user.permissions.includes('create samples'))" createRoute="samples.create" title="Add new Sample" withIcon />
             </div>
         </template>
 
@@ -25,19 +25,16 @@
                       <thead class="bg-gray-50">
                         <tr>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Sample #
+                          </th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Date
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Publisher
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Contact Person
+                            School
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Quantity
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Amount
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Note
@@ -46,37 +43,34 @@
                         </tr>
                       </thead>
                       <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="order in orders.data" :key="order.id">
+                        <tr v-for="sample in samples.data" :key="sample.id">
                           <td class="px-6 py-4 whitespace-nowrap">
-
-                              <div class="text-sm text-gray-500">{{ order.date }}</div>
-
+                            <Edit-link :edit="{route: 'samples.edit', to:sample.id }" >
+                              <div class="text-sm text-gray-500">{{ sample.id }}</div>
+                            </Edit-link>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ order.publisher.name }}</div>
+                            <Edit-link :edit="{route: 'samples.edit', to:sample.id }" >
+                              <div class="text-sm text-gray-500">{{ sample.date }}</div>
+                            </Edit-link>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ order.publisher.name }}</div>
-                            <div class="text-sm text-gray-500">{{ order.email }}</div>
-                            <div class="text-sm text-gray-500">{{ order.mobile }}</div>
+                            <div class="text-sm text-gray-900">{{ sample.school.name }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500">{{ order.quantity }}</div>
+                            <div class="text-sm text-gray-500">{{ sample.quantity }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm text-gray-500">{{ order.amount }}</div>
-                          </td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm text-gray-500">{{ order.note }}</div>
+                            <div class="text-sm text-gray-500">{{ sample.note }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                            <Show-link class="p-1" :show="{route: 'publisher.order.show', id:order.id }" showicon />
-                            <!-- <deliver-link :order="{route: 'publisher.order.delivery', id:order.id }" title="Update delivery" showicon /> -->
+                            <Show-link class="p-1" :show="{route: 'samples.show', id:sample.id }" showicon />
+                            <Edit-link v-if="($page.props.user.permissions.includes('edit samples'))" class="p-1" :edit="{route: 'samples.edit', to:sample.id }" showicon />
                           </td>
                         </tr>
                       </tbody>
                     </table>
-                    <Pagination :pageData="orders" pageof=" Publishers Orders" />
+                    <Pagination :pageData="samples" pageof=" Sample Orders" />
                    </div>
                 </div>
               </div>
@@ -91,14 +85,14 @@
     import Pagination from '@/Shared/Components/Pagination/Simple.vue'
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import AddLink from '@/Shared/Components/Links/Add.vue'
-    import DeliverLink from '@/Shared/Components/Links/Delivery.vue'
+    import EditLink from '@/Shared/Components/Links/Edit.vue'
     import ShowLink from '@/Shared/Components/Links/Show.vue'
     import Search from '@/Shared/Components/Filters/Search.vue'
 
     export default defineComponent({
         components: {
-            AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination,ShowLink
+            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination, ShowLink
         },
-        props:{ orders: Object }
+        props:{ samples: Object }
     })
 </script>

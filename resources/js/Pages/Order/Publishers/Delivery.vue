@@ -7,8 +7,8 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple v-if="delivery" :items="[  { route: 'publishers'}, {route: 'publisher.order', name:'Orders'} , { name:'Delivery'} ]" />
-            <bread-simple v-else :items="[ { route: 'publishers'}, {route: 'publisher.order', name:'Orders'} , {route: 'publisher.order.create', name:'Generate'} ]" />
+            <bread-simple v-if="delivery" :items="[  { route: 'publishers.index'}, {route: 'publisher.order.index', name:'Orders'} , { name:'Delivery'} ]" />
+            <bread-simple v-else :items="[ { route: 'publishers.index'}, {route: 'publisher.order.index', name:'Orders'} , {route: 'publisher.order.create', name:'Generate'} ]" />
         </template>
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -138,7 +138,7 @@
             BreadSimple
             // BookList
         },
-        props: ['publishers','order'],
+        props: ['publishers.index','order'],
         data: () => ({
             delivery: false,
             books: []
@@ -215,9 +215,6 @@
             removeRow(index, item_id = null) {
                 if (confirm('Are you sure?')) {
                     this.form.items.splice(index, 1);
-                    if (item_id) {
-                        axios.delete(route('publisherOrderItem.delete', item_id));
-                    }
                 }
             },
 

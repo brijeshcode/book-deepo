@@ -54,7 +54,7 @@
                         <div v-if="form.items.length" class="book-item-details">
                             <div class="flex flex-row mb-4">
                                 <p>Add books to list:
-                                    <span @click="addBook" class="bg-green-400 hover:bg-green-700 hover:text-white p-2 pb-1 pl-2 pt-1 rounded cursor-pointer">Add Book</span>
+                                    <span @click="addItem" class="bg-green-400 hover:bg-green-700 hover:text-white p-2 pb-1 pl-2 pt-1 rounded cursor-pointer">Add Book</span>
                                 </p>
                             </div>
                             <table class="min-w-full divide-y divide-gray-200 border mb-4">
@@ -152,7 +152,7 @@
 
                                         <td class="px-4 py-4 whitespace-nowrap">
                                             <button type="button" v-on:click="removeRow(index, item.id)" v-if="index > 0" >
-                                          <span class="material-icons text-sm text-red-500">Delete</span>
+                                          <span class="material-icons text-sm text-red-500"><remove-icon /></span>
                                         </button>
                                         </td>
                                     </tr>
@@ -196,10 +196,12 @@
     // import BookList from '@/Pages/Order/School/BookList.vue'
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import { Inertia } from '@inertiajs/inertia'
+    import RemoveIcon from '@/Shared/Components/Icons/svg/Trash.vue'
 
     export default defineComponent({
         components: {
             EditLink,
+            RemoveIcon,
             Link,
             JetInputError,
             JetInput,
@@ -262,11 +264,11 @@
                         this.form.mobile = school.mobile;
                         this.form.email = school.email;
                         this.form.contact_person = school.contact_person;
-                        this.addBook();
+                        this.addItem();
                     }
                 });
             },
-            addBook(){
+            addItem(){
                 const item = {
                     school_id : this.form.school_id,
                     book_id : null,
