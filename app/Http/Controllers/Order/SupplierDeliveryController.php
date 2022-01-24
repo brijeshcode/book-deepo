@@ -52,11 +52,11 @@ class SupplierDeliveryController extends Controller
         \DB::transaction(function() use ($request) {
             // dd($request);
             // 1.& 2  Insert supplier delivery &&  insert supplier delivery items
-            $order = SupplierOrderDelivery::create($request->only('date', 'supplier_id', 'school_id', 'supplier_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount','note'))->items()->createMany($request->items);
+            SupplierOrderDelivery::create($request->only('date', 'supplier_id', 'school_id', 'supplier_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount','note'))->items()->createMany($request->items);
 
 
             $schoolOrder = SchoolOrder::whereId($request->school_order_id)->first();
-            $schoolOrder->status = $schoolOrder->quantity ==  $order->quantity  ? 'Completed' : 'Partial';
+            $schoolOrder->status = $schoolOrder->quantity ==  $request->quantity  ? 'Completed' : 'Partial';
 
             $schoolOrder->save();
 
