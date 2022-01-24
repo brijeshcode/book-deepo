@@ -36,7 +36,7 @@ class PublisherDeliveryController extends Controller
 
 
             $schoolOrder = SchoolOrder::where( 'id', $request->school_order_id)->first();
-            $schoolOrder->status = $schoolOrder->quantity ==  $order->quantity  ? 'Completed' : 'Partial';
+            $schoolOrder->status = $schoolOrder->quantity ==  $request->quantity  ? 'Completed' : 'Partial';
             $schoolOrder->save();
 
             foreach ($request->items as $key => $item) {
