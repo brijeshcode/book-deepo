@@ -7,7 +7,7 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'schools'}, {route: 'schoolOrder', name:'Orders'} , {name:'Return'} ]" />
+            <bread-simple :items="[ { route: 'schools.index'}, {route: 'school.order.index', name:'Orders'} , {name:'Return'} ]" />
         </template>
 
 
@@ -110,7 +110,7 @@
             GroupInput
             // BookList
         },
-        props: ['schools','order'],
+        props: ['schools.index','order'],
         setup () {
             const form = useForm({
               items: []

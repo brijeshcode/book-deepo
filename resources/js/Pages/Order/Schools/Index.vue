@@ -3,16 +3,16 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 School Order
-                <add-link v-if="($page.props.user.permissions.includes('create school orders'))" createRoute="schoolOrder.create" isbutton >Generate</add-link>
+                <add-link v-if="($page.props.user.permissions.includes('create school orders'))" createRoute="school.order.create" isbutton >Generate</add-link>
             </h2>
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'schools'}, {route: 'schoolOrder', name:'Orders'} ]" />
+            <bread-simple :items="[ { route: 'schools.index'}, {route: 'school.order.index', name:'Orders'} ]" />
         </template>
         <template #actions>
             <div class="flex">
-              <Add-link v-if="($page.props.user.permissions.includes('create school orders'))" createRoute="schoolOrder.create" title="Add new school order" withIcon />
+              <Add-link v-if="($page.props.user.permissions.includes('create school orders'))" createRoute="school.order.create" title="Add new school order" withIcon />
             </div>
         </template>
 
@@ -54,7 +54,7 @@
                             <div class="text-sm text-gray-900">{{ order.id }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <Edit-link :edit="{route: 'schoolOrder.edit', to:order.id }" >
+                            <Edit-link :edit="{route: 'school.order.edit', to:order.id }" >
                               <div class="text-sm text-gray-500">{{ order.date }}</div>
                             </Edit-link>
                           </td>
@@ -79,7 +79,7 @@
                               </span>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                            <show-link class="p-1" :show="{route: 'schoolOrder.show', id:order.id }" showicon />
+                            <show-link class="p-1" :show="{route: 'school.order.show', id:order.id }" showicon />
                             <MailLink class="p-1" :link="{route: 'school.order.manual_email_notification', id:order.id }" showicon />
 
                               <deliver-link class="p-1" v-if="order.status != 'Completed' && $page.props.user.permissions.includes('edit school orders')" :order="{route: 'school.order.delivery', id:order.id }" title="Update delivery" showicon />

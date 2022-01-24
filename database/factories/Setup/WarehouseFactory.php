@@ -54,7 +54,7 @@ class WarehouseFactory extends Factory
         ];
 
         return [
-            'location_id' => $this->faker->randomDigitNotNull(),
+            // 'location_id' => $this->faker->randomDigitNotNull(),
             'name' => $this->faker->firstName() . ' Warehouse',
             'city' => $this->faker->city(),
             'address' => $this->faker->address(),

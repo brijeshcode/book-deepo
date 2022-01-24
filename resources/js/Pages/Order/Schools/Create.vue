@@ -7,8 +7,8 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple v-if="edit" :items="[  { route: 'schools'}, {route: 'schoolOrder', name:'Orders'} , { name:'edit'} ]" />
-            <bread-simple v-else :items="[ { route: 'schools'}, {route: 'schoolOrder', name:'Orders'} , {route: 'schoolOrder.create', name:'Generate'} ]" />
+            <bread-simple v-if="edit" :items="[  { route: 'schools.index'}, {route: 'school.order.index', name:'Orders'} , { name:'edit'} ]" />
+            <bread-simple v-else :items="[ { route: 'schools.index'}, {route: 'school.order.index', name:'Orders'} , {route: 'school.order.create', name:'Generate'} ]" />
         </template>
 
 
@@ -356,7 +356,7 @@
                 if (confirm('Are you sure?')) {
                     this.form.items.splice(index, 1);
                     if (item_id) {
-                        axios.delete(route('schoolOrderItem.delete', item_id));
+                        axios.delete(route('school.order.item.delete', item_id));
                     }
                 }
             },
@@ -375,7 +375,7 @@
                if (canSubmit) {
                     this.form.total_quantity = this.computeQuantity;
                     if (confirm('Are you sure you want to place this order')) {
-                        this.order ? this.form.put(route('schoolOrder.update', this.order.id)) : this.form.post(route('schoolOrder.store'));
+                        this.order ? this.form.put(route('school.order.update', this.order.id)) : this.form.post(route('school.order.store'));
                     }
                }else{
                     alert('Order items are not set properly, "please select the book in the list" ');

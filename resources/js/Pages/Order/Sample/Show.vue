@@ -7,7 +7,7 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[  { route: 'schools'}, {route: 'samples.index'} , { name:'Detail'} ]" />
+            <bread-simple :items="[  { route: 'schools.index'}, {route: 'samples.index'} , { name:'Detail'} ]" />
         </template>
 
          <template #actions>
@@ -36,7 +36,7 @@
                         <p class="text-gray-500 text-sm">{{ sample.school.city }}, {{ sample.school.state }}</p>
                         <p class="text-gray-500 text-sm">{{ sample.school.pincode }}</p>
                     </div>
-                    <div class="flex-col p-4 w-1/3 border-r">
+                    <!-- <div class="flex-col p-4 w-1/3 border-r">
                         <div class="flex">
                             <div>
                                 <h2 class="uppercase font-semibold mb-2" >Deliver From</h2>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="flex-col p-4">
 
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Sample Items details section -->

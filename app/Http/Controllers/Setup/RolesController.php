@@ -37,7 +37,7 @@ class RolesController extends Controller
             // $role->givePermissionTo([1,2,3]);
         });
 
-        return redirect(route('roles'))->with('type', 'success')->with('message', 'New Role added successfully !!');
+        return redirect(route('roles.index'))->with('type', 'success')->with('message', 'New Role added successfully !!');
     }
 
     public function edit($role)
@@ -53,7 +53,7 @@ class RolesController extends Controller
         $this->validateInputforUpdate($request, $role);
         $role->update($request->only('name', 'description'));
         $role->syncPermissions($request->permissions);
-        return redirect(route('roles'))->with('type', 'success')->with('message', 'Role Updated successfully !!');
+        return redirect(route('roles.index'))->with('type', 'success')->with('message', 'Role Updated successfully !!');
     }
 
      private function validateInput($request)

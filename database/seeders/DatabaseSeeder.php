@@ -9,9 +9,10 @@ use App\Models\Setup\School;
 use App\Models\Setup\Supplier;
 use App\Models\Setup\Warehouse;
 use App\Models\User;
+use DB;
+use Database\Seeders\LocationSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Database\Seeder;
-
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -21,28 +22,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Location::query()->truncate();
-        Warehouse::query()->truncate();
-        \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        School::query()->truncate();
-        Supplier::query()->truncate();
-        Publisher::query()->truncate();
-        Book::query()->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        //
-        User::query()->truncate();
+        // User::query()->truncate();
         $this->call(UserSeeder::class);
         $this->call(PermissionSeeder::class);
-        //
-        \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        Location::factory(10)->create();
-        Warehouse::factory(5)->create();
-        School::factory(50)->create();
-        Supplier::factory(50)->create();
-        Publisher::factory(50)->create();
-        Book::factory(5)->create();
-        \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Location::query()->truncate();
+        Warehouse::query()->truncate();
+        Supplier::query()->truncate();
+        Publisher::query()->truncate();
+        School::query()->truncate();
+        Book::query()->truncate();
+
+        $this->call(LocationSeeder::class);
+        $this->call(LocationSeeder::class);
+        /*$this->call(LocationSeeder::class);
+        $this->call(LocationSeeder::class);*/
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
 
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models\Setup;
 
+use App\Models\Setup\Location;
 use App\Models\Setup\Publisher;
 use App\Models\Setup\School;
 use App\Models\Setup\Supplier;
@@ -29,6 +30,11 @@ class Book extends Model
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class);
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
     }
 
     public function suppliers()

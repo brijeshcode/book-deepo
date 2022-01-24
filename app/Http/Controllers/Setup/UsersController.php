@@ -46,7 +46,7 @@ class UsersController extends Controller
             // $user->syncPermissions($request->permission);
         });
 
-        return redirect(route('users'))->with('type', 'success')->with('message', 'User added successfully !!');
+        return redirect(route('users.index'))->with('type', 'success')->with('message', 'User added successfully !!');
     }
 
 
@@ -76,7 +76,7 @@ class UsersController extends Controller
             }
 
         });
-        return redirect(route('users'))->with('type', 'success')->with('message', 'User updated successfully !!');
+        return redirect(route('users.index'))->with('type', 'success')->with('message', 'User updated successfully !!');
     }
 
     public function destroy(User $user)

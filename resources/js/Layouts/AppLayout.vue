@@ -47,9 +47,9 @@
                                             List
                                         </jet-dropdown-link>
 
-                                       <!--  <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers orders'))"  :href="route('publisher.order.index')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers orders'))"  :href="route('publisher.order.index')">
                                             Orders
-                                        </jet-dropdown-link> -->
+                                        </jet-dropdown-link>
 
                                         <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers deliveries'))" :href="route('publisher.order.delivery.index')">
                                             Deliveires
@@ -90,8 +90,6 @@
                                 </jet-dropdown>
                             </div>
 
-
-
                             <div v-if="($page.props.user.permissions.includes('access schools'))"  class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-dropdown align="left" width="48">
                                     <template #trigger>
@@ -104,7 +102,7 @@
                                             List
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access school orders'))" :href="route('schoolOrder')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access school orders'))" :href="route('school.order.index')">
                                             Orders
                                         </jet-dropdown-link>
 
@@ -127,7 +125,7 @@
                                             List
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link :href="route('bundles')">
+                                        <jet-dropdown-link :href="route('bundles.index')">
                                             Bundles
                                         </jet-dropdown-link>
 
@@ -150,11 +148,11 @@
 
                                     <template #content>
 
-                                        <jet-dropdown-link :href="route('users')">
+                                        <jet-dropdown-link :href="route('users.index')">
                                             Users
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link :href="route('roles')">
+                                        <jet-dropdown-link :href="route('roles.index')">
                                             Roles
                                         </jet-dropdown-link>
 

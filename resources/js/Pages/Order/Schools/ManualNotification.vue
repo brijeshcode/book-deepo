@@ -7,12 +7,12 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[  { route: 'schools'}, {route: 'schoolOrder', name:'Orders'} , { name:'Detail'} ]" />
+            <bread-simple :items="[  { route: 'schools.index'}, {route: 'school.order.index', name:'Orders'} , { name:'Detail'} ]" />
         </template>
 
         <template #actions>
             <div class="flex">
-              <Add-link v-if="($page.props.user.permissions.includes('create school orders'))" createRoute="schoolOrder.create" title="Add new school order" withIcon />
+              <Add-link v-if="($page.props.user.permissions.includes('create school orders'))" createRoute="school.order.create" title="Add new school order" withIcon />
             </div>
         </template>
 

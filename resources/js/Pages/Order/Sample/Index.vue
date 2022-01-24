@@ -8,7 +8,7 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'schools'}, {route: 'samples.index'} ]" />
+            <bread-simple :items="[ { route: 'schools.index'}, {route: 'samples.index'} ]" />
         </template>
         <template #actions>
             <div class="flex">

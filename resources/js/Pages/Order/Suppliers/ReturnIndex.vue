@@ -58,13 +58,13 @@ s                                  </th>
                                     <div class="text-sm text-gray-900">{{ returnData.supplier.name }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <show-link :show="{route: 'schoolOrder.show', id:returnData.order.school_order_id }" >
+                                    <show-link :show="{route: 'school.order.show', id:returnData.order.school_order_id }" >
                                       <div class="text-sm text-gray-900">{{ returnData.order.school.name }}</div>
                                     </show-link>
                                       <!-- <div class="text-sm text-gray-900">{{ returnData.order.school.name }}</div> -->
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <show-link :show="{route: 'schoolOrder.show', id:returnData.order.school_order_id }" >
+                                    <show-link :show="{route: 'school.order.show', id:returnData.order.school_order_id }" >
                                       <div class="text-sm text-gray-900">{{ returnData.order.school_order_id }}</div>
                                   </show-link>
                                   </td>

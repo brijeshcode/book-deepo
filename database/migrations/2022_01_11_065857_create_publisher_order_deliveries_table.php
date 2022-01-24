@@ -16,21 +16,25 @@ class CreatePublisherOrderDeliveriesTable extends Migration
         Schema::create('publisher_order_deliveries', function (Blueprint $table) {
             $table->id();
             $table->date('date');
+            $table->unsignedBigInteger('school_id');
             $table->unsignedBigInteger('publisher_id');
             $table->unsignedBigInteger('publisher_order_id');
-            $table->unsignedBigInteger('publisher_order_item_id');
             $table->unsignedBigInteger('school_order_id');
-            $table->unsignedBigInteger('school_order_item_id');
-            $table->unsignedBigInteger('book_id');
             $table->integer('quantity')->default(0);
-            $table->double('unit_price', 10,2)->default(0);
-            $table->double('price', 10,2)->default(0)->comment('quantity x unit_price');
+            $table->double('discount_percent', 10,2)->default(0);
+            $table->double('discount', 10,2)->default(0);
+            $table->double('sub_total', 10,2)->default(0);
+            $table->double('total_amount', 10,2)->default(0);
+            $table->double('amount', 10,2)->default(0);// this is temp veariable
+            $table->text('note')->nullable();
+
 
 
             $table->unsignedBigInteger('user_id')->default('1');
             $table->ipAddress('user_ip')->default('127.0.0.1');
             $table->softDeletes();
             $table->timestamps();
+
         });
     }
 

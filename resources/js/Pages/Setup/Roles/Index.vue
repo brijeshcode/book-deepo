@@ -8,12 +8,12 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'roles'} ]" />
+            <bread-simple :items="[ { route: 'roles.index'} ]" />
         </template>
 
         <template #actions>
             <div class="flex">
-              <search searchRoute='roles' />
+              <search searchRoute='roles.index' />
               <Add-link createRoute="roles.create" withIcon  />
             </div>
         </template>

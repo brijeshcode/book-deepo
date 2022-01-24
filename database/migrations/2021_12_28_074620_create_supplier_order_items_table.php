@@ -19,9 +19,7 @@ class CreateSupplierOrderItemsTable extends Migration
             $table->unsignedBigInteger('book_id');
             $table->unsignedBigInteger('school_order_item_id');
             $table->integer('quantity')->default(0);
-
-            $table->enum('status', ['Requested','Partial','Completed', 'Cancelled'])->default('Requested');
-
+            $table->integer('quantity_recived')->default(0);
             // $table->foreign('supplier_order_id')->references('id')->on('supplier_orders')->onDelete('cascade');
 
             $table->unsignedBigInteger('user_id')->default('1');

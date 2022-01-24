@@ -43,7 +43,7 @@ class BundleController extends Controller
         \DB::transaction(function() use ($request) {
             Bundle::create($request->only('name', 'school_id', 'note', 'active'))->items()->createMany($request->books);
         });
-        return redirect(route('bundles'))->with('type', 'success')->with('message', 'Bundle added successfully !!');
+        return redirect(route('bundles.index'))->with('type', 'success')->with('message', 'Bundle added successfully !!');
     }
 
     public function edit($bundle)
@@ -85,7 +85,7 @@ class BundleController extends Controller
         });
 
         $bundle->update($request->all());
-        return redirect(route('bundles'))->with('type', 'success')->with('message', 'Bundle updated successfully !!');
+        return redirect(route('bundles.index'))->with('type', 'success')->with('message', 'Bundle updated successfully !!');
     }
 
     public function bundles()

@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\Logs\SchoolOrderEmailLogController;
+use App\Http\Controllers\Order\PublisherDeliveryController;
 use App\Http\Controllers\Order\PublisherOrderController;
-use App\Http\Controllers\Order\PurchaseOrderController;
 use App\Http\Controllers\Order\SaleController;
 use App\Http\Controllers\Order\SampleController;
 use App\Http\Controllers\Order\SchoolOrderController;
+use App\Http\Controllers\Order\SupplierDeliveryController;
 use App\Http\Controllers\Order\SupplierOrderController;
 use App\Http\Controllers\Setup\BookController;
 use App\Http\Controllers\Setup\BundleController;
@@ -109,35 +110,55 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
 
 
+    Route::controller(PublisherDeliveryController::class)->prefix('/publisher/delivery')->name('publisher.delivery.')->group(function () {
+        Route::post('/', 'store')->name('store');
+
+    });
 
 
 
     Route::get('/supplier/orders', [SupplierOrderController::class, 'index'])->name('supplierOrder');
-    Route::get('/supplier/order/create', [SupplierOrderController::class, 'create'])->name('supplierOrder.create');
-    Route::post('/supplier/order', [SupplierOrderController::class, 'store'])->name('supplierOrder.store');
-    Route::get('/supplier/order/{order}/edit', [SupplierOrderController::class, 'edit'])->name('supplierOrder.edit');
+    Route::get('/supplier/orders/create', [SupplierOrderController::class, 'create'])->name('supplierOrder.create');
+    Route::post('/supplier/orders', [SupplierOrderController::class, 'store'])->name('supplierOrder.store');
+    Route::get('/supplier/orders/{order}/edit', [SupplierOrderController::class, 'edit'])->name('supplierOrder.edit');
     // Route::put('/supplier/order/{order}', [SupplierOrderController::class, 'update'])->name('supplierOrder.update');
-    Route::delete('/supplier/orde/item/{item}/delete', [SupplierOrderController::class, 'deleteItem'])->name('supplierOrderItem.delete');
-    Route::get('/supplier/orders/{order}/delivery', [SupplierOrderController::class, 'delivery'])->name('supplier.order.delivery');
-    Route::get('/supplier/order/deliveries', [SupplierOrderController::class, 'deliveryIndex'])->name('supplier.delivery.index');
+    Route::delete('/supplier/orders/item/{item}/delete', [SupplierOrderController::class, 'deleteItem'])->name('supplierOrderItem.delete');
+
+    Route::get('/supplier/orders/{order}/delivery', [SupplierOrderController::class, 'delivery'])->name('supplier.order.delivery'); // un-used
+
+    Route::get('/supplier/orders/deliveries', [SupplierOrderController::class, 'deliveryIndex'])->name('supplier.delivery.index');
+
+    // new route
+    Route::controller(SupplierDeliveryController::class)->prefix('/supplier/delivery')->name('supplier.delivery.')->group(function () {
+        /*Route::get('/deliveries', 'index')->name('supplier.delivery.index');
+        Route::get('/deliveries', 'create')->name('supplier.delivery.create');
+        Route::get('/{order}/delivery', 'delivery')->name('delivery');*/
+        Route::post('/', 'store')->name('store');
+
+    });
 
     Route::get('/supplier/order/returns', [SupplierOrderController::class, 'returnIndex'])->name('supplier.returns.index');
     Route::get('/supplier/order/returns/{return}', [SupplierOrderController::class, 'returnShow'])->name('supplier.returns.show');
 
 
-    Route::get('/school/orders', [SchoolOrderController::class, 'index'])->name('schoolOrder');
-    Route::get('/school/orders/create', [SchoolOrderController::class, 'create'])->name('schoolOrder.create');
-    Route::post('/school/orders', [SchoolOrderController::class, 'store'])->name('schoolOrder.store');
-    Route::get('/school/orders/{order}/edit', [SchoolOrderController::class, 'edit'])->name('schoolOrder.edit');
-    Route::get('/school/orders/{order}/show', [SchoolOrderController::class, 'show'])->name('schoolOrder.show');
-    Route::put('/school/orders/{order}', [SchoolOrderController::class, 'update'])->name('schoolOrder.update');
-    Route::delete('/school/order/item/{item}/delete', [SchoolOrderController::class, 'deleteItem'])->name('schoolOrderItem.delete');
+    Route::controller(SchoolOrderController::class)->prefix('/school/orders')->name('school.order.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{order}/edit', 'edit')->name('edit');
+        Route::get('/{order}/show', 'show')->name('show');
+        Route::put('/{order}', 'update')->name('update');
 
-    Route::get('/school/orders/{order}/delivery', [SchoolOrderController::class, 'delivery'])->name('school.order.delivery');
-    Route::post('/school/order/delivery', [SchoolOrderController::class, 'storeDelivery'])->name('school.delivery.store');
-    Route::get('/school/orders/{order}/return', [SchoolOrderController::class, 'createReturn'])->name('school.order.return');
+        Route::delete('/item/{item}/delete', 'deleteItem')->name('item.delete');
 
-    Route::post('/school/order/return', [SchoolOrderController::class, 'storeReturn'])->name('school.order.return.store');
+        Route::get('/{order}/delivery', 'createSchoolDelivery')->name('delivery');
+        Route::get('/{order}/return', 'createReturn')->name('return');
+        // Route::post('/delivery', 'storeDelivery')->name('delivery.store');
+        Route::post('/return', 'storeReturn')->name('return.store');
+    });
+
+
+
 
 
     Route::get('/school/orders/{order_id}/email-notification', [SchoolOrderEmailLogController::class, 'create'])->name('school.order.manual_email_notification');
@@ -150,31 +171,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/location/{location_id}/suppliers', [LocationsController::class, 'suppliers'])->name('location.suppliers');
     Route::get('/location/{location_id}/publishers', [LocationsController::class, 'publishers'])->name('location.publishers');
 
-
-    Route::get('/bundles', [BundleController::class, 'index'])->name('bundles');
-    Route::get('/bundles/create', [BundleController::class, 'create'])->name('bundles.create');
-    Route::post('/bundles', [BundleController::class, 'store'])->name('bundles.store');
-    Route::get('/bundles/{bundle}/edit', [BundleController::class, 'edit'])->name('bundles.edit');
-    Route::put('/bundles/{bundle}', [BundleController::class, 'update'])->name('bundles.update');
-    // need to update code for bundle item delete on update if removed from list
-
-
+    Route::resource('/bundles', BundleController::class)->except(['destroy']);
     Route::resource('/sales', SaleController::class)->except(['destroy']);
-
-    Route::get('/users', [UsersController::class, 'index'])->name('users');
-    Route::get('/users/create', [UsersController::class, 'create'])->name('users.create');
-    Route::post('/users', [UsersController::class, 'store'])->name('users.store');
-    Route::get('/users/{user}/edit', [UsersController::class, 'edit'])->name('users.edit');
-    // Route::get('/users/{user}/show', [UsersController::class, 'show'])->name('users.show');
-    Route::put('/users/{user}', [UsersController::class, 'update'])->name('users.update');
-    // Route::delete('/users/item/{item}/delete', [UsersController::class, 'deleteItem'])->name('users.Item.delete');
-
-    Route::get('/roles', [RolesController::class, 'index'])->name('roles');
-    Route::get('/roles/create', [RolesController::class, 'create'])->name('roles.create');
-    Route::post('/roles', [RolesController::class, 'store'])->name('roles.store');
-    Route::get('/roles/{role}/edit', [RolesController::class, 'edit'])->name('roles.edit');
-    // Route::get('/roles/{role}/show', [RolesController::class, 'show'])->name('roles.show');
-    Route::put('/roles/{role}', [RolesController::class, 'update'])->name('roles.update');
-
+    Route::resource('/users', UsersController::class)->except(['destroy', 'show']);
+    Route::resource('/roles', RolesController::class)->except(['destroy', 'show']);
     Route::resource('/samples', SampleController::class)->except(['destroy']);
 });

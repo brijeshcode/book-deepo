@@ -55,7 +55,7 @@ class SchoolOrderEmailLogController extends Controller
         );
         SchoolEmailLog::create($request->all());
 
-        return redirect(route('schoolOrder.show', $order_id))->with('type', 'success')->with('message', 'Notification send successfully');
+        return redirect(route('school.order.show', $order_id))->with('type', 'success')->with('message', 'Notification send successfully');
     }
 
     public function junk(Request $request, $order_id)

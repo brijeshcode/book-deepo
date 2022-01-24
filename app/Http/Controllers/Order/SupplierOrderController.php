@@ -7,7 +7,6 @@ use App\Mail\SupplierOrderMail;
 use App\Models\Orders\SchoolOrder;
 use App\Models\Orders\SchoolOrderItem;
 use App\Models\Orders\SupplierOrder;
-use App\Models\Orders\SupplierOrderDelivery;
 use App\Models\Orders\SupplierOrderItem;
 use App\Models\Orders\SupplierOrderReturn;
 use App\Models\Setup\Supplier;
@@ -133,11 +132,7 @@ class SupplierOrderController extends Controller
         );
     }
 
-    public function deliveryIndex(Request $request)
-    {
-        $deliveries = SupplierOrderDelivery::with('book', 'supplier')->paginate(10);
-        return Inertia::render('Order/Suppliers/DeliveryIndex', compact('deliveries'));
-    }
+
 
     public function returnIndex(Request $request)
     {
