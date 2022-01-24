@@ -51,7 +51,7 @@
                                             Orders
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers deliveries'))" :href="route('publisher.order.delivery.index')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers deliveries'))" :href="route('publisher.delivery.index')">
                                             Deliveires
                                         </jet-dropdown-link>
                                         <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers returns'))" :href="route('publisher.order.returns.index')">

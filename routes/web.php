@@ -105,13 +105,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
         Route::delete('/item/{item}/delete', 'deleteItem')->name('item.delete');
         Route::get('/{order}/delivery', 'delivery')->name('delivery');
-        Route::get('/deliveries', 'deliveryIndex')->name('delivery.index');
         Route::get('/returns', 'returnIndex')->name('returns.index');
     });
 
 
     Route::controller(PublisherDeliveryController::class)->prefix('/publisher/delivery')->name('publisher.delivery.')->group(function () {
         Route::post('/', 'store')->name('store');
+        Route::get('/deliveries', 'index')->name('index');
 
     });
 
@@ -126,7 +126,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/supplier/orders/{order}/delivery', [SupplierOrderController::class, 'delivery'])->name('supplier.order.delivery'); // un-used
 
-    Route::get('/supplier/orders/deliveries', [SupplierOrderController::class, 'deliveryIndex'])->name('supplier.delivery.index');
+    // Route::get('/supplier/orders/deliveries', [SupplierOrderController::class, 'deliveryIndex'])->name('supplier.delivery.index');
 
     // new route
     Route::controller(SupplierDeliveryController::class)->prefix('/supplier/delivery')->name('supplier.delivery.')->group(function () {
@@ -134,6 +134,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/deliveries', 'create')->name('supplier.delivery.create');
         Route::get('/{order}/delivery', 'delivery')->name('delivery');*/
         Route::post('/', 'store')->name('store');
+        Route::get('/', 'index')->name('index');
 
     });
 

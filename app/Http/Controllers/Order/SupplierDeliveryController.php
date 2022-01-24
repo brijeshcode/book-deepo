@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Models\Orders\SchoolOrder;
 use App\Models\Orders\SchoolOrderItem;
+use App\Models\Orders\SupplierOrder;
 use App\Models\Orders\SupplierOrderDelivery;
 use App\Models\Orders\SupplierOrderItem;
 use App\Models\Setup\Book;
@@ -15,7 +16,8 @@ class SupplierDeliveryController extends Controller
 {
     public function index(Request $request)
     {
-        $deliveries = SupplierOrderDelivery::paginate(10);
+
+        $deliveries = SupplierOrderDelivery::with('supplier')->paginate(10);
         return Inertia::render('Order/Suppliers/Deliveries/Index', compact('deliveries'));
     }
 

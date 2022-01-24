@@ -3,15 +3,22 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Models\Orders\PublisherOrder;
 use App\Models\Orders\PublisherOrderDelivery;
 use App\Models\Orders\PublisherOrderItem;
 use App\Models\Orders\SchoolOrder;
 use App\Models\Orders\SchoolOrderItem;
 use App\Models\Setup\Book;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PublisherDeliveryController extends Controller
 {
+    public function index()
+    {
+        $deliveries = PublisherOrderDelivery::with('publisher')->paginate(10);
+        return Inertia::render('Order/Publishers/Deliveries/Index', compact('deliveries'));
+    }
     public function store(Request $request)
     {
         // dd('publisher store');

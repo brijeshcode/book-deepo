@@ -2,12 +2,12 @@
     <app-layout title="Supplier Deliveries">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Supplier Order Deliveries
+                Publisher Order Deliveries
                 <!-- <add-link createRoute="supplierOrder.create" isbutton >Generate</add-link> -->
             </h2>
         </template>
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplierOrder', name: 'Order'}, { name:'Deliveries'} ]" />
+            <bread-simple :items="[ { route: 'publishers.index'}, {route: 'publisher.order.index', name: 'Order'}, { name:'Deliveries'} ]" />
         </template>
 
         <template #actions>
@@ -32,13 +32,13 @@
                                     Date
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Supplier
+                                    Publisher
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Quantity
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Total
+                                    Amount
                                   </th>
                                 </tr>
 
@@ -55,7 +55,7 @@
                                   </Edit-link>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ delivery.supplier.name }}</div>
+                                    <div class="text-sm text-gray-900">{{ delivery.publisher.name }}</div>
                                   </td>
 
                                   <td class="px-6 py-4 whitespace-nowrap">
