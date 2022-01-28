@@ -3,7 +3,6 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Publisher Order Deliveries
-                <!-- <add-link createRoute="supplierOrder.create" isbutton >Generate</add-link> -->
             </h2>
         </template>
         <template #breadcrum>
@@ -12,7 +11,6 @@
 
         <template #actions>
             <div class="flex">
-              <!-- <Add-link createRoute="supplierOrder.create" title="Add new supplier order" withIcon /> -->
             </div>
         </template>
 

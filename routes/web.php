@@ -9,6 +9,7 @@ use App\Http\Controllers\Order\SampleController;
 use App\Http\Controllers\Order\SchoolOrderController;
 use App\Http\Controllers\Order\SupplierDeliveryController;
 use App\Http\Controllers\Order\SupplierOrderController;
+use App\Http\Controllers\Order\SupplierPaymentController;
 use App\Http\Controllers\Setup\BookController;
 use App\Http\Controllers\Setup\BundleController;
 use App\Http\Controllers\Setup\LocationsController;
@@ -118,7 +119,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 
 
-    Route::get('/supplier/orders', [SupplierOrderController::class, 'index'])->name('supplierOrder');
+    Route::get('/supplier/orders', [SupplierOrderController::class, 'index'])->name('supplier.order.index');
     Route::get('/supplier/orders/create', [SupplierOrderController::class, 'create'])->name('supplierOrder.create');
     Route::post('/supplier/orders', [SupplierOrderController::class, 'store'])->name('supplierOrder.store');
     Route::get('/supplier/orders/{order}/edit', [SupplierOrderController::class, 'edit'])->name('supplierOrder.edit');
@@ -181,6 +182,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/publisher/payments', [PublisherPaymentController::class, 'index'])->name('publisher.payments.index');
     Route::get('/publisher/challan/{challan}/payment', [PublisherPaymentController::class, 'challanPayment'])->name('publisher.payments.challan.create');
     Route::post('/publisher/challan/payment', [PublisherPaymentController::class, 'storeChallanPayment'])->name('publisher.payments.challan.store');
-    // Route::get('/publisher/Payments', PublisherPaymentController::class, 'index');
+
+
+    Route::get('/supplier/payments', [SupplierPaymentController::class, 'index'])->name('supplier.payments.index');
+    Route::get('/supplier/challan/{challan}/payment', [SupplierPaymentController::class, 'challanPayment'])->name('supplier.payments.challan.create');
+    Route::post('/supplier/challan/payment', [SupplierPaymentController::class, 'storeChallanPayment'])->name('supplier.payments.challan.store');
 
 });

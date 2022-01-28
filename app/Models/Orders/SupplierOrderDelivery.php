@@ -25,7 +25,7 @@ class SupplierOrderDelivery extends Model
 
     public function challans()
     {
-        return $this->hasMany(SupplierChallan::class);
+        return $this->hasMany(SupplierChallan::class, 'supplier_delivery_id');
     }
     public function order()
     {

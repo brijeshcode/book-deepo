@@ -77,7 +77,7 @@
                                             List
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access suppliers orders'))"  :href="route('supplierOrder')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access suppliers orders'))"  :href="route('supplier.order.index')">
                                             Orders
                                         </jet-dropdown-link>
 
@@ -87,6 +87,10 @@
 
                                         <jet-dropdown-link v-if="($page.props.user.permissions.includes('access suppliers returns'))"  :href="route('supplier.returns.index')">
                                             Returns
+                                        </jet-dropdown-link>
+
+                                        <jet-dropdown-link  :href="route('supplier.payments.index')">
+                                            Payments
                                         </jet-dropdown-link>
 
 

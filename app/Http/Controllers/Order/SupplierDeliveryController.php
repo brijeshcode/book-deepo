@@ -42,6 +42,7 @@ class SupplierDeliveryController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->challans);
         // check if update or store
         $delivery = SupplierOrderDelivery::where('supplier_order_id', $request->supplier_order_id)->where('supplier_id' , $request->supplier_id)->first();
         if (!is_null($delivery)) {
@@ -63,8 +64,8 @@ class SupplierDeliveryController extends Controller
             // 1.& 2  Insert supplier delivery &&  insert supplier delivery items
             $supplierDelivery = SupplierOrderDelivery::create($request->only('date', 'supplier_id', 'school_id', 'supplier_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount','note'));
 
-            $supplierDelivery->items()->createMany($request->items);
             $supplierDelivery->challans()->createMany($request->challans);
+            $supplierDelivery->items()->createMany($request->items);
 
 
             $schoolOrder = SchoolOrder::whereId($request->school_order_id)->first();

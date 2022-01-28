@@ -3,16 +3,16 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Supplier Orders
-                <!-- <add-link createRoute="supplierOrder.create" isbutton >Generate</add-link> -->
+                <!-- <add-link createRoute="supplier.order.index.create" isbutton >Generate</add-link> -->
             </h2>
         </template>
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplierOrder', name:'Orders'} ]" />
+            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplier.order.index', name:'Orders'} ]" />
         </template>
 
         <template #actions>
             <div class="flex">
-              <!-- <Add-link createRoute="supplierOrder.create" title="Add new supplier order" withIcon /> -->
+              <!-- <Add-link createRoute="supplier.order.index.create" title="Add new supplier order" withIcon /> -->
             </div>
         </template>
 

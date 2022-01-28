@@ -7,8 +7,8 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple v-if="edit" :items="[  { route: 'suppliers'}, {route: 'supplierOrder', name:'Orders'} , { name:'edit'} ]" />
-            <bread-simple v-else :items="[ { route: 'suppliers'}, {route: 'supplierOrder', name:'Orders'} , {route: 'supplierOrder.create', name:'Generate'} ]" />
+            <bread-simple v-if="edit" :items="[  { route: 'suppliers'}, {route: 'supplier.order.index', name:'Orders'} , { name:'edit'} ]" />
+            <bread-simple v-else :items="[ { route: 'suppliers'}, {route: 'supplier.order.index', name:'Orders'} , {route: 'supplierOrder.create', name:'Generate'} ]" />
         </template>
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">

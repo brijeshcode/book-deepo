@@ -7,7 +7,7 @@
             </h2>
         </template>
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplierOrder', name: 'Order'}, { name:'Deliveries'} ]" />
+            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplier.order.index', name: 'Order'}, { name:'Deliveries'} ]" />
         </template>
 
         <template #actions>
@@ -38,7 +38,7 @@
                                     Quantity
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Total
+                                    Amount
                                   </th>
                                 </tr>
 
