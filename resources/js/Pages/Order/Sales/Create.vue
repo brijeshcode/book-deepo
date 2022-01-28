@@ -79,7 +79,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(item,index) in form.items">
-                                    <td class="py-4 whitespace-nowrap px-3">{{ index }}</td>
+                                    <td class="py-4 whitespace-nowrap px-3">{{ index +1 }}</td>
                                     <td class="py-4 whitespace-nowrap" >
                                         <!-- <select v-model="item.book_id" readonly @change="itemChange($event)" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block">
                                             <option v-for="book in books" :value="book.id" v-text="book.name"></option>
@@ -106,6 +106,7 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td class="  py-4 whitespace-nowrap"></td>
                                     <td class="  py-4 whitespace-nowrap"></td>
                                     <td class="  py-4 whitespace-nowrap"></td>
                                     <td class="  py-4 whitespace-nowrap"></td>
