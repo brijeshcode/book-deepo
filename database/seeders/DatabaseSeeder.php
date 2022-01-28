@@ -10,6 +10,7 @@ use App\Models\Setup\Supplier;
 use App\Models\Setup\Warehouse;
 use App\Models\User;
 use DB;
+use Database\Seeders\CountryStateCitySeeder;
 use Database\Seeders\LocationSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Database\Seeder;
@@ -22,6 +23,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // $this->call(CountryStateCitySeeder::class);
+
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         // User::query()->truncate();

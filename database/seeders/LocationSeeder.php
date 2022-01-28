@@ -29,7 +29,7 @@ class LocationSeeder extends Seeder
         Book::query()->truncate();*/
 
         // seed
-        Location::factory(3)
+        Location::factory(20)
         ->has(Warehouse::factory()->count(3)->has(School::factory(2)))
         ->has(Publisher::factory()->count(3))
         ->has(Supplier::factory()->count(3))

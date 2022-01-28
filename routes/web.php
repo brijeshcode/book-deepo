@@ -179,6 +179,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('/users', UsersController::class)->except(['destroy', 'show']);
     Route::resource('/roles', RolesController::class)->except(['destroy', 'show']);
     Route::resource('/samples', SampleController::class)->except(['destroy']);
+
+
     Route::get('/publisher/payments', [PublisherPaymentController::class, 'index'])->name('publisher.payments.index');
     Route::get('/publisher/challan/{challan}/payment', [PublisherPaymentController::class, 'challanPayment'])->name('publisher.payments.challan.create');
     Route::post('/publisher/challan/payment', [PublisherPaymentController::class, 'storeChallanPayment'])->name('publisher.payments.challan.store');
