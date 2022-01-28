@@ -3,6 +3,7 @@
 namespace App\Models\Orders;
 
 use App\Models\Orders\SupplierOrder;
+use App\Models\Orders\SupplierOrderDeliveryItem;
 use App\Models\Setup\Book;
 use App\Models\Setup\Publisher;
 use App\Models\Setup\Supplier;
@@ -34,5 +35,10 @@ class SupplierOrderItem extends Model
     public function book()
     {
         return $this->belongsTo(Book::class);
+    }
+
+    public function delivery()
+    {
+        return $this->hasOne(SupplierOrderDeliveryItem::class);
     }
 }

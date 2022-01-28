@@ -2,6 +2,8 @@
 
 namespace App\Models\Orders;
 
+use App\Models\Orders\PublisherChallan;
+use App\Models\Orders\PublisherOrderDelivery;
 use App\Models\Orders\PublisherOrderItem;
 use App\Models\Setup\Publisher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +20,15 @@ class PublisherOrder extends Model
         return $this->hasMany(PublisherOrderItem::class);
     }
 
+    public function deliveries()
+    {
+        return $this->hasMany(PublisherOrderDelivery::class);
+    }
+
+    public function challans()
+    {
+        return $this->hasMany(PublisherChallan::class);
+    }
     public function publisher()
     {
         return $this->belongsTo(Publisher::class);

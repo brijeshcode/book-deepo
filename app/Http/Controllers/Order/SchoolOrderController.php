@@ -155,8 +155,9 @@ class SchoolOrderController extends Controller
         // return $order = SchoolOrder::with('items', 'items.book' , 'items.supplier','items.publisher' , 'school')
         $order = SchoolOrder::with('items:id,school_order_id,book_id,order_to,publisher_id,supplier_id,quantity,recived_quantity', 'items.book:id,name' , 'items.supplier:id,name,email','items.publisher:id,name,email' , 'school:id,name,email,contact_person,mobile')
             ->whereId($order_id)->first();
-        $publisherOrders= PublisherOrder::with('publisher:id,name', 'items', 'items.book:id,name')->where('school_order_id', $order_id)->get();
-        $supplierOrders= SupplierOrder::with('supplier:id,name', 'items', 'items.book:id,name')->where('school_order_id', $order_id)->get();
+
+        $publisherOrders= PublisherOrder::with('publisher:id,name', 'items', 'items.book:id,name', 'items.delivery', 'challans')->where('school_order_id', $order_id)->get();
+        $supplierOrders= SupplierOrder::with('supplier:id,name', 'items', 'items.book:id,name', 'items.delivery','challans')->where('school_order_id', $order_id)->get();
 
         return Inertia::render('Order/Schools/Delivery', compact('order', 'publisherOrders', 'supplierOrders'));
     }

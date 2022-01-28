@@ -3,6 +3,7 @@
 use App\Http\Controllers\Logs\SchoolOrderEmailLogController;
 use App\Http\Controllers\Order\PublisherDeliveryController;
 use App\Http\Controllers\Order\PublisherOrderController;
+use App\Http\Controllers\Order\PublisherPaymentController;
 use App\Http\Controllers\Order\SaleController;
 use App\Http\Controllers\Order\SampleController;
 use App\Http\Controllers\Order\SchoolOrderController;
@@ -109,9 +110,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
 
 
-    Route::controller(PublisherDeliveryController::class)->prefix('/publisher/delivery')->name('publisher.delivery.')->group(function () {
+    Route::controller(PublisherDeliveryController::class)->prefix('/publisher/deliveries')->name('publisher.delivery.')->group(function () {
+        Route::get('/', 'index')->name('index');
         Route::post('/', 'store')->name('store');
-        Route::get('/deliveries', 'index')->name('index');
 
     });
 
@@ -177,4 +178,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('/users', UsersController::class)->except(['destroy', 'show']);
     Route::resource('/roles', RolesController::class)->except(['destroy', 'show']);
     Route::resource('/samples', SampleController::class)->except(['destroy']);
+    Route::get('/publisher/payments', [PublisherPaymentController::class, 'index'])->name('publisher.payments.index');
+    Route::get('/publisher/challan/{challan}/payment', [PublisherPaymentController::class, 'challanPayment'])->name('publisher.payments.challan.create');
+    Route::post('/publisher/challan/payment', [PublisherPaymentController::class, 'storeChallanPayment'])->name('publisher.payments.challan.store');
+    // Route::get('/publisher/Payments', PublisherPaymentController::class, 'index');
+
 });

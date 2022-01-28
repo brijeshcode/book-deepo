@@ -20,6 +20,7 @@ class CreateSupplierOrderDeliveriesTable extends Migration
             $table->unsignedBigInteger('school_id');
             $table->unsignedBigInteger('supplier_order_id');
             $table->unsignedBigInteger('school_order_id');
+            $table->enum('payment_status', ['paid','due','partial'])->default('due');
             $table->integer('quantity')->default(0);
             $table->double('discount_percent', 10,2)->default(0);
             $table->double('discount', 10,2)->default(0);

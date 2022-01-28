@@ -2,6 +2,7 @@
 
 namespace App\Models\Orders;
 
+use App\Models\Orders\PublisherOrderDeliveryItem;
 use App\Models\Setup\Book;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,5 +21,10 @@ class PublisherOrderItem extends Model
     public function book()
     {
         return $this->belongsTo(Book::class );
+    }
+
+    public function delivery()
+    {
+        return $this->hasOne(PublisherOrderDeliveryItem::class);
     }
 }

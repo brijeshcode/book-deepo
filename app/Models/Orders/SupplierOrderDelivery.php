@@ -2,6 +2,7 @@
 
 namespace App\Models\Orders;
 
+use App\Models\Orders\SupplierChallan;
 use App\Models\Orders\SupplierOrder;
 use App\Models\Orders\SupplierOrderDeliveryItem;
 use App\Models\Setup\Book;
@@ -15,11 +16,16 @@ class SupplierOrderDelivery extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['date', 'supplier_id', 'school_id', 'supplier_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount', 'amount', 'user_id','user_ip'];
+    protected $fillable = ['date', 'supplier_id', 'school_id', 'supplier_order_id', 'school_order_id',  'quantity', 'discount_percent', 'payment_status', 'discount', 'sub_total', 'total_amount', 'amount', 'user_id','user_ip'];
 
     public function items()
     {
         return $this->hasMany(SupplierOrderDeliveryItem::class );
+    }
+
+    public function challans()
+    {
+        return $this->hasMany(SupplierChallan::class);
     }
     public function order()
     {

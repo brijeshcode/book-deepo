@@ -152,7 +152,7 @@
 
                                         <td class="px-4 py-4 whitespace-nowrap">
                                             <button type="button" v-on:click="removeRow(index, item.id)" v-if="index > 0" >
-                                          <span class="material-icons text-sm text-red-500"><remove-icon /></span>
+                                            <span class="material-icons text-sm text-red-500"><remove-icon /></span>
                                         </button>
                                         </td>
                                     </tr>

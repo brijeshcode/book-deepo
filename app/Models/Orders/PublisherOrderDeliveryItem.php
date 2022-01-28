@@ -16,4 +16,5 @@ class PublisherOrderDeliveryItem extends Model
     {
         return $this->belongsTo(Book::class);
     }
+
 }

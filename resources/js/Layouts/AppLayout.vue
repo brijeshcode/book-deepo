@@ -57,6 +57,10 @@
                                         <jet-dropdown-link v-if="($page.props.user.permissions.includes('access publishers returns'))" :href="route('publisher.order.returns.index')">
                                             Returns
                                         </jet-dropdown-link>
+
+                                        <jet-dropdown-link  :href="route('publisher.payments.index')">
+                                            Payments
+                                        </jet-dropdown-link>
                                     </template>
                                 </jet-dropdown>
                             </div>

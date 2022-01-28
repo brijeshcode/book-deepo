@@ -142,8 +142,8 @@
         setup () {
             const form = useForm({
               name: null,
+              date: new Date().toISOString().slice(0,10),
               publisher_id: '',
-              date: '',
               email: '',
               mobile: '',
               fax : '',
