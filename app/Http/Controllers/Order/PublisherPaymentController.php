@@ -35,6 +35,12 @@ class PublisherPaymentController extends Controller
         return Inertia::render('Order/Publishers/Payments/Challan', compact('challan'));
     }
 
+    public function showChallan(PublisherChallan $challan)
+    {
+        $challan->load('publisher:id,name', 'delivery:id,date,quantity,discount_percent,discount,total_amount', 'schoolOrder:id,date,status,note,quantity,amount');
+        return Inertia::render('Order/Publishers/Payments/ChallanShow', compact('challan'));
+    }
+
     public function storeChallanPayment(Request $request)
     {
         \DB::transaction(function() use ($request) {

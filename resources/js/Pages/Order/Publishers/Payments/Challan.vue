@@ -7,21 +7,27 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple v-if="edit" :items="[  { route: 'publishers.index'}, {route: 'publisher.order.index', name:'Orders'} , { name:'edit'} ]" />
-            <bread-simple v-else :items="[ { route: 'publishers.index'}, {route: 'publisher.order.index', name:'Orders'} , {route: 'publisher.order.create', name:'Generate'} ]" />
+            <bread-simple :items="[ { route: 'publishers.index'}, {route: 'publisher.payments.index', name: 'payment'}  , {name: 'Generate'}]" />
         </template>
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div class="p-2">
                 <form  @submit.prevent="form.post(route('publisher.payments.challan.store'))">
-                    <ul>
-                        <li>Publisher: {{ challan.publisher.name }}</li>
-                        <li>School Order #: {{ challan.school_order_id }}</li>
-                        <li>School Order Date: {{ challan.school_order.date }}</li>
-                        <li>Challan #: {{ challan.challan_no }}</li>
-                        <li>Challan Amount: {{ challan.amount }}</li>
-                        <li>Paid: {{ challan.payment_status }}</li>
-                    </ul>
+                    <div class="flex">
+                        <div class="flex-1">
+                            <ul>
+                                <li>Publisher: {{ challan.publisher.name }}</li>
+                                <li>School Order #: {{ challan.school_order_id }}</li>
+                                <li>School Order Date: {{ challan.school_order.date }}</li>
+                                <li>Challan #: {{ challan.challan_no }}</li>
+                                <li>Challan Amount: {{ challan.amount }}</li>
+                                <li>Paid: {{ challan.payment_status }}</li>
+                            </ul>
+                        </div>
+                        <div class="flex-1">
+                            <img v-if="challan.path" :src="challan.path" class="w-full h-auto">
+                        </div>
+                    </div>
 
                     <div class="flex flex-row mb-4">
 

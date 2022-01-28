@@ -183,9 +183,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/publisher/challan/{challan}/payment', [PublisherPaymentController::class, 'challanPayment'])->name('publisher.payments.challan.create');
     Route::post('/publisher/challan/payment', [PublisherPaymentController::class, 'storeChallanPayment'])->name('publisher.payments.challan.store');
 
+    Route::get('/publisher/challan/{challan}', [PublisherPaymentController::class, 'showChallan'])->name('publisher.payments.challan.show');
+
 
     Route::get('/supplier/payments', [SupplierPaymentController::class, 'index'])->name('supplier.payments.index');
     Route::get('/supplier/challan/{challan}/payment', [SupplierPaymentController::class, 'challanPayment'])->name('supplier.payments.challan.create');
     Route::post('/supplier/challan/payment', [SupplierPaymentController::class, 'storeChallanPayment'])->name('supplier.payments.challan.store');
+
+    Route::get('/supplier/challan/{challan}', [SupplierPaymentController::class, 'showChallan'])->name('supplier.payments.challan.show');
 
 });

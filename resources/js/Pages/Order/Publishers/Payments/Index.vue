@@ -8,7 +8,7 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'publishers.index'}, {route: 'publisher.order.index', name:'Orders'}, {name: 'Payments'} ]" />
+            <bread-simple :items="[ { route: 'publishers.index'}, { name:'Payments'} ]" />
         </template>
         <template #actions>
             <div class="flex">
@@ -75,7 +75,8 @@
                             <div class="text-sm text-gray-500">{{ challan.note }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                            <!-- <Show-link class="p-1" :show="{route: 'publisher.challan.show', id:challan.id }" showicon /> -->
+                            <Show-link class="p-1" :show="{route: 'publisher.payments.challan.show', id:challan.id }" showicon />
+
                             <SimpleLink v-if="challan.payment_status != 'paid' " class="p-1" :link="{route: 'publisher.payments.challan.create', id:challan.id }" >
                               <pay />
                             </SimpleLink>

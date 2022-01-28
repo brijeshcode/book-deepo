@@ -75,6 +75,7 @@
                             <div class="text-sm text-gray-500">{{ challan.note }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
+                            <Show-link class="p-1" :show="{route: 'supplier.payments.challan.show', id:challan.id }" showicon />
                             <!-- <Show-link class="p-1" :show="{route: 'supplier.challan.show', id:challan.id }" showicon /> -->
                             <SimpleLink v-if="challan.payment_status != 'paid' " class="p-1" :link="{route: 'supplier.payments.challan.create', id:challan.id }" >
                               <pay />

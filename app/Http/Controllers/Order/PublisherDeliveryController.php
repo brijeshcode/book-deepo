@@ -13,6 +13,7 @@ use App\Models\Orders\SchoolOrderItem;
 use App\Models\Setup\Book;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class PublisherDeliveryController extends Controller
 {
@@ -47,8 +48,14 @@ class PublisherDeliveryController extends Controller
             // dd($request);
             // 1.& 2  Insert publisher delivery &&  insert publisher delivery items
             $publisherOrder = PublisherOrderDelivery::create($request->only('date', 'publisher_id', 'school_id', 'publisher_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount','note'));
+
             $publisherOrder->items()->createMany($request->items);
-            $publisherOrder->challans()->createMany($request->challans);
+
+            $challans = $request->challans;
+            foreach ($challans as $key => $challan) {
+                $challans[$key]['path'] = $this->uploadChallans($challan['path']);
+            }
+            $publisherOrder->challans()->createMany($challans);
 
 
             $schoolOrder = SchoolOrder::where( 'id', $request->school_order_id)->first();
@@ -83,17 +90,22 @@ class PublisherDeliveryController extends Controller
             }
 
             $challans = $request->challans;
+
             foreach ($challans as $key => $challan) {
                 if (isset($challan['id'])) {
                     $publisherChallan = PublisherChallan::where('id', $challan['id'])->first();
                     $publisherChallan->date = $challan['date'];
                     $publisherChallan->challan_no = $challan['challan_no'];
                     $publisherChallan->amount = $challan['amount'];
-                    $publisherChallan->path = $challan['path'];
+                    $publisherChallan->path = $this->uploadChallans($challan['path']);
                     $publisherChallan->note = $challan['note'];
                     $publisherChallan->save();
                     unset($challans[$key]);
                 }
+            }
+
+            foreach ($challans as $key => $challan) {
+                $challans[$key]['path'] = $this->uploadChallans($challan['path']);
             }
             if (count($challans) > 0) {
                 $delivery->challans()->createMany($challans);
@@ -130,5 +142,16 @@ class PublisherDeliveryController extends Controller
         $schoolItem->save();
     }
 
+    public function uploadChallans($challanPath)
+    {
+        if(gettype($challanPath) == 'string'){
+            return $challanPath;
+        }
+        $now = now();
+        $imageName = time().'.'.$challanPath->extension();
+        $location = 'Challans/Publisher/'. $now->year. '/'. $now->format('m');
+        return Storage::url($challanPath->storeAs($location, $imageName, 'public'));
+
+    }
 
 }

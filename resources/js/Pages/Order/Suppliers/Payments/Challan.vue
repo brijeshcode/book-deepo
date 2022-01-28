@@ -7,21 +7,28 @@
         </template>
 
         <template #breadcrum>
-             <bread-simple v-if="edit" :items="[  { route: 'suppliers'}, {name:'Challan'} , { name:'payment'} ]" />
-            <bread-simple v-else :items="[ { route: 'suppliers'}, {route: 'supplier.order.index', name:'Orders'} , {route: 'supplierOrder.create', name:'Generate'} ]" />
+             <bread-simple :items="[  { route: 'suppliers'}, {name:'Challan'} , { name:'payment'} ]" />
+
         </template>
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div class="p-2">
                 <form  @submit.prevent="form.post(route('supplier.payments.challan.store'))">
-                    <ul>
-                        <li>Supplier: {{ challan.supplier.name }}</li>
-                        <li>School Order #: {{ challan.school_order_id }}</li>
-                        <li>School Order Date: {{ challan.school_order.date }}</li>
-                        <li>Challan #: {{ challan.challan_no }}</li>
-                        <li>Challan Amount: {{ challan.amount }}</li>
-                        <li>Paid: {{ challan.payment_status }}</li>
-                    </ul>
+                    <div class="flex">
+                        <div class="flex-1">
+                            <ul>
+                                <li>Supplier: {{ challan.supplier.name }}</li>
+                                <li>School Order #: {{ challan.school_order_id }}</li>
+                                <li>School Order Date: {{ challan.school_order.date }}</li>
+                                <li>Challan #: {{ challan.challan_no }}</li>
+                                <li>Challan Amount: {{ challan.amount }}</li>
+                                <li>Paid: {{ challan.payment_status }}</li>
+                            </ul>
+                        </div>
+                        <div class="flex-1">
+                            <img v-if="challan.path" :src="challan.path" class="w-full h-auto">
+                        </div>
+                    </div>
 
                     <div class="flex flex-row mb-4">
 

@@ -133,6 +133,7 @@
                                             </th>
                                             <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 <jet-label value="File" />
+
                                             </th>
                                             <th>
                                                  <span class="p-2 bg-gray-800 text-white m-2 " @click="addChallan">Add </span>
@@ -153,7 +154,11 @@
                                             </td>
 
                                             <td class="px-4 py-4 whitespace-nowrap">
-                                                <jet-input type="file" v-model="challan.path" />
+                                                <input type="file" @input="challan.path = $event.target.files[0]" />
+                                                <img v-if="challan.path != '' " :src="challan.path" style="width:120px;height:120px;">
+                                                <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+                                                  {{ form.progress.percentage }}%
+                                                </progress>
                                             </td>
                                             <td>
                                                 <button type="button" v-on:click="removeChallan(challan_key)" v-if="challan_key > 0" >

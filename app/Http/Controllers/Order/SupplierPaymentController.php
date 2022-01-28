@@ -35,6 +35,12 @@ class SupplierPaymentController extends Controller
         return Inertia::render('Order/Suppliers/Payments/Challan', compact('challan'));
     }
 
+    public function showChallan(SupplierChallan $challan)
+    {
+        $challan->load('supplier:id,name', 'delivery:id,date,quantity,discount_percent,discount,total_amount', 'schoolOrder:id,date,status,note,quantity,amount');
+        return Inertia::render('Order/Suppliers/Payments/ChallanShow', compact('challan'));
+    }
+
     public function storeChallanPayment(Request $request)
     {
         \DB::transaction(function() use ($request) {
