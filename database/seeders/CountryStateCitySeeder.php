@@ -27,9 +27,10 @@ class CountryStateCitySeeder extends Seeder
         foreach ($states as $key => $state) {
             // dd($this->location($state->name));
             foreach($this->location($state->name) as $city){
-                $cities[] = ['name' => $city , $state->id];
+                $cities[] = ['name' => $city , 'parent_id' => $state->id];
             }
         }
+
         CountryStateCity::insert($cities);
 
         /*$parent_id = 0;

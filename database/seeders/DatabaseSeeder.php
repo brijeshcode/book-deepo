@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(CountryStateCitySeeder::class);
+        $this->call(CountryStateCitySeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 

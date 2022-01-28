@@ -24,15 +24,22 @@
                         </div>
 
                         <div class="basis-1/4">
-                            <jet-label for="city" required value="City"/>
-                            <jet-input id="city" type="text" class="mt-1 block" v-model="form.city" autocomplete="city" />
-                            <jet-input-error :message="form.errors.city" class="mt-2" />
+                            <jet-label for="state" required value="State" />
+                            <select id="location_id" @change="getCity($event)" v-model="form.state" class="w-3/4 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
+                                <option v-for="state in states" v-bind:value="state.name">{{ state.name }}</option>
+                            </select>
+
+                            <!-- <jet-input id="state" type="text" class="mt-1 block" v-model="form.state" autocomplete="state" /> -->
+                            <jet-input-error :message="form.errors.state" class="mt-2" />
                         </div>
 
                         <div class="basis-1/4">
-                            <jet-label for="state" required value="State" />
-                            <jet-input id="state" type="text" class="mt-1 block" v-model="form.state" autocomplete="state" />
-                            <jet-input-error :message="form.errors.state" class="mt-2" />
+                            <jet-label for="city" required value="City"/>
+                            <select id="city"  v-model="form.city" class="w-3/4 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
+                                <option v-for="city in cities" v-bind:value="city.name">{{ city.name }}</option>
+                            </select>
+                            <!-- <jet-input id="city" type="text" class="mt-1 block" v-model="form.city" autocomplete="city" /> -->
+                            <jet-input-error :message="form.errors.city" class="mt-2" />
                         </div>
 
                         <div class="basis-1/4">
@@ -92,17 +99,19 @@
             JetLabel,
             JetCheckbox
         },
-        props: ['location'],
+        props: ['location','countries'],
          data: () => ({
-            edit: false
+            edit: false,
+            states : [],
+            cities : []
          }),
         setup () {
             const form = useForm({
               name: null,
               city: null,
               state: null,
-              pincode: '',
-              email: '',
+              pincode: null,
+              email: null,
               note: '',
               active: false
 
@@ -117,6 +126,36 @@
                     this.form[index] = this.location[index];
                 });
                 this.edit = true;
+            }
+
+            this.countries.forEach(state =>{
+                if (state.parent_id == 0) {
+                   this.states.push(state);
+                }
+            });
+
+            this.countries.forEach(state =>{
+                if (state.parent_id == 1) {
+                   this.cities.push(state);
+                }
+            });
+        },
+        methods:{
+            getCity(event){
+                this.cities = [];
+                let i = 1;
+                let selectedState = event.target.value;
+                this.states.forEach(state => {
+                    if (state.name == selectedState) {
+                        this.countries.forEach(city => {
+                            if (city.parent_id == state.id) {
+                               this.cities.push(city);
+                               console.log(i++);
+                            }
+                        });
+                        return ;
+                    }
+                });
             }
         }
     })

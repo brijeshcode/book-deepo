@@ -36,7 +36,7 @@ class LocationSeeder extends Seeder
         ->create();
 
 
-        $books = Book::factory(1050)->create();
+        $books = Book::factory(500)->create();
         $bookSchool = $bookSupplier = array();
         foreach ($books as $key => $book) {
 

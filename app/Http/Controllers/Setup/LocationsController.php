@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Setup;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setup\CountryStateCity;
 use App\Models\Setup\Location;
 use App\Models\Setup\Publisher;
 use App\Models\Setup\Supplier;
@@ -39,7 +40,8 @@ class LocationsController extends Controller
 
     public function create(Request $request)
     {
-        return Inertia::render('Setup/Locations/Create');
+        $countries = CountryStateCity::get();
+        return Inertia::render('Setup/Locations/Create', compact('countries'));
     }
 
     public function store(Request $request)
@@ -51,8 +53,9 @@ class LocationsController extends Controller
 
     public function edit(Location $location)
     {
+        $countries = CountryStateCity::get();
         $location = $location->only('id','name', 'email', 'city', 'state', 'pincode', 'note', 'active');
-        return Inertia::render('Setup/Locations/Create', compact('location'));
+        return Inertia::render('Setup/Locations/Create', compact('location', 'countries'));
     }
 
     public function update(Request $request, Location $location)
