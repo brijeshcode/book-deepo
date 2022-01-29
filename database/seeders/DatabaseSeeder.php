@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         User::query()->truncate();
-        $this->call(PermissionSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(PermissionSeeder::class);
 
         Location::query()->truncate();
         Warehouse::query()->truncate();
