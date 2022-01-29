@@ -89,6 +89,6 @@
 
     export default defineComponent({
         components: {AppLayout,bookIcon},
-        props: ['books','schools','totalSale', 'sales']
+        props: ['schools','totalSale', 'sales']
     })
 </script>

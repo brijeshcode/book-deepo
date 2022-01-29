@@ -21,7 +21,7 @@ class LocationSeeder extends Seeder
     public function run()
     {
         // reset
-        Location::query()->truncate();
+        // Location::query()->truncate();
         /*
         Warehouse::query()->truncate();
         Supplier::query()->truncate();
@@ -31,13 +31,13 @@ class LocationSeeder extends Seeder
 
         // seed
         Location::factory(40)
-        /*->has(Warehouse::factory()->count(3)->has(School::factory(2)))
+        ->has(Warehouse::factory()->count(3)->has(School::factory(2)))
         ->has(Publisher::factory()->count(3))
-        ->has(Supplier::factory()->count(3))*/
+        ->has(Supplier::factory()->count(3))
         ->create();
 
 
-        /*$books = Book::factory(500)->create();
+        $books = Book::factory(500)->create();
         $bookSchool = $bookSupplier = array();
         foreach ($books as $key => $book) {
 
@@ -54,6 +54,6 @@ class LocationSeeder extends Seeder
         DB::table('book_school')->truncate();
         DB::table('book_supplier')->truncate();
         DB::table('book_school')->insert( $bookSchool);
-        DB::table('book_supplier')->insert( $bookSupplier);*/
+        DB::table('book_supplier')->insert( $bookSupplier);
     }
 }
