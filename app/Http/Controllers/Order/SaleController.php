@@ -14,9 +14,9 @@ class SaleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['can:access sale']);
-        $this->middleware(['can:create sale'])->only(['create', 'store']);
-        $this->middleware(['can:edit sale'])->only(['edit', 'update']);
+        $this->middleware(['can:access sales']);
+        $this->middleware(['can:create sales'])->only(['create', 'store']);
+        $this->middleware(['can:edit sales'])->only(['edit', 'update']);
     }
 
     public function index(Request $request)
