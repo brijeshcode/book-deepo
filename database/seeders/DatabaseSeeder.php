@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
 
         User::query()->truncate();
         $this->call(UserSeeder::class);
+
         $this->call(PermissionSeeder::class);
 
         Location::query()->truncate();
