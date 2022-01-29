@@ -18,6 +18,7 @@ class LocationFactory extends Factory
         $location = $this->location();
         $city = $location[1];
         $state = $location[0];
+        // dd($location);
         return [
             'name' => $city . ' Location',
             'city' => $city,

@@ -5449,42 +5449,36 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    if (this.location) {
-      Object.keys(this.location).forEach(function (index) {
-        _this.form[index] = _this.location[index];
-      });
-      this.edit = true;
-    }
-
     this.countries.forEach(function (state) {
       if (state.parent_id == 0) {
         _this.states.push(state);
       }
     });
-    this.countries.forEach(function (state) {
-      if (state.parent_id == 1) {
-        _this.cities.push(state);
-      }
-    });
+
+    if (this.location) {
+      Object.keys(this.location).forEach(function (index) {
+        _this.form[index] = _this.location[index];
+      });
+      this.edit = true;
+      this.listCitiesByStateName(this.form.state);
+    }
   },
   methods: {
     getCity: function getCity(event) {
+      this.cities = [];
+      var selectedState = event.target.value;
+      this.listCitiesByStateName(selectedState);
+    },
+    listCitiesByStateName: function listCitiesByStateName(stateName) {
       var _this2 = this;
 
-      this.cities = [];
-      var i = 1;
-      var selectedState = event.target.value;
       this.states.forEach(function (state) {
-        if (state.name == selectedState) {
+        if (state.name == stateName) {
           _this2.countries.forEach(function (city) {
             if (city.parent_id == state.id) {
               _this2.cities.push(city);
-
-              console.log(i++);
             }
           });
-
-          return;
         }
       });
     }

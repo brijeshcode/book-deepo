@@ -121,39 +121,36 @@
         },
 
         created(){
-            if (this.location) {
-                Object.keys(this.location).forEach((index) => {
-                    this.form[index] = this.location[index];
-                });
-                this.edit = true;
-            }
-
             this.countries.forEach(state =>{
                 if (state.parent_id == 0) {
                    this.states.push(state);
                 }
             });
 
-            this.countries.forEach(state =>{
-                if (state.parent_id == 1) {
-                   this.cities.push(state);
-                }
-            });
+            if (this.location) {
+                Object.keys(this.location).forEach((index) => {
+                    this.form[index] = this.location[index];
+                });
+                this.edit = true;
+                this.listCitiesByStateName(this.form.state);
+            }
+
         },
         methods:{
             getCity(event){
                 this.cities = [];
-                let i = 1;
                 let selectedState = event.target.value;
+                this.listCitiesByStateName(selectedState);
+            },
+
+            listCitiesByStateName(stateName){
                 this.states.forEach(state => {
-                    if (state.name == selectedState) {
+                    if (state.name == stateName) {
                         this.countries.forEach(city => {
-                            if (city.parent_id == state.id) {
+                            if (city.parent_id == state.id ) {
                                this.cities.push(city);
-                               console.log(i++);
                             }
                         });
-                        return ;
                     }
                 });
             }

@@ -40,7 +40,7 @@ class LocationsController extends Controller
 
     public function create(Request $request)
     {
-        $countries = CountryStateCity::get();
+        $countries = CountryStateCity::orderBy('name', 'asc')->orderBy('parent_id', 'desc')->get();
         return Inertia::render('Setup/Locations/Create', compact('countries'));
     }
 
@@ -53,7 +53,7 @@ class LocationsController extends Controller
 
     public function edit(Location $location)
     {
-        $countries = CountryStateCity::get();
+        $countries = CountryStateCity::orderBy('name', 'asc')->orderBy('parent_id', 'desc')->get();
         $location = $location->only('id','name', 'email', 'city', 'state', 'pincode', 'note', 'active');
         return Inertia::render('Setup/Locations/Create', compact('location', 'countries'));
     }

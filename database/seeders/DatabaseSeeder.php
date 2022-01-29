@@ -23,12 +23,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(CountryStateCitySeeder::class);
+        // $this->call(CountryStateCitySeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         // User::query()->truncate();
-        $this->call(UserSeeder::class);
+        /*$this->call(UserSeeder::class);
         $this->call(PermissionSeeder::class);
 
         Location::query()->truncate();
@@ -36,10 +36,10 @@ class DatabaseSeeder extends Seeder
         Supplier::query()->truncate();
         Publisher::query()->truncate();
         School::query()->truncate();
-        Book::query()->truncate();
+        Book::query()->truncate();*/
 
         $this->call(LocationSeeder::class);
-        $this->call(LocationSeeder::class);
+        // $this->call(LocationSeeder::class);
         /*$this->call(LocationSeeder::class);
         $this->call(LocationSeeder::class);*/
 
