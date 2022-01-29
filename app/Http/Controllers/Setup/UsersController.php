@@ -13,10 +13,17 @@ use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
-    //
+
+    public function __construct()
+    {
+        $this->middleware(['can:access users']);
+        $this->middleware(['can:create users'])->only(['create', 'store']);
+        $this->middleware(['can:edit users'])->only(['edit', 'update']);
+    }
+
     public function index()
     {
-        $users = User::with('roles:id,name')->paginate(10);
+        $users = User::paginate(10);
         return Inertia::render('Setup/Users/Index' , compact('users'));
     }
 

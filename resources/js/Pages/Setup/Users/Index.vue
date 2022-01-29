@@ -60,9 +60,7 @@
                             <div class="text-sm text-gray-500">{{ user.email }}</div>
                           </td>
                           <td class="px-4 py-4 whitespace-nowrap">
-                            <div v-on="user.roles">
-                            <div class="text-sm text-gray-500" v-for="role in user.roles" >{{ role.name }}</div>
-                            </div>
+                            <div class="text-sm text-gray-500">{{ user.role.name }}</div>
                           </td>
                           <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div class="text-sm text-gray-500">{{ user.note }}</div>

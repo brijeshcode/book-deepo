@@ -46,6 +46,7 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        'roles'
     ];
 
     /**
@@ -65,7 +66,9 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
-        'permissions'
+        'permissions',
+        'role',
+        'role_name'
     ];
 
 
@@ -78,6 +81,24 @@ class User extends Authenticatable
         return [];
     }
 
+    public function getRoleAttribute()
+    {
+        $role = $this->roles;
+        if (count($role) > 0) {
+            return collect($role[0])->except('permissions', 'created_at', 'updated_at', 'pivot');
+            // return $role[0]->name;
+        }
+        return [];
+    }
+
+    public function getRoleNameAttribute()
+    {
+        $role = $this->roles;
+        if (count($role) > 0) {
+            return $role[0]->name;
+        }
+        return [];
+    }
     public function schools()
     {
         return $this->belongsToMany(School::class)->withTimestamps();

@@ -11,6 +11,12 @@ use Inertia\Inertia;
 
 class SchoolController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['can:access schools'])->except(['books', 'bookList', 'bundleList']);
+        $this->middleware(['can:create schools'])->only(['create', 'store']);
+        $this->middleware(['can:edit schools'])->only(['edit', 'update']);
+    }
     /**
      * Display a listing of the resource.
      *

@@ -18,8 +18,8 @@
                     </div>
 
                     <div class="flex items-start justify-center pt-5 bg-white min-w-screen">
-                        <div class="flex flex-wrap w-full px-4">
-                            <div class="w-full px-2 sm:w-1/2 xl:w-1/4">
+                        <div class="flex flex-wrap w-full px-4 pb-4">
+                            <!-- <div class="w-full px-2 sm:w-1/2 xl:w-1/4">
                                 <div
                                     class="relative flex items-center px-5 py-6 overflow-hidden rounded-md shadow-sm bg-gradient-to-br from-gray-100 to-gray-200">
                                     <span class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-indigo-300 to-indigo-500"></span>
@@ -31,7 +31,7 @@
                                         <div class="text-gray-500">Warehouses</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="w-full px-2 mt-6 sm:w-1/2 xl:w-1/4 xl:mt-0">
                                 <div
                                     class="relative flex items-center px-5 py-6 overflow-hidden rounded-md shadow-sm bg-gradient-to-br from-gray-100 to-gray-200">
@@ -55,8 +55,8 @@
                                         <bookIcon class="h-8 w-8 text-white" />
                                     </div>
                                     <div class="mx-5">
-                                        <h4 class="text-2xl font-semibold text-gray-700">{{ books }}</h4>
-                                        <div class="text-gray-500">Books</div>
+                                        <h4 class="text-2xl font-semibold text-gray-700">{{ sales }}</h4>
+                                        <div class="text-gray-500">Sales Invoice</div>
                                     </div>
                                 </div>
                             </div>
@@ -66,58 +66,16 @@
                                     class="relative flex items-center px-8 py-6 overflow-hidden rounded-md shadow-sm bg-gradient-to-br from-gray-100 to-gray-200">
                                     <span class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-yellow-300 to-yellow-500"></span>
                                     <div class="p-3 bg-opacity-75 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600">
-
-
                                         <svg class="h-8 w-8 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <polygon points="12 2 2 7 12 12 22 7 12 2" />  <polyline points="2 17 12 22 22 17" />  <polyline points="2 12 12 17 22 12" /></svg>
-
-
                                     </div>
                                     <div class="mx-5">
-                                        <h4 class="text-2xl font-semibold text-gray-700">{{ bundles }}</h4>
-                                        <div class="text-gray-500">Bundles</div>
+                                        <h4 class="text-2xl font-semibold text-gray-700">{{ totalSale }}</h4>
+                                        <div class="text-gray-500">Sale Amount</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- component -->
-                    <section class="text-gray-600 body-font">
-                      <div class="container px-5 py-24 mx-auto">
-                        <div class="flex flex-wrap w-full mb-8">
-                          <div class="w-full mb-6 lg:mb-0">
-                            <h1 class="sm:text-4xl text-5xl font-medium title-font mb-2 text-gray-900 flex"> <svg class="h-9 w-9"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <line x1="4" y1="19" x2="20" y2="19" />  <polyline points="4 15 8 9 12 11 16 6 20 10" /></svg> Statistic</h1>
-                            <div class="h-1 w-20 bg-indigo-500 rounded"></div>
-                          </div>
-                        </div>
-                        <div class="flex flex-wrap -m-4 text-center">
-                          <div class="p-4 sm:w-1/4 w-1/2">
-                            <div class="bg-indigo-500 rounded-lg p-2 xl:p-6">
-                                <h2 class="title-font font-medium sm:text-4xl text-3xl text-white">{{ schoolOrders }}</h2>
-                                <p class="leading-relaxed text-gray-100 font-bold">School orders</p>
-                            </div>
-                          </div>
-                          <div class="p-4 sm:w-1/4 w-1/2">
-                            <div class="bg-indigo-500 rounded-lg p-2 xl:p-6">
-                                <h2 class="title-font font-medium sm:text-4xl text-3xl text-white">{{ supplierOrders }}</h2>
-                                <p class="leading-relaxed text-gray-100 font-bold">Supplier Orders</p>
-                            </div>
-                          </div>
-                          <div class="p-4 sm:w-1/4 w-1/2">
-                            <div class="bg-indigo-500 rounded-lg p-2 xl:p-6">
-                                <h2 class="title-font font-medium sm:text-4xl text-3xl text-white">{{ publisherOrders }}</h2>
-                                <p class="leading-relaxed text-gray-100 font-bold">Publisher Orders</p>
-                            </div>
-                          </div>
-                          <div class="p-4 sm:w-1/4 w-1/2">
-                            <div class="bg-indigo-500 rounded-lg p-2 xl:p-6">
-                                <h2 class="title-font font-medium sm:text-4xl text-3xl text-white">{{ sales }}</h2>
-                                <p class="leading-relaxed text-gray-100 font-bold">Sales</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
 
                 </div>
 
@@ -131,6 +89,6 @@
 
     export default defineComponent({
         components: {AppLayout,bookIcon},
-        props: ['books','schools','warehouses', 'schoolOrders', 'supplierOrders', 'publisherOrders', 'sales', 'bundles']
+        props: ['books','schools','totalSale', 'sales']
     })
 </script>

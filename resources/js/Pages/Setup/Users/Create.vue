@@ -159,9 +159,7 @@
                     this.form[index] = this.editUser[index];
                 });
 
-                if (this.editUser.roles.length > 0) {
-                    this.form.role = this.editUser.roles[0].id;
-                }
+                this.form.role = this.editUser.role.id;
                 if (this.editUser.schools.length > 0) {
                     this.editUser.schools.forEach((school) => {
                         this.form.userSchools.push( { 'id' : school.id});

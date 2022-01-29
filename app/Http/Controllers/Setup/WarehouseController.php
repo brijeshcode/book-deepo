@@ -12,6 +12,13 @@ use Inertia\Inertia;
 class WarehouseController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware(['can:access warehouses'])->except(['schools']);
+        $this->middleware(['can:create warehouses'])->only(['create', 'store']);
+        $this->middleware(['can:edit warehouses'])->only(['edit', 'update']);
+    }
+
     public function index(Request $request)
     {
         /*$where = array();

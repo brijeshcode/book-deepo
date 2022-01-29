@@ -11,6 +11,13 @@ use Inertia\Inertia;
 
 class PublisherController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['can:access publishers'])->except(['books']);
+        $this->middleware(['can:create publishers'])->only(['create', 'store']);
+        $this->middleware(['can:edit publishers'])->only(['edit', 'update']);
+    }
+
     public function index(Request $request)
     {
         $publishers = Publisher::with('location')->orderBy('id', 'desc')

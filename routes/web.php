@@ -27,6 +27,7 @@ use App\Models\Setup\Book;
 use App\Models\Setup\Bundle;
 use App\Models\Setup\School;
 use App\Models\Setup\Warehouse;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -51,17 +52,32 @@ Route::get('/order/recived/confirmation/{order}/{type}', function(Request $reque
 })->name('dashboard');*/
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        $schools = School::count();
-        $warehouses = Warehouse::count();
-        $books = Book::count();
-        $schoolOrders = SchoolOrder::count();
-        $supplierOrders = SupplierOrder::count();
-        $sales = Sale::count();
-        $bundles = Bundle::count();
-        $publisherOrders = PublisherOrder::count();
 
-        return Inertia::render('Dashboard', compact('schools', 'warehouses', 'books', 'schoolOrders', 'bundles', 'supplierOrders', 'publisherOrders', 'sales'));
+    Route::get('/dashboard', function () {
+        $user = auth()->user();
+
+        if ($user->hasRole('Operator')) {
+            // echo 'operator';
+            // return $schools = $user->schools()->count;
+            $schools = $user->schools()->count();
+            $sales = Sale::where('user_id' , $user->id)->count();
+            $totalSale = Sale::where('user_id' , $user->id)->sum('total_amount');
+
+            return Inertia::render('OperatorDashboard', compact('schools', 'sales', 'totalSale'));
+
+        }else{
+            // dd($user->roles[0]->name);
+            $schools = School::count();
+            $warehouses = Warehouse::count();
+            $books = Book::count();
+            $schoolOrders = SchoolOrder::count();
+            $supplierOrders = SupplierOrder::count();
+            $sales = Sale::count();
+            $bundles = Bundle::count();
+            $publisherOrders = PublisherOrder::count();
+
+            return Inertia::render('Dashboard', compact('schools', 'warehouses', 'books', 'schoolOrders', 'bundles', 'supplierOrders', 'publisherOrders', 'sales'));
+        }
     })->name('dashboard');
 
     Route::get('/get/locations', [LocationsController::class, 'locations'])->name('locations.list');

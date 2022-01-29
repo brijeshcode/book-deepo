@@ -11,6 +11,13 @@ use Inertia\Inertia;
 
 class RolesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['can:access roles']);
+        $this->middleware(['can:create roles'])->only(['create', 'store']);
+        $this->middleware(['can:edit roles'])->only(['edit', 'update']);
+    }
+
     public function index()
     {
         $roles = Role::orderBy('name')->paginate(10);

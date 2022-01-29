@@ -16,6 +16,13 @@ use Inertia\Inertia;
 
 class BookController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['can:access books'])->except(['list']);
+        $this->middleware(['can:create books'])->only(['create', 'store']);
+        $this->middleware(['can:edit books'])->only(['edit', 'update']);
+    }
+
     public function index(Request $request)
     {
         $books = Book::select('id', 'publisher_id', 'warehouse_id', 'sku_no','cost', 'subject', 'name', 'author_name', 'description', 'class', 'quantity', 'note', 'active')

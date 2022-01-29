@@ -12,10 +12,23 @@ use Inertia\Inertia;
 
 class SaleController extends Controller
 {
-    //
+    public function __construct()
+    {
+        $this->middleware(['can:access sale']);
+        $this->middleware(['can:create sale'])->only(['create', 'store']);
+        $this->middleware(['can:edit sale'])->only(['edit', 'update']);
+    }
+
     public function index(Request $request)
     {
-        $sales = Sale::with('school:id,name')->select('id', 'date' , 'school_id', 'bundle_id', 'student_name', 'student_mobile', 'student_email', 'total_amount' ,'total_quantity', 'note' )->orderBy('id', 'desc')->paginate(5);
+        $user = auth()->user();
+        if ($user->hasRole('Operator')) {
+
+            $sales = Sale::with('school:id,name')->select('id', 'date' , 'school_id', 'bundle_id', 'student_name', 'student_mobile', 'student_email', 'total_amount' ,'total_quantity', 'note' )->where('user_id', $user->id)->orderBy('id', 'desc')->paginate(5);
+        }else{
+
+            $sales = Sale::with('school:id,name')->select('id', 'date' , 'school_id', 'bundle_id', 'student_name', 'student_mobile', 'student_email', 'total_amount' ,'total_quantity', 'note' )->orderBy('id', 'desc')->paginate(5);
+        }
         return Inertia::render('Order/Sales/Index', compact('sales'));
     }
 
@@ -36,7 +49,7 @@ class SaleController extends Controller
         }
 
         if ($schools->isEmpty()) {
-            return redirect()->back()->with('type', 'warning')->with('message', 'Check shcool have alteast one active bundle.');
+            return redirect()->back()->with('type', 'warning')->with('message', 'No active bundle in any school found, check school have alteast one active bundle and continue.');
         }
         return Inertia::render('Order/Sales/Create', compact('schools'));
     }

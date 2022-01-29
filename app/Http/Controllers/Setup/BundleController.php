@@ -11,6 +11,13 @@ use Inertia\Inertia;
 
 class BundleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['can:access bundles'])->except(['bundles']);
+        $this->middleware(['can:create bundles'])->only(['create', 'store']);
+        $this->middleware(['can:edit bundles'])->only(['edit', 'update']);
+    }
+
     public function index(Request $request)
     {
         $bundles = Bundle::select('id', 'name', 'school_id', 'note', 'active')

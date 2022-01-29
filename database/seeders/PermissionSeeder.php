@@ -43,5 +43,8 @@ class PermissionSeeder extends Seeder
         $role->givePermissionTo(Permission::all());
         $user = User::whereId(2)->first();
         $user->assignRole('super-admin');
+        $role = Role::create(['name' => 'Operator']);
+
+        $role->givePermissionTo('access sales', 'create sales', 'edit sales');
     }
 }

@@ -14,6 +14,15 @@ class Sale extends Model
     use HasFactory,SoftDeletes;
     protected $fillable = [ 'date' , 'school_id', 'bundle_id', 'student_name','student_email', 'student_mobile', 'total_amount' ,'total_quantity', 'note', 'user_id', 'user_ip'];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $model->user_id = auth()->user()->id;
+            $model->user_ip = \Request::ip();
+        });
+    }
     public function getDateAttribute()
     {
         return date('d-m-Y @ H:i A', strtotime($this->created_at));

@@ -12,7 +12,13 @@ use Inertia\Inertia;
 
 class SampleController extends Controller
 {
-    //
+    public function __construct()
+    {
+        $this->middleware(['can:access samples']);
+        $this->middleware(['can:create samples'])->only(['create', 'store']);
+        $this->middleware(['can:edit samples'])->only(['edit', 'update']);
+    }
+
     public function index(Request $request)
     {
         $samples = SchoolSample::with('school:id,name')->select('id', 'date' , 'school_id', 'quantity', 'note' )->orderBy('id', 'desc')->paginate(10);

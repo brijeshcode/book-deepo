@@ -10,6 +10,13 @@ use Inertia\Inertia;
 
 class SupplierController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['can:access suppliers'])->except(['books']);
+        $this->middleware(['can:create suppliers'])->only(['create', 'store']);
+        $this->middleware(['can:edit suppliers'])->only(['edit', 'update']);
+    }
+
     /**
      * Display a listing of the resource.
      *
