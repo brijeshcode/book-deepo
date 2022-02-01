@@ -180,7 +180,7 @@
             this.showFilter   = !this.showFilter;
           },
           filterData(){
-            Inertia.get(route('school.order.index'), this.filter ,{
+            Inertia.get(route('sales.index'), this.filter ,{
                         preserveState: true,
                         replace: true
                     });

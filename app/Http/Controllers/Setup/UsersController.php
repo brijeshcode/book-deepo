@@ -21,7 +21,7 @@ class UsersController extends Controller
         $this->middleware(['can:edit users'])->only(['edit', 'update']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $users = User::when($request->search, function ($query, $search){
                 $query->where('name', 'like', '%'. $search . '%');
