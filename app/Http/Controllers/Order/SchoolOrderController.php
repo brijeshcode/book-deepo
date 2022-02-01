@@ -15,9 +15,7 @@ use App\Models\Orders\SupplierOrderDelivery;
 use App\Models\Orders\SupplierOrderItem;
 use App\Models\Orders\SupplierOrderReturn;
 use App\Models\Setup\Book;
-use App\Models\Setup\Publisher;
 use App\Models\Setup\School;
-use App\Models\Setup\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
@@ -26,12 +24,26 @@ class SchoolOrderController extends Controller
 {
     public function index(Request $request)
     {
+        $orders = SchoolOrder::with('school:id,name,email,mobile')
+            ->when($request->quantity, function ($query, $quantity){
+                $query->where('quantity',  '='  , $quantity);
+            })
+            ->when($request->school_id, function ($query, $school_id){
+                $query->where('school_id',  '='  , $school_id);
+            })
+            ->when($request->status, function ($query, $status){
+                $query->where('status',  '='  , $status);
+            })
+            ->when($request->date, function ($query, $date){
+                $query->where('date',  '='  , $date);
+            })
+            ->orderBy('id', 'desc')->paginate(5)
+            ->withQueryString()
+            ;
 
-        // $orders = SchoolOrder::with('school:id,name')->select('id', 'school_id','email' , 'date', 'mobile', 'fax', 'contact_person',  'note', 'total_quantity', 'total_amount' )->orderBy('id', 'desc')->paginate(5);
-        // Mail::to('Cloudways@Cloudways.com')->send(new SendMailable($name));
-        $orders = SchoolOrder::with('school:id,name,email,mobile')->orderBy('id', 'desc')->paginate(5);
+        $schools = School::whereActive(1)->orderBy('name', 'asc')->get();
 
-        return Inertia::render('Order/Schools/Index', compact('orders'));
+        return Inertia::render('Order/Schools/Index', compact('orders', 'schools'));
     }
 
     public function create(Request $request)
@@ -42,8 +54,8 @@ class SchoolOrderController extends Controller
             return redirect()->back()->with('type', 'info')->with('message', 'First Add books to any school And make sure school atleast one school is active.');
         }
 
-        $books = Book::with('suppliers', 'publisher:id,name,mobile,email')
-                ->select( 'id', 'publisher_id', 'sku_no','name', 'author_name' ,'description', 'quantity', 'cost', 'class' , 'note', 'subject')->where('active' , true)->orderBy('name')->get();
+        /*$books = Book::with('suppliers', 'publisher:id,name,mobile,email')
+                ->select( 'id', 'publisher_id', 'sku_no','name', 'author_name' ,'description', 'quantity', 'cost', 'class' , 'note', 'subject')->where('active' , true)->orderBy('name')->get();*/
         return Inertia::render('Order/Schools/Create', compact('schools', 'books'));
     }
 

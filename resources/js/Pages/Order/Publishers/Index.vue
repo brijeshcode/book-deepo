@@ -13,8 +13,58 @@
         <template #actions>
             <div class="flex">
               <!-- <Add-link createRoute="publisher.order.create" title="Add new publisher order" withIcon /> -->
+
+              <span @click="toggleFilter" class="p-2">
+                <FilterIcon class=" cursor-pointer text-gray-500 hover:text-gray-800" />
+              </span>
             </div>
         </template>
+
+        <div v-if="showFilter" class="p-4 transition ease-in bg-white shadow rounded w-full border-red-100 my-4">
+
+          <div class="p-4  grid  grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="filter">
+              <jet-label for="date" required value="Order date" />
+              <jet-input id="date" type="date" class="mt-1 block w-full" v-model="filter.date" autocomplete="date" />
+            </div>
+            <div class="filter">
+              <jet-label for="quantity" required value="Order quantity" />
+              <jet-input id="quantity" type="number" class="mt-1 block w-full" v-model="filter.quantity" autocomplete="quantity" />
+            </div>
+            <div class="filter">
+              <jet-label for="amount" required value="Order amount" />
+              <jet-input id="amount" type="number" class="mt-1 block w-full" v-model="filter.amount" autocomplete="amount" />
+            </div>
+            <!-- <div class="filter">
+              <jet-label for="status" required value="Order Status" />
+              <select id="status" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"
+                  v-model="filter.status"
+                  >
+                  <option value="Requested">Requested</option>
+                  <option value="Partial">Partial</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Cancelled">Cancelled</option>
+                  </select>
+            </div> -->
+            <div class="filter">
+              <jet-label for="publisher_id" required value="Publisher" />
+                  <select id="publisher_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"
+                  v-model="filter.publisher_id"
+                  >
+                      <option v-for="publisher in publishers" :value="publisher.id">{{ publisher.name }}</option>
+                  </select>
+            </div>
+
+          </div>
+
+          <div>
+
+          <div class="p-4">
+            <jet-button @click="filterData"  >Filter</jet-button>
+          </div>
+
+          </div>
+        </div>
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div class="flex flex-col">
@@ -94,11 +144,41 @@
     import DeliverLink from '@/Shared/Components/Links/Delivery.vue'
     import ShowLink from '@/Shared/Components/Links/Show.vue'
     import Search from '@/Shared/Components/Filters/Search.vue'
+    import { Inertia } from '@inertiajs/inertia'
+    import JetLabel from '@/Jetstream/Label.vue'
+    import FilterIcon from '@/Shared/Components/Icons/svg/Filter.vue'
+    import JetInput from '@/Jetstream/Input.vue'
+    import JetButton from '@/Jetstream/Button.vue'
 
     export default defineComponent({
+
         components: {
-            AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination,ShowLink
+            AppLayout,BreadSimple,Search,AddLink,
+            DeliverLink,Pagination,ShowLink,
+            FilterIcon,JetLabel,JetInput,JetButton
         },
-        props:{ orders: Object }
+        props:{ orders: Object , publishers: Object},
+        data: () => ({
+            showFilter: false,
+            filter:{
+              date: null,
+              quantity: null,
+              amount: null,
+              status: null,
+              publisher_id: null,
+              filter: 1
+            }
+        }),
+        methods:{
+          toggleFilter(){
+            this.showFilter   = !this.showFilter;
+          },
+          filterData(){
+            Inertia.get(route('publisher.order.index'), this.filter ,{
+                        preserveState: true,
+                        replace: true
+                    });
+          }
+        }
     })
 </script>

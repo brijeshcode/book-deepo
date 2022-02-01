@@ -20,8 +20,24 @@ class PublisherOrderController extends Controller
     //
     public function index(Request $request)
     {
-        $orders = PublisherOrder::with('publisher:id,name')->orderBy('id', 'desc')->paginate(5);
-        return Inertia::render('Order/Publishers/Index', compact('orders'));
+        $orders = PublisherOrder::with('publisher:id,name')
+            ->when($request->quantity, function ($query, $quantity){
+                $query->where('quantity',  '='  , $quantity);
+            })
+            ->when($request->publisher_id, function ($query, $publisher_id){
+                $query->where('publisher_id',  '='  , $publisher_id);
+            })
+            ->when($request->status, function ($query, $status){
+                $query->where('status',  '='  , $status);
+            })
+            ->when($request->date, function ($query, $date){
+                $query->where('date',  '='  , $date);
+            })
+            ->orderBy('id', 'desc')->paginate(5)
+            ->withQueryString();
+
+        $publishers = Publisher::whereActive(1)->orderBy('name', 'asc')->get();
+        return Inertia::render('Order/Publishers/Index', compact('orders', 'publishers'));
     }
 
 

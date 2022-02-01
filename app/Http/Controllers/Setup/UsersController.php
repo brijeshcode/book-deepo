@@ -23,7 +23,15 @@ class UsersController extends Controller
 
     public function index()
     {
-        $users = User::paginate(10);
+        $users = User::when($request->search, function ($query, $search){
+                $query->where('name', 'like', '%'. $search . '%');
+                $query->orWhere('email', 'like', '%'. $search . '%');
+                $query->orWhere('note', 'like', '%'. $search . '%');
+            })
+        ->orderBy('id', 'desc')
+        ->paginate(10)
+        ->withQueryString()
+        ;
         return Inertia::render('Setup/Users/Index' , compact('users'));
     }
 

@@ -20,12 +20,26 @@ class SupplierOrderController extends Controller
     //
     public function index(Request $request)
     {
-        /*return $orders = SchoolOrder::has('items.supplier')->with('items:id,order_id,supplier_id', 'items.supplier:id,name')->paginate(10);
-        return $orders = SchoolOrderItem::where('order_to', 'Supplier')->get();*/
-        // $orders = SupplierOrder::with('supplier:id,name')->select('id', 'school_id', 'supplier_id','email' , 'date', 'mobile', 'fax', 'contact_person',  'note', 'total_quantity', 'total_amount' )->orderBy('id', 'desc')
-        $orders = SupplierOrder::with('supplier:id,name')->orderBy('id', 'desc')
-        ->paginate(10)->withQueryString();
-        return Inertia::render('Order/Suppliers/Index', compact('orders'));
+
+        $orders = SupplierOrder::with('supplier:id,name')
+        ->when($request->quantity, function ($query, $quantity){
+                $query->where('quantity',  '='  , $quantity);
+            })
+            ->when($request->supplier_id, function ($query, $supplier_id){
+                $query->where('supplier_id',  '='  , $supplier_id);
+            })
+            ->when($request->status, function ($query, $status){
+                $query->where('status',  '='  , $status);
+            })
+            ->when($request->date, function ($query, $date){
+                $query->where('date',  '='  , $date);
+            })
+        ->orderBy('id', 'desc')
+        ->paginate(10)
+        ->withQueryString();
+
+        $suppliers = Supplier::whereActive(1)->orderBy('name', 'asc')->get();
+        return Inertia::render('Order/Suppliers/Index', compact('orders','suppliers'));
     }
 
     public function create(Request $request)

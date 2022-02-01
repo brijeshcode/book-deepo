@@ -16,6 +16,7 @@
             <div class="p-2">
 
                 <form  @submit.prevent="submitData">
+
                     <div class="flex flex-row mb-4">
 
                         <div class="basis-1/4">
@@ -77,51 +78,8 @@
                                         </select>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
-                                        <div v-if="item.book.sku_no" class="flex text-gray-800">
+                                        <div v-if="item.book.id" class="flex text-gray-800">
                                             <Edit-link :edit="{route: 'books.edit', to:item.book.id }" target="_blank" > View Detail </Edit-link>
-
-                                            <!-- <div class=" flex-1 rounded-md shadow-lg shadow-sm mr-2  ">
-                                                <div class=" card">
-                                                    <div class="card-head pt-2 pb-2 border-b text-center flex">
-                                                        <div class="font-bold w-full">Book</div>
-                                                    </div>
-                                                    <div class="card-body p-2">
-                                                        <div class="block">#: {{ item.book.sku_no }}</div>
-                                                        <div class="block">
-                                                        {{ item.book.class }}, <div class="right flex-1 text-sm "> {{ item.book.subject }}</div>
-                                                        <div class="block">Qty: {{ item.book.quantity }}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> -->
-
-                                            <!-- <div v-if="item.book.suppliers" class="flex-1 rounded-md shadow-lg mr-2">
-                                                <div class=" card">
-                                                    <div class="card-head pt-2 pb-2 border-b text-center flex">
-                                                        <div class="font-bold w-full">Supplier</div>
-                                                    </div>
-
-                                                    <div class="card-body p-2 text-cener">
-                                                        <div class="right block ">{{ item.book.supplier.name }}</div>
-                                                        <div class="block ">{{ item.book.supplier.email }}</div>
-                                                        <div class="block text-sm ">{{ item.book.supplier.mobile }}</div>
-                                                    </div>
-                                                </div>
-                                            </div> -->
-
-                                            <!-- <div v-if="item.book.publisher" class="flex-1 rounded-md shadow-lg  ">
-                                                <div class=" card">
-                                                    <div class="card-head pt-2 pb-2 border-b text-center flex">
-                                                        <div class="font-bold w-full">Publisher</div>
-                                                    </div>
-                                                    <div class="card-body p-2 text-cener">
-                                                        <div class="right block">{{ item.book.publisher.name }}</div>
-                                                        <div class="block">{{ item.book.publisher.email }}</div>
-                                                        <div class="block">{{ item.book.publisher.mobile }}</div>
-                                                    </div>
-                                                </div>
-                                            </div> -->
-
                                         </div>
                                     </td>
 
@@ -146,7 +104,7 @@
 
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <jet-input type="number" style="width:70px" step="1" min="0" class="mt-1 block" v-model="item.quantity" />
-                                        <!-- <group-input prefixlabel="Qty:" :prefix="item.book.quantity" type="number" class="mt-1 block" v-model="item.quantity" /> -->
+                                        <!-- <group-input prefixlabel="Qty:" :prefix="item.book.quantity" type="number" claclassss="mt-1 block" v-model="item.quantity" /> -->
                                     </td>
 
 
@@ -164,7 +122,7 @@
                                     <td class="px-4 py-4 whitespace-nowrap"></td>
                                     <td class="px-4 py-4 whitespace-nowrap"></td>
                                     <td class="px-4 py-4 whitespace-nowrap"></td>
-                                    <td class="px-4 py-4 whitespace-nowrap"><jet-input type="number" class="mt-1 block" style="width:70px" readonly v-model="computeQuantity" /></td>
+                                    <td class="p-4 whitespace-nowrap">{{ computeQuantity }}</td>
                                     <td class="px-4 py-4 whitespace-nowrap"></td>
                                 </tr>
                             </tfoot>
@@ -193,7 +151,6 @@
     import JetCheckbox from '@/Jetstream/Checkbox.vue'
     import { Link } from '@inertiajs/inertia-vue3';
     import EditLink from '@/Shared/Components/Links/Edit.vue'
-    // import BookList from '@/Pages/Order/School/BookList.vue'
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import { Inertia } from '@inertiajs/inertia'
     import RemoveIcon from '@/Shared/Components/Icons/svg/Trash.vue'
@@ -281,7 +238,6 @@
                     book: {}
                 };
                 this.form.items.push(item);
-
             },
             getBooks(school_id){
                 axios.get(route('schools.books', school_id)).then(books =>{
@@ -292,6 +248,7 @@
             changeBook(event , index){
                 this.refreshBook(event.target.value, index);
             },
+
             refreshBook(book_id = '', itemIndex = ''){
                 let book = {};
 
