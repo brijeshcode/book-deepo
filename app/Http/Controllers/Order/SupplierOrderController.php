@@ -38,7 +38,7 @@ class SupplierOrderController extends Controller
         ->paginate(10)
         ->withQueryString();
 
-        $suppliers = Supplier::whereActive(1)->orderBy('name', 'asc')->get();
+        $suppliers = Supplier::has('orders')->whereActive(1)->orderBy('name', 'asc')->get();
         return Inertia::render('Order/Suppliers/Index', compact('orders','suppliers'));
     }
 

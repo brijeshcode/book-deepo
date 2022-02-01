@@ -36,7 +36,7 @@ class PublisherOrderController extends Controller
             ->orderBy('id', 'desc')->paginate(5)
             ->withQueryString();
 
-        $publishers = Publisher::whereActive(1)->orderBy('name', 'asc')->get();
+        $publishers = Publisher::has('orders')->whereActive(1)->orderBy('name', 'asc')->get();
         return Inertia::render('Order/Publishers/Index', compact('orders', 'publishers'));
     }
 

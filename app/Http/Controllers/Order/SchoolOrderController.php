@@ -41,7 +41,7 @@ class SchoolOrderController extends Controller
             ->withQueryString()
             ;
 
-        $schools = School::whereActive(1)->orderBy('name', 'asc')->get();
+        $schools = School::has('orders')->whereActive(1)->orderBy('name', 'asc')->get();
 
         return Inertia::render('Order/Schools/Index', compact('orders', 'schools'));
     }

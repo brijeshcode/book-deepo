@@ -3,6 +3,7 @@
 namespace App\Models\Setup;
 
 use App\Models\Orders\PublisherChallan;
+use App\Models\Orders\PublisherOrder;
 use App\Models\Orders\PublisherOrderDelivery;
 use App\Models\Orders\PublisherOrderReturn;
 use App\Models\Setup\Book;
