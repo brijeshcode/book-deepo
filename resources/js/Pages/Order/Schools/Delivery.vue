@@ -155,7 +155,7 @@
 
                                             <td class="px-4 py-4 whitespace-nowrap">
                                                 <input type="file" @input="challan.path = $event.target.files[0]" />
-                                                <img v-if="challan.path != '' " :src="challan.path" style="width:120px;height:120px;">
+                                                <img v-if="challan.path && challan.path != '' " :src="challan.path" style="width:120px;height:120px;">
                                                 <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                                                   {{ form.progress.percentage }}%
                                                 </progress>

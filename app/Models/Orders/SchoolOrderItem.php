@@ -39,13 +39,13 @@ class SchoolOrderItem extends Model
         return $this->belongsTo(Publisher::class, 'publisher_id');
     }
 
-    public function supplierDelivery()
+    /*public function supplierDelivery()
     {
         return $this->hasMany(SupplierOrderDelivery::class);
-    }
+    }*/
 
-    public function publisherDelivery()
+    /*public function publisherDelivery()
     {
         return $this->hasMany(PublisherOrderDelivery::class);
-    }
+    }*/
 }

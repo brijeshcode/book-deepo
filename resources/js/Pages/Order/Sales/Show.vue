@@ -40,7 +40,7 @@
                     <div class="flex-col p-4 w-1/3 border-r">
                         <div class="flex">
                             <div>
-                                <h2 class="uppercase font-semibold mb-2" >Deliver From</h2>
+                                <h2 class="uppercase font-semibold mb-2" >&nbsp;</h2>
                                 <p class="">{{ sale.school.warehouse.name }}</p>
                                 <p class="text-gray-500 text-sm">{{ sale.school.warehouse.address }}</p>
                                 <p class="text-gray-500 text-sm">{{ sale.school.warehouse.city }}, {{ sale.school.warehouse.state }}</p>

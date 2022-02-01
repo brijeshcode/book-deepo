@@ -178,7 +178,15 @@ class SchoolOrderController extends Controller
     public function createReturn (Request $request, $order_id)
     {
 
-       $order = SchoolOrder::with('items', 'items.supplierDelivery', 'items.publisherDelivery', 'items.book' , 'items.supplier','items.publisher' , 'school')
+       $order = SchoolOrder::with(
+                'items',
+                // 'items.supplierDelivery',
+                // 'items.publisherDelivery',
+                'items.book' ,
+                'items.supplier',
+                'items.publisher',
+                'school'
+            )
             ->where('id',$order_id)->first();
 
         $schools = School::select('id', 'name', 'email' ,'mobile', 'contact_person')

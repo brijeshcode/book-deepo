@@ -50,7 +50,6 @@ class SaleController extends Controller
             ->paginate(10)
             ->withQueryString();
             ;
-            $schools = School::whereActive(1)->has('user')->orderBy('name', 'asc')->get();
         }else{
 
             $sales = Sale::with('school:id,name')->select('id', 'date' , 'school_id', 'bundle_id', 'student_name', 'student_mobile', 'student_email', 'total_amount' ,'total_quantity', 'note' )
@@ -77,27 +76,16 @@ class SaleController extends Controller
             })
             ->orderBy('id', 'desc')->paginate(10)
             ->withQueryString();
-            $schools = School::whereActive(1)->orderBy('name', 'asc')->get();
-
         }
+
+        $schools = $this->getSchoolWithOperatorCheck();
+
         return Inertia::render('Order/Sales/Index', compact('sales', 'schools'));
     }
 
     public function create(Request $request)
     {
-        // $user = User::with('schools:id,name,active')->has('schools')->find(8);
-        $user = User::with('schools:id,name,active')->has('schools')->find(\Auth::id());
-        $checkSchool = [];
-        if ($user) {
-            foreach ($user->schools as $key => $school) {
-                $checkSchool[] = $school->id;
-            }
-        }
-        if (empty($checkSchool)) {
-            $schools = School::select('id', 'name')->where('active', 1)->orderBy('name')->has('bundles')->get();
-        }else{
-            $schools = School::select('id', 'name')->whereIn('id' , $checkSchool)->where('active', 1)->orderBy('name')->has('bundles')->get();
-        }
+        $schools = $this->getSchoolWithOperatorCheck();
 
         if ($schools->isEmpty()) {
             return redirect()->back()->with('type', 'warning')->with('message', 'No active bundle in any school found, check school have alteast one active bundle and continue.');
@@ -192,5 +180,22 @@ class SaleController extends Controller
 
             ]
         );
+    }
+
+    private function getSchoolWithOperatorCheck()
+    {
+        $user = User::with('schools:id,name,active')->has('schools')->find(\Auth::id());
+        $checkSchool = [];
+        if ($user) {
+            foreach ($user->schools as $key => $school) {
+                $checkSchool[] = $school->id;
+            }
+        }
+        if (empty($checkSchool)) {
+            $schools = School::select('id', 'name')->where('active', 1)->orderBy('name')->has('bundles')->get();
+        }else{
+            $schools = School::select('id', 'name')->whereIn('id' , $checkSchool)->where('active', 1)->orderBy('name')->has('bundles')->get();
+        }
+        return $schools;
     }
 }

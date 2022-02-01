@@ -2,7 +2,10 @@
 
 namespace App\Models\Setup;
 
+use App\Models\Orders\SupplierChallan;
 use App\Models\Orders\SupplierOrder;
+use App\Models\Orders\SupplierOrderDelivery;
+use App\Models\Orders\SupplierOrderReturn;
 use App\Models\Setup\Book;
 use App\Models\Setup\Location;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,5 +34,20 @@ class Supplier extends Model
     public function orders()
     {
         return $this->hasMany(SupplierOrder::class);
+    }
+
+    public function deliveries()
+    {
+        return $this->hasMany(SupplierOrderDelivery::class);
+    }
+
+    public function challans()
+    {
+        return $this->hasMany(SupplierChallan::class);
+    }
+
+    public function returns()
+    {
+        return $this->hasMany(SupplierOrderReturn::class);
     }
 }

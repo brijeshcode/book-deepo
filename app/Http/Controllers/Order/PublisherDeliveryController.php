@@ -11,16 +11,33 @@ use App\Models\Orders\PublisherOrderItem;
 use App\Models\Orders\SchoolOrder;
 use App\Models\Orders\SchoolOrderItem;
 use App\Models\Setup\Book;
+use App\Models\Setup\Publisher;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class PublisherDeliveryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $deliveries = PublisherOrderDelivery::with('publisher' , 'items')->paginate(10);
-        return Inertia::render('Order/Publishers/Deliveries/Index', compact('deliveries'));
+        $deliveries = PublisherOrderDelivery::with('publisher:id,name' , 'items')
+                ->when($request->quantity, function ($query, $quantity){
+                    $query->where('quantity',  '='  , $quantity);
+                })
+                ->when($request->amount, function ($query, $amount){
+                    $query->where('amount',  '='  , $amount);
+                })
+                ->when($request->publisher_id, function ($query, $publisher_id){
+                    $query->where('publisher_id',  '='  , $publisher_id);
+                })
+                ->when($request->date, function ($query, $date){
+                    $query->where('date',  '='  , $date);
+                })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+        $publishers = Publisher::select('id', 'name')->whereActive(1)->has('deliveries')->get();
+        return Inertia::render('Order/Publishers/Deliveries/Index', compact('deliveries', 'publishers'));
     }
     public function store(Request $request)
     {
@@ -45,6 +62,11 @@ class PublisherDeliveryController extends Controller
         // $this->validateFull($request);
 
         \DB::transaction(function() use ($request) {
+            $challans = $request->challans;
+            foreach ($challans as $key => $challan) {
+                $challans[$key]['path'] = $this->uploadChallans($challan['path']);
+            }
+
             // dd($request);
             // 1.& 2  Insert publisher delivery &&  insert publisher delivery items
             $publisherOrder = PublisherOrderDelivery::create($request->only('date', 'publisher_id', 'school_id', 'publisher_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount','note'));
@@ -104,10 +126,10 @@ class PublisherDeliveryController extends Controller
                 }
             }
 
-            foreach ($challans as $key => $challan) {
-                $challans[$key]['path'] = $this->uploadChallans($challan['path']);
-            }
             if (count($challans) > 0) {
+                foreach ($challans as $key => $challan) {
+                    $challans[$key]['path'] = $this->uploadChallans($challan['path']);
+                }
                 $delivery->challans()->createMany($challans);
             }
         });
@@ -144,7 +166,7 @@ class PublisherDeliveryController extends Controller
 
     public function uploadChallans($challanPath)
     {
-        if(gettype($challanPath) == 'string'){
+        if(gettype($challanPath) == 'string' || is_null($challanPath)){
             return $challanPath;
         }
         $now = now();

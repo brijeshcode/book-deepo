@@ -150,8 +150,24 @@ class SupplierOrderController extends Controller
 
     public function returnIndex(Request $request)
     {
-        $returns = SupplierOrderReturn::with('supplier', 'order', 'order.school')->paginate(10);
-        return Inertia::render('Order/Suppliers/ReturnIndex', compact('returns'));
+        $returns = SupplierOrderReturn::with('supplier', 'order', 'order.school')
+                ->when($request->quantity, function ($query, $quantity){
+                    $query->where('quantity',  '='  , $quantity);
+                })
+                ->when($request->supplier_order_id, function ($query, $supplier_order_id){
+                    $query->where('supplier_order_id',  '='  , $supplier_order_id);
+                })
+                ->when($request->supplier_id, function ($query, $supplier_id){
+                    $query->where('supplier_id',  '='  , $supplier_id);
+                })
+                ->when($request->date, function ($query, $date){
+                    $query->where('date',  '='  , $date);
+                })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+        $suppliers = Supplier::select('id', 'name')->whereActive(1)->has('returns')->get();
+        return Inertia::render('Order/Suppliers/ReturnIndex', compact('returns','suppliers'));
     }
 
     public function returnShow(Request $request, $return_id)

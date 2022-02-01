@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Models\Orders\PublisherChallan;
 use App\Models\Orders\PublisherPayment;
+use App\Models\Setup\Publisher;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -17,10 +18,32 @@ class PublisherPaymentController extends Controller
         // $this->middleware(['can:edit {{ auth }}'])->only(['edit', 'update']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-       $challans = PublisherChallan::with('publisher')->orderBy('school_order_id', 'desc')->paginate(10);
-        return Inertia::render('Order/Publishers/Payments/Index', compact('challans'));
+        $challans = PublisherChallan::with('publisher:id,name')
+                ->when($request->challan_no, function ($query, $challan_no){
+                    $query->where('challan_no',  '='  , $challan_no);
+                })
+                ->when($request->amount, function ($query, $amount){
+                    $query->where('amount',  '='  , $amount);
+                })
+                ->when($request->payment_status, function ($query, $payment_status){
+                    $query->where('payment_status',  '='  , $payment_status);
+                })
+                ->when($request->publisher_id, function ($query, $publisher_id){
+                    $query->where('publisher_id',  '='  , $publisher_id);
+                })
+                ->when($request->date, function ($query, $date){
+                    $query->where('date',  '='  , $date);
+                })
+                ->when($request->note, function ($query, $note){
+                    $query->where('note',  '='  , $note);
+                })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+        $publishers = Publisher::select('id', 'name')->whereActive(1)->has('challans')->get();
+        return Inertia::render('Order/Publishers/Payments/Index', compact('challans', 'publishers'));
     }
 
     public function create($publisherId)

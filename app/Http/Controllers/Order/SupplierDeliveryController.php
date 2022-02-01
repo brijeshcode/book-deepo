@@ -12,16 +12,33 @@ use App\Models\Orders\SupplierOrderDelivery;
 use App\Models\Orders\SupplierOrderDeliveryItem;
 use App\Models\Orders\SupplierOrderItem;
 use App\Models\Setup\Book;
+use App\Models\Setup\Supplier;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class SupplierDeliveryController extends Controller
 {
     public function index(Request $request)
     {
-        $deliveries = SupplierOrderDelivery::with('supplier')->paginate(10);
-        return Inertia::render('Order/Suppliers/Deliveries/Index', compact('deliveries'));
+        $deliveries = SupplierOrderDelivery::with('supplier:id,name')
+                ->when($request->quantity, function ($query, $quantity){
+                    $query->where('quantity',  '='  , $quantity);
+                })
+                ->when($request->amount, function ($query, $amount){
+                    $query->where('amount',  '='  , $amount);
+                })
+                ->when($request->supplier_id, function ($query, $supplier_id){
+                    $query->where('supplier_id',  '='  , $supplier_id);
+                })
+                ->when($request->date, function ($query, $date){
+                    $query->where('date',  '='  , $date);
+                })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+        $suppliers = Supplier::select('id', 'name')->whereActive(1)->has('deliveries')->get();
+        return Inertia::render('Order/Suppliers/Deliveries/Index', compact('deliveries', 'suppliers'));
     }
 
     public function create(Request $request, $order_id)
@@ -119,16 +136,15 @@ class SupplierDeliveryController extends Controller
                     $supplierChallan->challan_no = $challan['challan_no'];
                     $supplierChallan->amount = $challan['amount'];
                     $supplierChallan->path = $this->uploadChallans($challan['path']);
-                    $supplierChallan->path = $challan['path'];
                     $supplierChallan->note = $challan['note'];
                     $supplierChallan->save();
                     unset($challans[$key]);
                 }
             }
-            foreach ($challans as $key => $challan) {
-                $challans[$key]['path'] = $this->uploadChallans($challan['path']);
-            }
             if (count($challans) > 0) {
+                foreach ($challans as $key => $challan) {
+                    $challans[$key]['path'] = $this->uploadChallans($challan['path']);
+                }
                 $delivery->challans()->createMany($challans);
             }
         });
@@ -163,9 +179,10 @@ class SupplierDeliveryController extends Controller
 
     public function uploadChallans($challanPath)
     {
-        if(gettype($challanPath) == 'string'){
+        if(gettype($challanPath) == 'string' || is_null($challanPath)){
             return $challanPath;
         }
+
         $now = now();
         $imageName = time().'.'.$challanPath->extension();
         $location = 'Challans/Supplier/'. $now->year. '/'. $now->format('m');

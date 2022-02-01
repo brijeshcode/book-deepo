@@ -62,7 +62,7 @@ class PublisherOrderController extends Controller
     public function show(PublisherOrder $order)
     {
         // return abort(404);
-        return $order->load(
+        $order = $order->load(
                 'schoolOrder:id,school_id,date,status',
                 'schoolOrder.school:id,name',
                 'publisher:id,name,mobile,email,contact_person',
@@ -71,7 +71,7 @@ class PublisherOrderController extends Controller
             )
         ->only('id','date' ,'amount', 'quantity', 'publisher_id', 'school_order_id', 'status', 'publisher','schoolOrder', 'items');
 
-        return Inertia::render('Order/Publishers/Show', compact('publishers', 'order'));
+        return Inertia::render('Order/Publishers/Show', compact( 'order'));
     }
 
 
@@ -213,7 +213,23 @@ class PublisherOrderController extends Controller
 
     public function returnIndex(Request $request)
     {
-        $returns = PublisherOrderReturn::with('publisher')->paginate(10);
-        return Inertia::render('Order/Publishers/ReturnIndex', compact('returns'));
+        $returns = PublisherOrderReturn::with('publisher:id,name')
+                ->when($request->quantity, function ($query, $quantity){
+                    $query->where('quantity',  '='  , $quantity);
+                })
+                ->when($request->publisher_order_id, function ($query, $publisher_order_id){
+                    $query->where('publisher_order_id',  '='  , $publisher_order_id);
+                })
+                ->when($request->publisher_id, function ($query, $publisher_id){
+                    $query->where('publisher_id',  '='  , $publisher_id);
+                })
+                ->when($request->date, function ($query, $date){
+                    $query->where('date',  '='  , $date);
+                })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+        $publishers = Publisher::select('id', 'name')->whereActive(1)->has('returns')->get();
+        return Inertia::render('Order/Publishers/ReturnIndex', compact('returns', 'publishers'));
     }
 }

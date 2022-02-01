@@ -137,7 +137,7 @@
                     var item = {
                         book_name : item.book.name,
                         publisher_name : item.publisher.name,
-                        supplier_name : item.supplier.name,
+                        supplier_name : item.supplier ? item.supplier.name : '',
                         supplier_id : item.supplier_id,
                         publisher_id : item.publisher_id,
                         school_order_id : item.school_order_id,

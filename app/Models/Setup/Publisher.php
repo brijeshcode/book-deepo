@@ -2,6 +2,9 @@
 
 namespace App\Models\Setup;
 
+use App\Models\Orders\PublisherChallan;
+use App\Models\Orders\PublisherOrderDelivery;
+use App\Models\Orders\PublisherOrderReturn;
 use App\Models\Setup\Book;
 use App\Models\Setup\Location;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,9 +29,23 @@ class Publisher extends Model
     {
         return $this->hasMany(Book::class);
     }
+    public function deliveries()
+    {
+        return $this->hasMany(PublisherOrderDelivery::class);
+    }
 
     public function orders()
     {
         return $this->hasMany(PublisherOrder::class);
+    }
+
+    public function challans()
+    {
+        return $this->hasMany(PublisherChallan::class);
+    }
+
+    public function returns()
+    {
+        return $this->hasMany(PublisherOrderReturn::class);
     }
 }
