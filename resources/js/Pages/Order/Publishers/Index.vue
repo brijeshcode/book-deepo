@@ -121,6 +121,7 @@
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
                             <Show-link class="p-1" :show="{route: 'publisher.order.show', id:order.id }" showicon />
+                            <span :title="order.order_recived_confirmation ? 'Order Recived Confirm By Supplier' : 'Order Revice not Confirma Not Recived'" class="p-1" :class="order.order_recived_confirmation ? 'text-green-500': 'text-gray-500'"> <SeenIcon /></span>
                             <!-- <deliver-link :order="{route: 'publisher.order.delivery', id:order.id }" title="Update delivery" showicon /> -->
                           </td>
                         </tr>
@@ -144,6 +145,8 @@
     import DeliverLink from '@/Shared/Components/Links/Delivery.vue'
     import ShowLink from '@/Shared/Components/Links/Show.vue'
     import Search from '@/Shared/Components/Filters/Search.vue'
+    import SeenIcon from '@/Shared/Components/Icons/svg/Doubletick.vue'
+
     import { Inertia } from '@inertiajs/inertia'
     import JetLabel from '@/Jetstream/Label.vue'
     import FilterIcon from '@/Shared/Components/Icons/svg/Filter.vue'
@@ -155,7 +158,8 @@
         components: {
             AppLayout,BreadSimple,Search,AddLink,
             DeliverLink,Pagination,ShowLink,
-            FilterIcon,JetLabel,JetInput,JetButton
+            FilterIcon,JetLabel,JetInput,JetButton,
+            SeenIcon
         },
         props:{ orders: Object , publishers: Object},
         data: () => ({

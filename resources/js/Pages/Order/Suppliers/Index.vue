@@ -125,7 +125,7 @@
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
                                     <Show-link class="p-1" :show="{route: 'supplier.order.show', id:order.id }" showicon />
-
+                                    <span :title="order.order_recived_confirmation ? 'Order Recived Confirm By Publisher' : 'Order Revice not Confirma Not Recived'" class="p-1" :class="order.order_recived_confirmation ? 'text-green-500': 'text-gray-500'"> <SeenIcon /></span>
                                   </td>
                                 </tr>
                               </tbody>
@@ -156,12 +156,13 @@
     import JetInput from '@/Jetstream/Input.vue'
     import JetButton from '@/Jetstream/Button.vue'
     import { Inertia } from '@inertiajs/inertia'
+    import SeenIcon from '@/Shared/Components/Icons/svg/Doubletick.vue'
 
 
     export default defineComponent({
         components: {
             AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination,ShowLink,
-            FilterIcon,JetLabel,JetInput,JetButton
+            FilterIcon,JetLabel,JetInput,JetButton,SeenIcon
         },
         props: ['orders', 'suppliers' ],
 

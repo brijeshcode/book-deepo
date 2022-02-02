@@ -44,12 +44,15 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/order/recived/confirmation/{order}/{type}', function(Request $request){
-        echo 'Order recived confirmed';
+Route::get('/order/recived/confirmation/{order}/{type}', function(Request $request, $order, $type){
+        if ($type == 'Publisher') {
+            PublisherOrder::whereId($order)->update(['order_recived_confirmation' => 1]);
+        }else{
+            SupplierOrder::whereId($order)->update(['order_recived_confirmation' => 1]);
+        }
+        echo "Order Recirve Confirmed !! Thank you";
 })->name('orderRecived')->middleware('signed');
-/*Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');*/
+
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
