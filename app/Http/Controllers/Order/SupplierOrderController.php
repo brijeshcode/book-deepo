@@ -68,6 +68,23 @@ class SupplierOrderController extends Controller
         return Inertia::render('Order/Suppliers/Delivery', compact('suppliers', 'order'));
     }
 
+    public function show(SupplierOrder $order)
+    {
+
+        $order = $order->load(
+                'schoolOrder:id,school_id,date,status',
+                'schoolOrder.school:id,warehouse_id,name,city,address,pincode,state',
+                'schoolOrder.school.warehouse:id,name,city,address,pincode,state,email,mobile',
+                'supplier:id,name,mobile,email,contact_person',
+                'items:id,supplier_order_id,book_id,quantity',
+                'items.book:id,name,class,sku_no,subject,publisher_id',
+                'items.book.publisher:id,name'
+            )
+        ->only('id','date' ,'amount', 'quantity', 'supplier_id', 'school_order_id', 'status', 'supplier','schoolOrder', 'items');
+
+        return Inertia::render('Order/Suppliers/Show', compact( 'order'));
+    }
+
     public function store(Request $request)
     {
         return abort(404);

@@ -139,6 +139,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/supplier/orders/create', [SupplierOrderController::class, 'create'])->name('supplierOrder.create');
     Route::post('/supplier/orders', [SupplierOrderController::class, 'store'])->name('supplierOrder.store');
     Route::get('/supplier/orders/{order}/edit', [SupplierOrderController::class, 'edit'])->name('supplierOrder.edit');
+    Route::get('/supplier/orders/{order}/show', [SupplierOrderController::class, 'show'])->name('supplier.order.show');
     // Route::put('/supplier/order/{order}', [SupplierOrderController::class, 'update'])->name('supplierOrder.update');
     Route::delete('/supplier/orders/item/{item}/delete', [SupplierOrderController::class, 'deleteItem'])->name('supplierOrderItem.delete');
 

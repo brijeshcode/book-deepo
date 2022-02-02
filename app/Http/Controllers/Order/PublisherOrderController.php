@@ -64,10 +64,12 @@ class PublisherOrderController extends Controller
         // return abort(404);
         $order = $order->load(
                 'schoolOrder:id,school_id,date,status',
-                'schoolOrder.school:id,name',
+                'schoolOrder.school:id,warehouse_id,name,city,address,pincode,state',
+                'schoolOrder.school.warehouse:id,name,city,address,pincode,state,email,mobile',
                 'publisher:id,name,mobile,email,contact_person',
                 'items:id,publisher_order_id,book_id,quantity',
-                'items.book:id,name,class,sku_no,subject'
+                'items.book:id,name,class,sku_no,subject,publisher_id',
+                'items.book.publisher:id,name'
             )
         ->only('id','date' ,'amount', 'quantity', 'publisher_id', 'school_order_id', 'status', 'publisher','schoolOrder', 'items');
 
