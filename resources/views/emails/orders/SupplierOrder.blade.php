@@ -18,6 +18,9 @@ Hi {{ $order->supplier->name }},
 
 @endcomponent
 
+@component('mail::button', ['url' => $url])
+Recive Confirmation
+@endcomponent
 
 Thanks,<br>
 {{ config('app.name') }}

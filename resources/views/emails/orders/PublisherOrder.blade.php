@@ -18,7 +18,7 @@ Hi {{ $order->publisher->name }},
 
 @endcomponent
 @component('mail::button', ['url' => $url])
-Recive confirmation
+Recive Confirmation
 @endcomponent
 
 Thanks,<br>
