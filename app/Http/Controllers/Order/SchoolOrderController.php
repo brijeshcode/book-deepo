@@ -54,9 +54,7 @@ class SchoolOrderController extends Controller
             return redirect()->back()->with('type', 'info')->with('message', 'First Add books to any school And make sure school atleast one school is active.');
         }
 
-        /*$books = Book::with('suppliers', 'publisher:id,name,mobile,email')
-                ->select( 'id', 'publisher_id', 'sku_no','name', 'author_name' ,'description', 'quantity', 'cost', 'class' , 'note', 'subject')->where('active' , true)->orderBy('name')->get();*/
-        return Inertia::render('Order/Schools/Create', compact('schools', 'books'));
+        return Inertia::render('Order/Schools/Create', compact('schools'));
     }
 
     public function edit(Request $request, $order_id)
