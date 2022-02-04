@@ -196,6 +196,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::resource('/bundles', BundleController::class)->except(['destroy']);
     Route::resource('/sales', SaleController::class)->except(['destroy']);
+    Route::get('/sales/{sale}/invoice/save', [SaleController::class, 'saveInvoice'])->name('sales.invoice.save');
+    Route::get('/sales/{sale}/invoice/print', [SaleController::class, 'printInvoice'])->name('sales.invoice.print');
     Route::resource('/users', UsersController::class)->except(['destroy', 'show']);
     Route::resource('/roles', RolesController::class)->except(['destroy', 'show']);
     Route::resource('/samples', SampleController::class)->except(['destroy']);

@@ -1,14 +1,4 @@
 <template>
-    <app-layout title="Sales">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Sales Details
-            </h2>
-        </template>
-
-        <template #breadcrum>
-            <bread-simple :items="[ {route: 'sales.index'} , { name:'Details'} ]" />
-        </template>
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div class="p-2">
@@ -113,15 +103,8 @@
 
                         </table>
                     </div>
-
-
-                <div class="mb-4">
-                    <print :link="{route:'sales.invoice.print', id:sale.id}" class="ml-4" >Print</print>
-                </div>
             </div>
         </div>
-
-    </app-layout>
 </template>
 
 <script>
@@ -136,12 +119,10 @@
     import InputGroup from '@/Shared/Components/Form/Simple/InputGroup.vue'
     import { Inertia } from '@inertiajs/inertia'
     import RemoveIcon from '@/Shared/Components/Icons/svg/Trash.vue'
-    import print from '@/Shared/Components/Links/Print.vue'
 
     export default defineComponent({
         components: {
             JetInputError,
-            print,
             RemoveIcon,
             AppLayout,
             JetLabel,

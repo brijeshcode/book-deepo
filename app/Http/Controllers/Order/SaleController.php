@@ -9,6 +9,7 @@ use App\Models\Setup\School;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\Browsershot\Browsershot;
 
 class SaleController extends Controller
 {
@@ -162,6 +163,31 @@ class SaleController extends Controller
         $item->delete();
     }*/
 
+    public function saveInvoice(Sale $sale)
+    {
+        $html = view('sales/invoice', compact('sale'))->render();
+        // return $html;
+        $now = now();
+        // $location = 'SaleInvoice/'. $now->year. '/'. $now->format('m');
+        $location = 'SaleInvoice';
+        $pathToImage = $location .  '/INVOICE_'.$sale->id.'.pdf';
+        Browsershot::html($html)
+        ->showBrowserHeaderAndFooter()
+        ->showBackground()
+        ->margins(10,10,10,10)
+        ->paperSize('3.5','8', 'in')
+        ->savePdf($pathToImage);
+        // unlink($pathToImage);
+        // return ' saved';
+    }
+
+    public function printInvoice(Sale $sale)
+    {
+        $sale = $sale->load( 'school:id,name,address,city,state,pincode,warehouse_id' , 'school.warehouse' , 'bundle:id,name', 'items:id,sale_id,book_id,quantity,cost,class,subject,book_name,system_quantity', 'items.book:id,sku_no,name,author_name,class,subject,publisher_id', 'items.book.publisher:id,name')
+        ->only('id', 'date', 'bundle_id', 'school_id', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'total_quantity', 'bundle', 'school', 'items');
+
+        return Inertia::render('Order/Sales/invoice', compact('sale'));
+    }
     private function validateFull($request)
     {
         $tempName = 'Sale';

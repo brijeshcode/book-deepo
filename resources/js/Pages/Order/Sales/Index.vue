@@ -126,6 +126,7 @@
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
                             <Show-link class="p-1" :show="{route: 'sales.show', id:sale.id }" showicon />
+                            <print class="p-1" :link="{route: 'sales.invoice.print', id:sale.id }" icon />
                             <Edit-link v-if="($page.props.user.permissions.includes('edit sales'))" class="p-1" :edit="{route: 'sales.edit', to:sale.id }" showicon />
                           </td>
                         </tr>
@@ -153,11 +154,12 @@
     import JetLabel from '@/Jetstream/Label.vue'
     import FilterIcon from '@/Shared/Components/Icons/svg/Filter.vue'
     import JetInput from '@/Jetstream/Input.vue'
+    import print from '@/Shared/Components/Links/Print.vue'
     import JetButton from '@/Jetstream/Button.vue'
 
     export default defineComponent({
         components: {
-            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination, ShowLink,
+            AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination, ShowLink,print,
             FilterIcon,JetLabel,JetInput,JetButton
         },
         props: ['sales', 'schools' ],

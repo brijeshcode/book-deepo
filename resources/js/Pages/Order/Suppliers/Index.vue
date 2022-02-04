@@ -109,11 +109,7 @@
                                   <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ order.supplier.name }}</div>
                                   </td>
-                                  <!-- <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ order.contact_person }}</div>
-                                    <div class="text-sm text-gray-500">{{ order.email }}</div>
-                                    <div class="text-sm text-gray-500">{{ order.mobile }}</div>
-                                  </td> -->
+
                                   <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-500">{{ order.quantity }}</div>
                                   </td>
