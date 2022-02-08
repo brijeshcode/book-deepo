@@ -2,6 +2,7 @@
 
 namespace App\Models\Setup;
 
+use App\Models\Orders\Sale;
 use App\Models\Setup\BundleBooks;
 use App\Models\Setup\School;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,6 +40,11 @@ class Bundle extends Model
     public function items()
     {
         return $this->hasMany(BundleBooks::class, 'bundle_id');
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class, 'bundle_id');
     }
 
 }

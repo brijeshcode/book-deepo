@@ -31,8 +31,11 @@ class SupplierOrderController extends Controller
             ->when($request->status, function ($query, $status){
                 $query->where('status',  '='  , $status);
             })
-            ->when($request->date, function ($query, $date){
-                $query->where('date',  '='  , $date);
+            ->when($request->from_date, function ($query, $from_date){
+                $query->where('date',  '>=' , $from_date);
+            })
+            ->when($request->to_date, function ($query, $to_date){
+                $query->where('date',  '<='  , $to_date);
             })
         ->orderBy('id', 'desc')
         ->paginate(10)

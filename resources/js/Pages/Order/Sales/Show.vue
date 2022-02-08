@@ -15,7 +15,7 @@
                 <!-- Introduction section -->
                 <div class="flex flex-row w-full justify-between border-b">
                     <div class="flex-col px-4 py-2">
-                        <p class="text-gray-500 mb-4">Created: {{ sale.date }}</p>
+                        <p class="text-gray-500 mb-4">Created: {{ sale.formated_date }}</p>
                         <p class="text-gray-700 text-sm uppercase font-bold">
                             Status<br/>
                             <span class="text-green-600 text-xl ">Completed</span>

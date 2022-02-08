@@ -33,8 +33,11 @@ class PublisherPaymentController extends Controller
                 ->when($request->publisher_id, function ($query, $publisher_id){
                     $query->where('publisher_id',  '='  , $publisher_id);
                 })
-                ->when($request->date, function ($query, $date){
-                    $query->where('date',  '='  , $date);
+                ->when($request->from_date, function ($query, $from_date){
+                    $query->where('date',  '>=' , $from_date);
+                })
+                ->when($request->to_date, function ($query, $to_date){
+                    $query->where('date',  '<='  , $to_date);
                 })
                 ->when($request->note, function ($query, $note){
                     $query->where('note',  '='  , $note);

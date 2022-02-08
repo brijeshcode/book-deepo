@@ -22,8 +22,12 @@
 
           <div class="p-4  grid  grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="filter">
-              <jet-label for="date" required value="Order date" />
-              <jet-input id="date" type="date" class="mt-1 block w-full" v-model="filter.date" autocomplete="date" />
+              <jet-label for="from_date" value="From date" />
+              <jet-input id="from_date" type="date" class="mt-1 block w-full" v-model="filter.from_date" autocomplete="from_date" />
+            </div>
+            <div class="filter">
+              <jet-label for="to_date" value="To date" />
+              <jet-input id="to_date" type="date" class="mt-1 block w-full" v-model="filter.to_date" autocomplete="to_date" />
             </div>
             <div class="filter">
               <jet-label for="quantity" required value="Order quantity" />
@@ -153,7 +157,8 @@ s                                  </th>
         data: () => ({
             showFilter: false,
             filter:{
-              date: null,
+              from_date: null,
+              to_date: null,
               quantity: null,
               supplier_order_id: null,
               supplier_id: null,

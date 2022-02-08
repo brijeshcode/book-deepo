@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Models\Orders\Sale;
 use App\Models\Orders\SaleItem;
+use App\Models\Setup\Bundle;
 use App\Models\Setup\School;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -22,10 +23,8 @@ class SaleController extends Controller
 
     public function index(Request $request)
     {
-        $user = auth()->user();
-        if ($user->hasRole('Operator')) {
 
-            $sales = Sale::with('school:id,name')->select('id', 'date' , 'school_id', 'bundle_id', 'student_name', 'student_mobile', 'student_email', 'total_amount' ,'total_quantity', 'note' )
+        $sales = Sale::with('school:id,name')->select('id', 'date' , 'school_id', 'bundle_id', 'student_name', 'student_mobile', 'student_email', 'total_amount' ,'total_quantity', 'note' )
                 ->when($request->student_name, function ($query, $student_name){
                     $query->where('student_name',  'like', '%'. $student_name . '%');
                 })
@@ -36,52 +35,35 @@ class SaleController extends Controller
                     $query->where('student_mobile',  'like', '%'. $student_mobile . '%');
                 })
                 ->when($request->quantity, function ($query, $quantity){
-                    $query->where('total_quantity',  '='  , $quantity);
+                    $query->where('total_quantity' , $quantity);
                 })
                 ->when($request->amount, function ($query, $amount){
-                    $query->where('total_amount',  '='  , $amount);
+                    $query->where('total_amount' , $amount);
                 })
                 ->when($request->school_id, function ($query, $school_id){
-                    $query->where('school_id',  '='  , $school_id);
+                    $query->where('school_id'  , $school_id);
                 })
-                ->when($request->date, function ($query, $date){
-                    $query->where('date',  '='  , $date);
+                ->when($request->bundle_id, function ($query, $bundle_id){
+                    $query->where('bundle_id', $bundle_id);
                 })
-            ->where('user_id', $user->id)->orderBy('id', 'desc')
+                ->when($request->from_date, function ($query, $from_date){
+                    $query->where('date',  '>=' , $from_date);
+                })
+                ->when($request->to_date, function ($query, $to_date){
+                    $query->where('date',  '<='  , $to_date);
+                })
+                ->where(function($query) {
+                    $user = auth()->user();
+                    if ($user->hasRole('Operator')) $query->where('user_id', $user->id);
+                })
+            ->orderBy('id', 'desc')
             ->paginate(10)
             ->withQueryString();
-            ;
-        }else{
-
-            $sales = Sale::with('school:id,name')->select('id', 'date' , 'school_id', 'bundle_id', 'student_name', 'student_mobile', 'student_email', 'total_amount' ,'total_quantity', 'note' )
-            ->when($request->student_name, function ($query, $student_name){
-                $query->where('student_name',  'like', '%'. $student_name . '%');
-            })
-            ->when($request->student_email, function ($query, $student_email){
-                $query->where('student_email',  'like', '%'. $student_email . '%');
-            })
-            ->when($request->student_mobile, function ($query, $student_mobile){
-                $query->where('student_mobile',  'like', '%'. $student_mobile . '%');
-            })
-            ->when($request->quantity, function ($query, $quantity){
-                $query->where('total_quantity',  '='  , $quantity);
-            })
-            ->when($request->amount, function ($query, $amount){
-                $query->where('total_amount',  '='  , $amount);
-            })
-            ->when($request->school_id, function ($query, $school_id){
-                $query->where('school_id',  '='  , $school_id);
-            })
-            ->when($request->date, function ($query, $date){
-                $query->where('date',  '='  , $date);
-            })
-            ->orderBy('id', 'desc')->paginate(10)
-            ->withQueryString();
-        }
 
         $schools = $this->getSchoolWithOperatorCheck();
+        $bundles = $this->getSalesWtihOperatorCheck();
 
-        return Inertia::render('Order/Sales/Index', compact('sales', 'schools'));
+    return Inertia::render('Order/Sales/Index', compact('sales', 'schools', 'bundles'));
     }
 
     public function create(Request $request)
@@ -110,7 +92,7 @@ class SaleController extends Controller
     public function show(Sale $sale)
     {
         $sale = $sale->load( 'school:id,name,address,city,state,pincode,warehouse_id' , 'school.warehouse' , 'bundle:id,name', 'items:id,sale_id,book_id,quantity,cost,class,subject,book_name,system_quantity', 'items.book:id,sku_no,name,author_name,class,subject,publisher_id', 'items.book.publisher:id,name')
-        ->only('id', 'date', 'bundle_id', 'school_id', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'total_quantity', 'bundle', 'school', 'items');
+        ->only('id', 'date', 'formated_date', 'bundle_id', 'school_id', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'total_quantity', 'bundle', 'school', 'items');
 
         return Inertia::render('Order/Sales/Show', compact('sale'));
     }
@@ -175,7 +157,7 @@ class SaleController extends Controller
         ->showBrowserHeaderAndFooter()
         ->showBackground()
         ->margins(10,10,10,10)
-        ->paperSize('3.5','8', 'in')
+        ->paperSize('89','8', 'mm')
         ->savePdf($pathToImage);
         // unlink($pathToImage);
         echo '<a href="'.asset($pathToImage).'" downlaod > Downlaod </a>';
@@ -213,18 +195,37 @@ class SaleController extends Controller
 
     private function getSchoolWithOperatorCheck()
     {
-        $user = User::with('schools:id,name,active')->has('schools')->find(\Auth::id());
-        $checkSchool = [];
-        if ($user) {
-            foreach ($user->schools as $key => $school) {
-                $checkSchool[] = $school->id;
-            }
-        }
-        if (empty($checkSchool)) {
+        $checkSchools = $this->checkOperator();
+        if (empty($checkSchools)) {
             $schools = School::select('id', 'name')->where('active', 1)->orderBy('name')->has('bundles')->get();
+            $bundles = Bundle::select('id', 'name')->where('active', 1)->orderBy('name')->has('sales')->get();
         }else{
-            $schools = School::select('id', 'name')->whereIn('id' , $checkSchool)->where('active', 1)->orderBy('name')->has('bundles')->get();
+            $schools = School::select('id', 'name')->whereIn('id' , $checkSchools)->where('active', 1)->orderBy('name')->has('bundles')->get();
+            $bundles = Bundle::select('id', 'name')->whereIn('school_id' , $checkSchools)->where('active', 1)->orderBy('name')->has('sales')->get();
         }
         return $schools;
+    }
+
+    private function getSalesWtihOperatorCheck()
+    {
+        $checkSchools = $this->checkOperator();
+        if (empty($checkSchools)) {
+            $bundles = Bundle::select('id', 'name')->where('active', 1)->orderBy('name')->has('sales')->get();
+        }else{
+            $bundles = Bundle::select('id', 'name')->whereIn('school_id' , $checkSchools)->where('active', 1)->orderBy('name')->has('sales')->get();
+        }
+        return $bundles;
+    }
+
+    private function checkOperator()
+    {
+        $user = User::with('schools:id,name,active')->has('schools')->find(\Auth::id());
+        $checkSchools = [];
+        if ($user) {
+            foreach ($user->schools as $key => $school) {
+                $checkSchools[] = $school->id;
+            }
+        }
+        return $checkSchools;
     }
 }

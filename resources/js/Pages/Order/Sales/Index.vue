@@ -23,8 +23,12 @@
 
           <div class="p-4  grid  grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="filter">
-              <jet-label for="date" value="Sales date" />
-              <jet-input id="date" type="date" class="mt-1 block w-full" v-model="filter.date" autocomplete="date" />
+              <jet-label for="from_date" value="From date" />
+              <jet-input id="from_date" type="date" class="mt-1 block w-full" v-model="filter.from_date" autocomplete="from_date" />
+            </div>
+            <div class="filter">
+              <jet-label for="to_date" value="To date" />
+              <jet-input id="to_date" type="date" class="mt-1 block w-full" v-model="filter.to_date" autocomplete="to_date" />
             </div>
             <div class="filter">
               <jet-label for="student_name" value="Student Name" />
@@ -53,6 +57,15 @@
                   v-model="filter.school_id"
                   >
                       <option v-for="school in schools" :value="school.id">{{ school.name }}</option>
+                  </select>
+            </div>
+
+            <div class="filter">
+              <jet-label for="bundle_id" value="Bundle" />
+                  <select id="bundle_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"
+                  v-model="filter.bundle_id"
+                  >
+                      <option v-for="bundle in bundles" :value="bundle.id">{{ bundle.name }}</option>
                   </select>
             </div>
           </div>
@@ -165,11 +178,12 @@
             AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination, ShowLink,print,
             FilterIcon,JetLabel,JetInput,JetButton,doc
         },
-        props: ['sales', 'schools' ],
+        props: ['sales', 'schools', 'bundles'],
         data: () => ({
             showFilter: false,
             filter:{
-              date: null,
+              from_date: null,
+              to_date: null,
               student_name: null,
               student_email: null,
               student_mobile: null,

@@ -33,8 +33,11 @@ class SupplierPaymentController extends Controller
                 ->when($request->supplier_id, function ($query, $supplier_id){
                     $query->where('supplier_id',  '='  , $supplier_id);
                 })
-                ->when($request->date, function ($query, $date){
-                    $query->where('date',  '='  , $date);
+                ->when($request->from_date, function ($query, $from_date){
+                    $query->where('date',  '>=' , $from_date);
+                })
+                ->when($request->to_date, function ($query, $to_date){
+                    $query->where('date',  '<='  , $to_date);
                 })
                 ->when($request->note, function ($query, $note){
                     $query->where('note',  '='  , $note);
