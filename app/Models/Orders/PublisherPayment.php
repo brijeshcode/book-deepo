@@ -19,9 +19,9 @@ class PublisherPayment extends Model
         static::created(function($payment)
         {
             PublisherChallan::whereId($payment->challan_id)->update(['payment_status'=> 'paid']);
-            /*$model->actor_id = Auth()->user()->id;
-            $model->actor_ip = \Request::ip();
-            $model->active = '1';*/
+            $payment->actor_id = Auth()->user()->id;
+            $payment->actor_ip = \Request::ip();
+
         });
     }
 

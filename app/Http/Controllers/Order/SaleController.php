@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Models\Orders\Sale;
 use App\Models\Orders\SaleItem;
+use App\Models\Setup\Book;
 use App\Models\Setup\Bundle;
 use App\Models\Setup\School;
 use App\Models\User;
@@ -24,7 +25,7 @@ class SaleController extends Controller
     public function index(Request $request)
     {
 
-        $sales = Sale::with('school:id,name')->select('id', 'date' , 'school_id', 'bundle_id', 'student_name', 'student_mobile', 'student_email', 'total_amount' ,'total_quantity', 'note' )
+        $sales = Sale::with('school:id,name')->select('id', 'date' , 'school_id', 'bundle_id', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'status' ,'total_quantity', 'note' )
                 ->when($request->student_name, function ($query, $student_name){
                     $query->where('student_name',  'like', '%'. $student_name . '%');
                 })
@@ -63,7 +64,7 @@ class SaleController extends Controller
         $schools = $this->getSchoolWithOperatorCheck();
         $bundles = $this->getSalesWtihOperatorCheck();
 
-    return Inertia::render('Order/Sales/Index', compact('sales', 'schools', 'bundles'));
+        return Inertia::render('Order/Sales/Index', compact('sales', 'schools', 'bundles'));
     }
 
     public function create(Request $request)
@@ -92,7 +93,7 @@ class SaleController extends Controller
     public function show(Sale $sale)
     {
         $sale = $sale->load( 'school:id,name,address,city,state,pincode,warehouse_id' , 'school.warehouse' , 'bundle:id,name', 'items:id,sale_id,book_id,quantity,cost,class,subject,book_name,system_quantity', 'items.book:id,sku_no,name,author_name,class,subject,publisher_id', 'items.book.publisher:id,name')
-        ->only('id', 'date', 'formated_date', 'bundle_id', 'school_id', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'total_quantity', 'bundle', 'school', 'items');
+        ->only('id', 'date', 'formated_date', 'bundle_id', 'discount_percent', 'discount_amount', 'school_id', 'student_name', 'status', 'student_mobile', 'student_email', 'total_amount', 'total_quantity', 'bundle', 'note', 'school', 'items');
 
         return Inertia::render('Order/Sales/Show', compact('sale'));
     }
@@ -103,7 +104,7 @@ class SaleController extends Controller
         $this->validateFull($request);
         \DB::transaction(function() use ($request) {
 
-            $order = Sale::create($request->only('name', 'school_id', 'bundle_id', 'date', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'total_quantity','note'))->items()->createMany($request->items);
+            $order = Sale::create($request->only('name', 'discount_percent', 'discount_amount', 'school_id', 'bundle_id', 'date', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'total_quantity','note'))->items()->createMany($request->items);
         });
 
         return redirect()->back()->with('type', 'success')->with('message', 'Sales generated successfully !!');
@@ -119,7 +120,7 @@ class SaleController extends Controller
             foreach ($sale->items as $key => $item) {
                 $allItems[] = $item->id;
             }
-            $sale->update($request->only('name', 'school_id', 'bundle_id', 'date', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'total_quantity','note'));
+            $sale->update($request->only('name', 'school_id', 'bundle_id', 'date', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'discount_percent', 'discount_amount', 'total_quantity','note'));
 
             foreach ($request->items as $reqKey => $item) {
                 if (isset($item['id'])) {
@@ -140,6 +141,21 @@ class SaleController extends Controller
         return redirect(route('sales.index'))->with('type', 'success')->with('message', 'Sales updated successfully !!');
     }
 
+    public function cancel(Request $request, Sale $sale)
+    {
+        \DB::transaction(function() use ($request, $sale) {
+            $sale->update(['status' => 'cancel']);
+            if ($sale->status == 'cancel') {
+                foreach ($sale->items as $key => $item) {
+                    $book = Book::whereId($item->book_id)->first();
+                    $book->quantity += $item->quantity ;
+                    $book->save();
+                }
+            }
+
+        });
+        return redirect()->back()->with('type', 'success')->with('message', 'Sale Cancelled !!');
+    }
     /*public function deleteItem(PublisherOrderItem $item)
     {
         $item->delete();

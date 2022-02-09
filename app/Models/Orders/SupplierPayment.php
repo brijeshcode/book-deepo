@@ -17,6 +17,8 @@ class SupplierPayment extends Model
         parent::boot();
         static::created(function($payment)
         {
+            $payment->user_id = auth()->user()->id;
+            $payment->user_ip = \Request::ip();
             SupplierChallan::whereId($payment->challan_id)->update(['payment_status'=> 'paid']);
         });
     }

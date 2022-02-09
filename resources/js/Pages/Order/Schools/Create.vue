@@ -17,37 +17,37 @@
 
                 <form  @submit.prevent="submitData">
 
-                    <div class="flex flex-row mb-4">
+                    <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
 
-                        <div class="basis-1/4">
+                        <div class="">
                             <jet-label for="school_id" required value="School" />
-                            <select id="school_id" @change="changeSchool($event)" v-model="form.school_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block" >
+                            <select id="school_id" @change="changeSchool($event)" v-model="form.school_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full" >
                                 <option v-for="school in schools" v-bind:value="school.id">{{ school.name }}</option>
                             </select>
                             <jet-input-error :message="form.errors.school_id" class="mt-2" />
                         </div>
 
-                        <div class="mb-4 basis-1/4">
+                        <div class="mb-4 ">
                             <jet-label for="contact_person" value="Contact Person Name" />
-                            <jet-input id="contact_person" type="text" class="mt-1 block" v-model="form.contact_person" autocomplete="contact_person"  readonly />
+                            <jet-input id="contact_person" type="text" class="mt-1 w-full" v-model="form.contact_person" autocomplete="contact_person"  readonly />
                             <jet-input-error :message="form.errors.contact_person" class="mt-2" />
                         </div>
 
-                        <div class="mb-4 basis-1/4">
+                        <div class="mb-4 ">
                             <jet-label for="mobile" value="Mobile#" required />
-                            <jet-input id="mobile" type="text" class="mt-1 block" v-model="form.mobile" autocomplete="mobile" readonly />
+                            <jet-input id="mobile" type="text" class="mt-1 w-full" v-model="form.mobile" autocomplete="mobile" readonly />
                             <jet-input-error :message="form.errors.mobile" class="mt-2" />
                         </div>
 
-                        <div class="mb-4 basis-1/4">
+                        <div class="mb-4 ">
                             <jet-label for="email" value="Email" required />
-                            <jet-input id="email" type="text" class="mt-1 block" v-model="form.email" autocomplete="email" readonly />
+                            <jet-input id="email" type="text" class="mt-1 w-full" v-model="form.email" autocomplete="email" readonly />
                             <jet-input-error :message="form.errors.email" class="mt-2" />
                         </div>
 
-                        <div class="mb-4 basis-1/4">
+                        <div class="mb-4 ">
                             <jet-label for="expected_delivery_date" required value="Expected delivery date" />
-                            <jet-input id="expected_delivery_date" type="date" class="mt-1 block" v-model="form.expected_delivery_date" autocomplete="expected_delivery_date" />
+                            <jet-input id="expected_delivery_date" type="date" class="mt-1 w-full" v-model="form.expected_delivery_date" autocomplete="expected_delivery_date" />
                             <jet-input-error :message="form.errors.expected_delivery_date" class="mt-2" />
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Select Book" /></th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Details" /></th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Class" /></th>
                                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Publishers" /></th>
                                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Suppliers" /></th>
                                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><jet-label value="Order To" /></th>
@@ -79,7 +79,10 @@
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div v-if="item.book.id" class="flex text-gray-800">
-                                            <Edit-link :edit="{route: 'books.edit', to:item.book.id }" target="_blank" > View Detail </Edit-link>
+                                            {{ item.book.class }}
+                                        </div>
+                                        <div v-if="item.book.id" class="flex text-xs">
+                                            <Edit-link :edit="{route: 'books.edit', to:item.book.id }" class="text-xs" target="_blank" > View More </Edit-link>
                                         </div>
                                     </td>
 

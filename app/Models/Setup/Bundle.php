@@ -32,6 +32,17 @@ class Bundle extends Model
 
         return  min($bookQtyByBundle);
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $model->user_id = auth()->user()->id;
+            $model->user_ip = \Request::ip();
+        });
+    }
+
     public function school()
     {
         return $this->belongsTo(School::class);

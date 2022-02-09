@@ -13,6 +13,16 @@ class SupplierOrderReturnItem extends Model
 
     protected $fillable = ['date', 'supplier_order_return_id', 'supplier_order_item_id', 'book_id', 'unit_price', 'quantity', 'price' , 'user_id','user_ip'];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $model->user_id = auth()->user()->id;
+            $model->user_ip = \Request::ip();
+        });
+    }
+
     public function order()
     {
         return $this->belongsTo(SupplierOrderReturn::class );

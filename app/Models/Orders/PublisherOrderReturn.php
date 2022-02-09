@@ -13,6 +13,16 @@ class PublisherOrderReturn extends Model
     use HasFactory,SoftDeletes;
     protected $fillable = ['date', 'publisher_id', 'publisher_order_id', 'quantity', 'amount','user_id', 'user_ip'];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $model->user_id = auth()->user()->id;
+            $model->user_ip = \Request::ip();
+        });
+    }
+
     public function items()
     {
         return $this->hasMany(PublisherOrderReturnItem::class);

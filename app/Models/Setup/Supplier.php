@@ -20,6 +20,17 @@ class Supplier extends Model
     protected $casts = [
       'active' => 'boolean',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $model->user_id = auth()->user()->id;
+            $model->user_ip = \Request::ip();
+        });
+    }
+
     public function location()
     {
         return $this->belongsTo(Location::class);

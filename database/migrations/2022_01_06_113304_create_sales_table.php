@@ -23,6 +23,8 @@ class CreateSalesTable extends Migration
             $table->string('student_mobile')->nullable();
             $table->string('student_email')->nullable();
             // $table->string('transaction_id')->unique();
+            $table->double('discount_percent',10,2)->default(0);
+            $table->double('discount_amount',10,2)->default(0);
             $table->double('total_amount',10,2)->default(0);
             $table->integer('total_quantity')->default(0);
             $table->text('note')->nullable();

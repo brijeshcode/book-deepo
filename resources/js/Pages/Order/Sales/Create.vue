@@ -61,6 +61,12 @@
 
                     </div>
 
+                    <div class="grid gap-4">
+                        <div class="mb-4 basis-1/4">
+                            <jet-label for="note" value="Sale Note" />
+                        <form-text-area id="note" type="text" rows="3" class="mt-1 w-full" v-model="form.note" autocomplete="note" />
+                        </div>
+                    </div>
                     <div v-if="form.items.length" class="book-item-details">
                          <!-- <p>Add books to list:
                             <span @click="addItem" class="bg-green-400 hover:bg-green-700 hover:text-white p-2 pb-1 pl-2 pt-1 rounded cursor-pointer">Add Book</span>
@@ -97,13 +103,38 @@
                                         <input-group type="number" class="mt-1 block" style="width:150px" :prefix="item.system_quantity" prefixlabel="Qty:" v-model="item.quantity" />
                                     </td>
                                     <td class=" py-4 whitespace-nowrap">
-                                        <jet-input type="number" class="mt-1 block" style="width:120px" v-model="item.cost" />
+                                        <jet-input type="number" class="mt-1 block" @keyup="changeDisPercent" style="width:120px" v-model="item.cost" />
                                     </td>
                                     <td class="  py-4 whitespace-nowrap">
                                        <button type="button" v-on:click="removeRow(index, item.id)" v-if="index > 0" >
                                           <span class="material-icons text-sm text-red-500"><remove-icon /></span>
                                        </button>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td class="  py-4 whitespace-nowrap"></td>
+                                    <td class="  py-4 whitespace-nowrap"></td>
+                                    <td class="  py-4 whitespace-nowrap"></td>
+                                    <td class="  py-4 whitespace-nowrap"></td>
+
+                                    <td class="  py-4 whitespace-nowrap">Discount %</td>
+                                    <td class="  py-4 whitespace-nowrap">
+                                        <jet-input type="number" @keyup="changeDisPercent" class="mt-1 block"  style="width:120px" placeholder="Discount %" max="100" step="0.01" min="0" v-model="form.discount_percent" />
+                                    </td>
+                                    <td class="  py-4 whitespace-nowrap"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="  py-4 whitespace-nowrap"></td>
+                                    <td class="  py-4 whitespace-nowrap"></td>
+                                    <td class="  py-4 whitespace-nowrap"></td>
+                                    <td class="  py-4 whitespace-nowrap"></td>
+                                    <td class="  py-4 whitespace-nowrap">Discount</td>
+
+                                    <td class="  py-4 whitespace-nowrap">
+                                        <jet-input type="number" @keyup="changeDisAmount" class="mt-1 block" style="width:120px" v-model="form.discount_amount" placeholder="Discount Amount" />
+                                    </td>
+                                    <td class="  py-4 whitespace-nowrap"></td>
                                 </tr>
                                 <tr>
                                     <td class="  py-4 whitespace-nowrap"></td>
@@ -122,6 +153,7 @@
                         </table>
 
                     </div>
+
 
                     <div class="mb-4">
                         <jet-button :class="{ 'opacity-25': form.processing }" >Save</jet-button>
@@ -146,6 +178,7 @@
     import InputGroup from '@/Shared/Components/Form/Simple/InputGroup.vue'
     import { Inertia } from '@inertiajs/inertia'
     import RemoveIcon from '@/Shared/Components/Icons/svg/Trash.vue'
+    import FormTextArea from '@/Shared/Components/Form/Simple/Textarea.vue'
 
     export default defineComponent({
         components: {
@@ -156,7 +189,8 @@
             AppLayout,
             JetButton,
             JetLabel,
-            BreadSimple
+            BreadSimple,
+            FormTextArea
         },
         props: ['schools','sale'],
         data: () => ({
@@ -175,7 +209,10 @@
               student_mobile: '',
               total_quantity: 0,
               total_amount: 0,
-              note: '',
+              discount_percent: 0,
+              discount_amount: 0,
+
+              note: null,
               items: []
             });
 
@@ -185,12 +222,16 @@
             computeQuantity: function () {
                 let qty = 0;
                 this.form.items.forEach((item) =>{ qty += parseInt(item.quantity); });
+                this.form.total_quantity = qty;
                 return qty;
             },
             computeCost: function () {
                 let cost = 0;
+                let discount_amount = 0;
                 this.form.items.forEach((item) =>{ cost += parseInt(item.cost); });
-                return cost;
+                discount_amount = (this.form.discount_percent * cost )/ 100;
+                this.form.total_amount = cost - discount_amount;
+                return this.form.total_amount;
             }
         },
         created(){
@@ -213,6 +254,20 @@
                 this.getBundle(event.target.value);
             },
 
+            changeDisAmount(){
+                let cost = 0;
+                this.form.items.forEach((item) =>{ cost += parseInt(item.cost); });
+
+                this.form.discount_percent = (this.form.discount_amount / cost  ) * 100;
+                this.form.total_amount = cost - this.form.discount_amount;
+
+            },
+            changeDisPercent(){
+                let cost = 0;
+                this.form.items.forEach((item) =>{ cost += parseInt(item.cost); });
+                this.form.discount_amount = (this.form.discount_percent * cost )/ 100;
+                this.form.total_amount = cost - this.form.discount_amount;
+            },
             getBundle(school_id){
                 axios.get(route('schools.bundles', school_id)).then(bundles =>{
                     this.bundles = bundles.data;
@@ -290,8 +345,7 @@
                     }
                });
                if (canSubmit) {
-                    this.form.total_quantity = this.computeQuantity;
-                    this.form.total_amount = this.computeCost;
+
                     this.sale ? this.form.put(route('sales.update', this.sale.id)) : this.form.post(route('sales.store'));
                }else{
                     // alert('Order items are not set properly, "please select the book in the list" ');

@@ -16,6 +16,15 @@ class PublisherOrderDelivery extends Model
     use HasFactory,SoftDeletes;
     protected $fillable = ['date', 'publisher_id', 'school_id', 'publisher_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount', 'payment_status', 'amount', 'note', 'user_id','user_ip'];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $model->user_id = auth()->user()->id;
+            $model->user_ip = \Request::ip();
+        });
+    }
     public function items()
     {
         return $this->hasMany(PublisherOrderDeliveryItem::class);

@@ -131,7 +131,7 @@ class SchoolController extends Controller
     {
         return $school->bundles()
             ->with('items:id,book_id,bundle_id,quantity', 'items.book:id,name,quantity,cost,class,subject')
-            ->whereActive( true)
+            ->whereActive(true)
             ->get();
     }
 
@@ -139,7 +139,7 @@ class SchoolController extends Controller
     {
         $books = $school->books()
         ->with('warehouse:id,name,city,state,email,pincode,mobile,contact_person', 'publisher:id,name')
-        ->whereActive( true)
+        ->whereActive(true)
         ->paginate(10);
         $school = $school->only('id','name') ;
 

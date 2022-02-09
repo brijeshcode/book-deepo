@@ -16,6 +16,15 @@ class SupplierOrder extends Model
     use HasFactory,SoftDeletes;
     protected $fillable = ['date','supplier_id', 'school_id', 'school_order_id', 'status', 'quantity', 'amount', 'note', 'user_id', 'user_ip'];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $model->user_id = auth()->user()->id;
+            $model->user_ip = \Request::ip();
+        });
+    }
 
     public function items()
     {

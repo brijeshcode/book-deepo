@@ -20,6 +20,16 @@ class SchoolOrder extends Model
         return date('d-m-Y @ H:i A', strtotime($this->created_at));
     }
 
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $model->user_id = auth()->user()->id;
+            $model->user_ip = \Request::ip();
+        });
+    }
+
     public function items()
     {
         return $this->hasMany(SchoolOrderItem::class);

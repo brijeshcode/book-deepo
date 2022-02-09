@@ -18,7 +18,7 @@
                         <p class="text-gray-500 mb-4">Created: {{ sale.formated_date }}</p>
                         <p class="text-gray-700 text-sm uppercase font-bold">
                             Status<br/>
-                            <span class="text-green-600 text-xl ">Completed</span>
+                            <span class=" text-xl " :class="sale.status == 'cancel' ? 'text-red-600' : text-green-600">{{ sale.status }}</span>
                         </p>
                     </div>
                     <div class="flex-col text-right px-4 py-2">
@@ -79,11 +79,25 @@
                                 </tr>
                             </thead>
                             <tfoot>
+                                <tr v-if="sale.discount_percent > 0">
+                                    <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase"></th>
+                                    <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase"></th>
+                                    <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase"></th>
+                                    <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase">Discount %</th>
+                                    <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase">{{ sale.discount_percent }}</th>
+                                </tr>
+                                <tr v-if="sale.discount_percent > 0">
+                                    <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase"></th>
+                                    <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase"></th>
+                                    <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase"></th>
+                                    <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase">Discount</th>
+                                    <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase">{{ sale.discount_amount }}</th>
+                                </tr>
                                 <tr>
                                     <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase"></th>
                                     <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase"></th>
                                     <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase">{{ sale.total_quantity }}</th>
-                                    <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase"></th>
+                                    <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase">Total Amount</th>
                                     <th class="px-6 py-3 text-left text-normal  text-gray-900 uppercase">{{ sale.total_amount }}</th>
                                 </tr>
                             </tfoot>

@@ -14,6 +14,16 @@ class SupplierChallan extends Model
     use HasFactory,SoftDeletes;
     protected $fillable = [ 'school_order_id', 'supplier_delivery_id', 'supplier_order_id', 'supplier_id', 'date', 'challan_no', 'amount', 'path', 'payment_status', 'note', 'user_id', 'user_ip'];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $model->user_id = auth()->user()->id;
+            $model->user_ip = \Request::ip();
+        });
+    }
+
     public function delivery()
     {
         return $this->belongsTo(SupplierOrderDelivery::class , 'supplier_delivery_id');

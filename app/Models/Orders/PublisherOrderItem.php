@@ -13,6 +13,16 @@ class PublisherOrderItem extends Model
     use HasFactory,SoftDeletes;
     protected $fillable = ['publisher_order_id', 'school_order_item_id', 'book_id', 'quantity', 'quantity_recived' , 'user_id','user_ip'];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $model->user_id = auth()->user()->id;
+            $model->user_ip = \Request::ip();
+        });
+    }
+
     public function order()
     {
         return $this->belongsTo(PublisherOrder::class );

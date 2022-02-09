@@ -15,6 +15,9 @@ class SaleItem extends Model
 
     public static function booted(){
         static::created(function($saleItem){
+            $saleItem->user_id = auth()->user()->id;
+            $saleItem->user_ip = \Request::ip();
+
             $book = Book::where('id', $saleItem->book_id)->first();
             $book->quantity -= $saleItem->quantity;
             $book->save();

@@ -111,38 +111,40 @@
                         </tr>
                       </thead>
                       <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="sale in sales.data" :key="sale.id">
-                          <td class="px-6 py-4 whitespace-nowrap">
+                        <tr v-for="sale in sales.data" :key="sale.id" class="hover:bg-gray-100">
+                          <td class="px-6 py-4 whitespace-nowrap"  :class="sale.status == 'cancel' ? 'bg-red-200' : ''">
                             <Edit-link :edit="{route: 'sales.edit', to:sale.id }" >
                               <div class="text-sm text-gray-500">{{ sale.id }}</div>
                             </Edit-link>
                           </td>
-                          <td class="px-6 py-4 whitespace-nowrap">
+                          <td class="px-6 py-4 whitespace-nowrap" :class="sale.status == 'cancel' ? 'bg-red-200' : ''">
                             <Edit-link :edit="{route: 'sales.edit', to:sale.id }" >
                               <div class="text-sm text-gray-500">{{ sale.date }}</div>
                             </Edit-link>
                           </td>
-                          <td class="px-6 py-4 whitespace-nowrap">
+                          <td class="px-6 py-4 whitespace-nowrap" :class="sale.status == 'cancel' ? 'bg-red-200' : ''">
                             <div class="text-sm text-gray-900">{{ sale.school.name }}</div>
                           </td>
-                          <td class="px-6 py-4 whitespace-nowrap">
+                          <td class="px-6 py-4 whitespace-nowrap" :class="sale.status == 'cancel' ? 'bg-red-200' : ''">
                             <div class="text-sm text-gray-900">{{ sale.student_name }}</div>
                           </td>
-                          <td class="px-6 py-4 whitespace-nowrap">
+                          <td class="px-6 py-4 whitespace-nowrap" :class="sale.status == 'cancel' ? 'bg-red-200' : ''">
                             <div class="text-sm text-gray-500">{{ sale.total_quantity }}</div>
                           </td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" :class="sale.status == 'cancel' ? 'bg-red-200' : ''">
                             <div class="text-sm text-gray-500">{{ sale.total_amount }}</div>
                           </td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" :class="sale.status == 'cancel' ? 'bg-red-200' : ''">
                             <div class="text-sm text-gray-500">{{ sale.note }}</div>
                           </td>
-                          <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
+                          <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium" :class="sale.status == 'cancel' ? 'bg-red-200' : ''">
                             <Show-link class="p-1" :show="{route: 'sales.show', id:sale.id }" showicon />
                             <!-- <doc class="p-1" :link="{route: 'sales.invoice.save', id:sale.id }" icon /> -->
 
                             <print class="p-1" :link="{route: 'sales.invoice.print', id:sale.id }" icon />
-                            <Edit-link v-if="($page.props.user.permissions.includes('edit sales'))" class="p-1" :edit="{route: 'sales.edit', to:sale.id }" showicon />
+                            <Edit-link v-if="($page.props.user.permissions.includes('edit sales')) && sale.status != 'cancel'" class="p-1" :edit="{route: 'sales.edit', to:sale.id }" showicon />
+
+                            <cancel-link v-if="($page.props.user.permissions.includes('edit sales')) && sale.status != 'cancel'" :link="{route: 'sales.cancel', id:sale.id}" icon />
                           </td>
                         </tr>
                       </tbody>
@@ -170,13 +172,14 @@
     import FilterIcon from '@/Shared/Components/Icons/svg/Filter.vue'
     import JetInput from '@/Jetstream/Input.vue'
     import print from '@/Shared/Components/Links/Print.vue'
+    import CancelLink from '@/Shared/Components/Links/Cancel.vue'
     import doc from '@/Shared/Components/Links/InvoicePdf.vue'
     import JetButton from '@/Jetstream/Button.vue'
 
     export default defineComponent({
         components: {
             AppLayout,BreadSimple, Search,AddLink,EditLink,Pagination, ShowLink,print,
-            FilterIcon,JetLabel,JetInput,JetButton,doc
+            FilterIcon,JetLabel,JetInput,JetButton,doc,CancelLink
         },
         props: ['sales', 'schools', 'bundles'],
         data: () => ({

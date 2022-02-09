@@ -29,6 +29,7 @@ class BookController extends Controller
             ->with(
                 // 'schools',
                 'schools:id,name,city,state,pincode,contact_person,mobile,active,email',
+                'publisher:id,name',
                 // 'school:id,name,city,state,pincode,contact_person,mobile,active,email',
                 'warehouse:id,name,city,state,pincode,contact_person,mobile,active,email')
             ->when($request->search, function ($query, $search){

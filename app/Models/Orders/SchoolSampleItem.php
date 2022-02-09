@@ -18,7 +18,15 @@ class SchoolSampleItem extends Model
         return $this->belongsTo(SchoolSample::class, 'school_sample_id' );
     }
 
-
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $model->user_id = auth()->user()->id;
+            $model->user_ip = \Request::ip();
+        });
+    }
     public function publisher()
     {
         return $this->belongsTo(Publisher::class, 'publisher_id');

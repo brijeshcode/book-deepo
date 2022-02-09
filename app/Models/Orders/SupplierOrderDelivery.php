@@ -18,6 +18,16 @@ class SupplierOrderDelivery extends Model
 
     protected $fillable = ['date', 'supplier_id', 'school_id', 'supplier_order_id', 'school_order_id',  'quantity', 'discount_percent', 'payment_status', 'discount', 'sub_total', 'total_amount', 'amount', 'user_id','user_ip'];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $model->user_id = auth()->user()->id;
+            $model->user_ip = \Request::ip();
+        });
+    }
+
     public function items()
     {
         return $this->hasMany(SupplierOrderDeliveryItem::class );
