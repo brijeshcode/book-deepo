@@ -5,29 +5,23 @@ namespace App\Models\Orders;
 use App\Models\Setup\Book;
 use App\Models\Setup\Publisher;
 use App\Models\Setup\Supplier;
+use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SchoolOrderItem extends Model
 {
+    use Authorable;
     use HasFactory,SoftDeletes;
-    protected $fillable = ['school_order_id', 'book_id', 'supplier_id', 'publisher_id', 'quantity' , 'order_to', 'status', 'recived_quantity','user_id','user_ip' ];
+    protected $fillable = ['school_order_id', 'book_id', 'supplier_id', 'publisher_id', 'quantity' , 'order_to', 'status', 'recived_quantity'];
 
     public function order()
     {
         return $this->belongsTo(SchoolOrder::class, 'school_order_id' );
     }
 
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($model)
-        {
-            $model->user_id = auth()->user()->id;
-            $model->user_ip = \Request::ip();
-        });
-    }
+
     public function school()
     {
         return $this->belongsTo(School::class);

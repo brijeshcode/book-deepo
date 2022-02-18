@@ -7,29 +7,20 @@ use App\Models\Setup\Publisher;
 use App\Models\Setup\School;
 use App\Models\Setup\Supplier;
 use App\Models\Setup\Warehouse;
+use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Book extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes,Authorable;
     // protected $fillable = [ 'supplier_id' ,'publisher_id', 'sku_no','cost', 'warehouse_id', 'school_id' ,'subject', 'name', 'author_name', 'description', 'class', 'quantity', 'note', 'active', 'user_id', 'user_ip'];
-    protected $fillable = [ 'warehouse_id', 'location_id', 'publisher_id', 'sku_no','cost', 'subject', 'name', 'author_name', 'description', 'class', 'quantity', 'note', 'active', 'user_id', 'user_ip'];
+    protected $fillable = [ 'warehouse_id', 'location_id', 'publisher_id', 'sku_no','cost', 'subject', 'name', 'author_name', 'description', 'class', 'quantity', 'note', 'active'];
 
     protected $casts = [
       'active' => 'boolean'
     ];
-
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($model)
-        {
-            $model->user_id = auth()->user()->id;
-            $model->user_ip = \Request::ip();
-        });
-    }
 
     public function publisher()
     {

@@ -7,24 +7,15 @@ use App\Models\Orders\SupplierChallan;
 use App\Models\Orders\SupplierOrderItem;
 use App\Models\Setup\School;
 use App\Models\Setup\Supplier;
+use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SupplierOrder extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $fillable = ['date','supplier_id', 'school_id', 'school_order_id', 'status', 'quantity', 'amount', 'note', 'user_id', 'user_ip'];
-
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($model)
-        {
-            $model->user_id = auth()->user()->id;
-            $model->user_ip = \Request::ip();
-        });
-    }
+    use HasFactory,SoftDeletes,Authorable;
+    protected $fillable = ['date','supplier_id', 'school_id', 'school_order_id', 'status', 'quantity', 'amount', 'note'];
 
     public function items()
     {
@@ -41,7 +32,6 @@ class SupplierOrder extends Model
     {
         return $this->hasMany(SupplierChallan::class);
     }
-
 
     public function schoolOrder()
     {

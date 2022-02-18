@@ -8,14 +8,15 @@ use App\Models\Setup\Bundle;
 use App\Models\Setup\Location;
 use App\Models\Setup\Warehouse;
 use App\Models\User;
+use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class School extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $fillable = [ 'warehouse_id' , 'address', 'name', 'city', 'state', 'pincode',  'email' ,'mobile', 'fax' ,'contact_person',  'note', 'active', 'user_id', 'user_ip'];
+    use HasFactory,SoftDeletes,Authorable;
+    protected $fillable = [ 'warehouse_id' , 'address', 'name', 'city', 'state', 'pincode',  'email' ,'mobile', 'fax' ,'contact_person',  'note', 'active'];
 
     protected $casts = [
       'active' => 'boolean',
@@ -26,15 +27,6 @@ class School extends Model
         return $this->belongsTo(Warehouse::class);
     }
 
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($model)
-        {
-            $model->user_id = auth()->user()->id;
-            $model->user_ip = \Request::ip();
-        });
-    }
     public function books()
     {
         return $this->belongsToMany(Book::class);

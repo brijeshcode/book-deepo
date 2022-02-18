@@ -8,28 +8,20 @@ use App\Models\Orders\PublisherOrderDelivery;
 use App\Models\Orders\PublisherOrderReturn;
 use App\Models\Setup\Book;
 use App\Models\Setup\Location;
+use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Publisher extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $fillable = [ 'location_id' , 'name', 'address', 'city', 'state', 'pincode',  'email' ,'mobile', 'fax' ,'contact_person',  'note', 'active', 'user_id', 'user_ip'];
+    use HasFactory,SoftDeletes,Authorable;
+    protected $fillable = [ 'location_id' , 'name', 'address', 'city', 'state', 'pincode',  'email' ,'mobile', 'fax' ,'contact_person',  'note', 'active'];
 
     protected $casts = [
       'active' => 'boolean',
     ];
 
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($model)
-        {
-            $model->user_id = auth()->user()->id;
-            $model->user_ip = \Request::ip();
-        });
-    }
     public function location()
     {
         return $this->belongsTo(Location::class);

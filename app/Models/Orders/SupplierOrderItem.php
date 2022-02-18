@@ -7,24 +7,15 @@ use App\Models\Orders\SupplierOrderDeliveryItem;
 use App\Models\Setup\Book;
 use App\Models\Setup\Publisher;
 use App\Models\Setup\Supplier;
+use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SupplierOrderItem extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $fillable = ['supplier_order_id', 'school_order_item_id', 'book_id', 'quantity', 'quantity_recived' , 'user_id','user_ip'];
-
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($model)
-        {
-            $model->user_id = auth()->user()->id;
-            $model->user_ip = \Request::ip();
-        });
-    }
+    use HasFactory,SoftDeletes,Authorable;
+    protected $fillable = ['supplier_order_id', 'school_order_item_id', 'book_id', 'quantity', 'quantity_recived'];
 
     public function order()
     {

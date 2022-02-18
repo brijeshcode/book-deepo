@@ -6,29 +6,23 @@ use App\Models\Orders\PublisherOrderDelivery;
 use App\Models\Orders\SchoolOrderItem;
 use App\Models\Orders\SupplierOrderDelivery;
 use App\Models\Setup\School;
+use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SchoolOrder extends Model
 {
+    use Authorable;
     use HasFactory,SoftDeletes;
-    protected $fillable = [ 'school_id', 'status', 'date','quantity', 'expected_delivery_date', 'amount', 'note', 'user_id', 'user_ip'];
+    protected $fillable = [ 'school_id', 'status', 'date','quantity', 'expected_delivery_date', 'amount', 'note'];
 
     public function getDateAttribute()
     {
         return date('d-m-Y @ H:i A', strtotime($this->created_at));
     }
 
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($model)
-        {
-            $model->user_id = auth()->user()->id;
-            $model->user_ip = \Request::ip();
-        });
-    }
+
 
     public function items()
     {

@@ -5,24 +5,15 @@ namespace App\Models\Orders;
 use App\Models\Orders\SchoolOrder;
 use App\Models\Orders\SupplierOrderDelivery;
 use App\Models\Setup\Supplier;
+use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SupplierChallan extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $fillable = [ 'school_order_id', 'supplier_delivery_id', 'supplier_order_id', 'supplier_id', 'date', 'challan_no', 'amount', 'path', 'payment_status', 'note', 'user_id', 'user_ip'];
-
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($model)
-        {
-            $model->user_id = auth()->user()->id;
-            $model->user_ip = \Request::ip();
-        });
-    }
+    use HasFactory,SoftDeletes,Authorable;
+    protected $fillable = [ 'school_order_id', 'supplier_delivery_id', 'supplier_order_id', 'supplier_id', 'date', 'challan_no', 'amount', 'path', 'payment_status', 'note'];
 
     public function delivery()
     {
@@ -38,5 +29,4 @@ class SupplierChallan extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
-
 }

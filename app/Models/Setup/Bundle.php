@@ -5,14 +5,15 @@ namespace App\Models\Setup;
 use App\Models\Orders\Sale;
 use App\Models\Setup\BundleBooks;
 use App\Models\Setup\School;
+use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Bundle extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $fillable = [ 'name', 'class', 'school_id', 'note', 'active', 'user_id', 'user_ip'];
+    use HasFactory,SoftDeletes,Authorable;
+    protected $fillable = [ 'name', 'class', 'school_id', 'note', 'active'];
 
     protected $casts = [
       'active' => 'boolean',
@@ -31,16 +32,6 @@ class Bundle extends Model
         }
 
         return  min($bookQtyByBundle);
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($model)
-        {
-            $model->user_id = auth()->user()->id;
-            $model->user_ip = \Request::ip();
-        });
     }
 
     public function school()

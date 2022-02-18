@@ -7,6 +7,7 @@ use App\Models\Orders\PublisherOrderDeliveryItem;
 use App\Models\Setup\Book;
 use App\Models\Setup\Publisher;
 use App\Models\Setup\School;
+use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,17 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PublisherOrderDelivery extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['date', 'publisher_id', 'school_id', 'publisher_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount', 'payment_status', 'amount', 'note', 'user_id','user_ip'];
+    use Authorable;
+    protected $fillable = ['date', 'publisher_id', 'school_id', 'publisher_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount', 'payment_status', 'amount', 'note'];
 
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($model)
-        {
-            $model->user_id = auth()->user()->id;
-            $model->user_ip = \Request::ip();
-        });
-    }
     public function items()
     {
         return $this->hasMany(PublisherOrderDeliveryItem::class);

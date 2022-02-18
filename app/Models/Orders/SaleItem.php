@@ -4,6 +4,7 @@ namespace App\Models\Orders;
 
 use App\Models\Setup\Book;
 use App\Models\Setup\Bundle;
+use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,13 +12,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SaleItem extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['sale_id', 'bundle_id', 'book_id', 'class', 'subject' ,'quantity', 'cost', 'book_name', 'system_quantity', 'user_id','user_ip'];
+    use Authorable;
+
+    protected $fillable = ['sale_id', 'bundle_id', 'book_id', 'class', 'subject' ,'quantity', 'cost', 'book_name', 'system_quantity'];
 
     public static function booted(){
         static::created(function($saleItem){
-            $saleItem->user_id = auth()->user()->id;
-            $saleItem->user_ip = \Request::ip();
-
             $book = Book::where('id', $saleItem->book_id)->first();
             $book->quantity -= $saleItem->quantity;
             $book->save();

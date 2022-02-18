@@ -156,10 +156,6 @@ class SaleController extends Controller
         });
         return redirect()->back()->with('type', 'success')->with('message', 'Sale Cancelled !!');
     }
-    /*public function deleteItem(PublisherOrderItem $item)
-    {
-        $item->delete();
-    }*/
 
     public function saveInvoice(Sale $sale)
     {

@@ -6,28 +6,20 @@ use App\Models\Setup\Publisher;
 use App\Models\Setup\School;
 use App\Models\Setup\Supplier;
 use App\Models\Setup\Warehouse;
+use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Location extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $fillable = [ 'name', 'city', 'state', 'pincode', 'note', 'active', 'user_id', 'user_ip'];
+    use HasFactory,SoftDeletes,Authorable;
+    protected $fillable = [ 'name', 'city', 'state', 'pincode', 'note', 'active'];
 
     protected $casts = [
       'active' => 'boolean',
     ];
 
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($model)
-        {
-            $model->user_id = auth()->user()->id;
-            $model->user_ip = \Request::ip();
-        });
-    }
     public function publishers()
     {
         return $this->hasMany(Publisher::class);
