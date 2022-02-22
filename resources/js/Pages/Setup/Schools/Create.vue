@@ -13,7 +13,7 @@
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div class="p-2 mt-4">
-                <form  @submit.prevent=" school ? form.put(route('schools.update', school.id)) : form.post(route('schools.store'))">
+                <form  @submit.prevent="submitData">
 
                     <div class="flex flex-row">
                         <div class="mb-4 basis-1/4">
@@ -92,6 +92,34 @@
                         </div>
                     </div>
 
+                    <div class="my-4">
+
+                        <span class="text-lg font-bold">Documents </span>
+                         <span class="px-2 py-1 bg-gray-800 text-white  my-2 rounded cursor-pointer" @click="addDocument"> Add </span>
+                        <div class="docments" v-for="schoolDoc in form.documents">
+                            <div class="grid grid-cols-1 mb-4 md:grid-cols-5 gap-4">
+                                <div>
+                                    <jet-label for="title" required value="Title" />
+                                    <jet-input id="title" type="text" required class="mt-1 w-full" v-model="schoolDoc.title" autocomplete="title" />
+                                </div>
+
+                                <div class="col-span-2">
+                                    <jet-label for="note" value="Description" />
+                                    <jet-input id="note" type="text" class="mt-1 w-full" v-model="schoolDoc.note" autocomplete="note" />
+                                </div>
+                                <div>
+                                    <Link v-if="schoolDoc.id " :href="schoolDoc.link" class="text-indigo-600">Click to open File </Link>
+                                    <input type="file"  @input="schoolDoc.link = $event.target.files[0]" class="w-full" />
+                                </div>
+
+                                <div>
+                                    <trash @click="removeDocument"  />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="mb-4">
                         <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Save</jet-button>
                     </div>
@@ -111,7 +139,8 @@
     import JetInputError from '@/Jetstream/InputError.vue'
     import JetLabel from '@/Jetstream/Label.vue'
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
-    // import { Link } from '@inertiajs/inertia-vue3';
+    import Trash from '@/Shared/Components/Icons/svg/Trash.vue'
+    import { Link } from '@inertiajs/inertia-vue3';
     import { useForm } from '@inertiajs/inertia-vue3'
     import JetCheckbox from '@/Jetstream/Checkbox.vue'
 
@@ -120,11 +149,12 @@
             JetInputError,
             JetInput,
             BreadSimple,
-            // Link,
+            Link,
             AppLayout,
             JetButton,
             JetLabel,
-            JetCheckbox
+            JetCheckbox,
+            Trash
         },
         props: ['school', 'warehouses'],
          data: () => ({
@@ -143,6 +173,7 @@
               contact_person: '',
               address: '',
               note: '',
+              documents: [],
               active: false
 
             })
@@ -158,7 +189,6 @@
                 });
                 this.edit = true;
             }
-
         },
         methods:{
             newLocation(event){
@@ -169,7 +199,20 @@
                         this.form.pincode = warehouse.pincode;
                     }
                 });
-            }
+            },
+            addDocument(){
+                this.form.documents.push({
+                    title:null,
+                    note:null,
+                    link:''
+                });
+            },
+            submitData(){
+                 this.school ? this.form.put(route('schools.update', this.school.id)) : this.form.post(route('schools.store'))
+            },
+            removeDocument(index) {
+                if (confirm('Are you sure?')) { this.form.documents.splice(index, 1); }
+            },
         }
     })
 </script>

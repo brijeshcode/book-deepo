@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Setup;
 use App\Http\Controllers\Controller;
 use App\Models\Setup\Book;
 use App\Models\Setup\School;
+use App\Models\Setup\SchoolDocument;
 use App\Models\Setup\Warehouse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class SchoolController extends Controller
@@ -34,7 +36,7 @@ class SchoolController extends Controller
             $query->orWhere('mobile', 'like', '%'. $search . '%');
             $query->orWhere('address', 'like', '%'. $search . '%');
             $query->orWhere('note', 'like', '%'. $search . '%');
-        })
+        })->orderBy('id')
         ->paginate(10)->withQueryString()->through(fn($school) => [
             'id' => $school->id,
             'name' => $school->name,'city' => $school->city,'state' => $school->state, 'contact_person' => $school->contact_person,
@@ -64,9 +66,18 @@ class SchoolController extends Controller
 
     public function store(Request $request)
     {
+
         $this->validateFull($request);
-        School::create($request->all());
-        return redirect(route('schools'))->with('type', 'success')->with('message', 'School added successfully !!');
+        \DB::transaction(function() use ($request) {
+            $school = School::create($request->all());
+            $documents = $request->documents;
+            foreach ($documents as $key => $document) {
+                $documents[$key]['link'] = $this->uploadSchoolDoc($document['link'], $school->id, $document['title']);
+            }
+            $school->documents()->createMany($documents);
+        });
+
+        return redirect(route('schools.index'))->with('type', 'success')->with('message', 'School added successfully !!');
     }
 
     public function show($id)
@@ -82,15 +93,46 @@ class SchoolController extends Controller
             return redirect()->back()->with('type', 'warning')->with('message', 'First Add warehouses And make sure atleast one warehouse is active.');
         }
 
-        $school = $school->only('id','name', 'email', 'address', 'city', 'state', 'mobile', 'warehouse_id', 'contact_person', 'pincode', 'note', 'active');
+       $school = $school->load('documents:id,school_id,title,link,note')->only('id',  'name', 'email', 'address', 'city', 'state', 'mobile', 'warehouse_id', 'contact_person', 'pincode', 'note', 'active', 'documents');
         return Inertia::render('Setup/Schools/Create', compact('school', 'warehouses'));
     }
 
     public function update(Request $request, School $school)
     {
+
         $this->validateFull($request);
-        $school->update($request->all());
-        return redirect(route('schools'))->with('type', 'success')->with('message', 'School updated successfully !!');
+        \DB::transaction(function() use ($request, $school) {
+            $school->update($request->all());
+            $oldDocs = array();
+            foreach ($school->documents as $key => $document) {
+                $oldDocs[$document->id] = $document->id;
+            }
+            $docs = $request->documents;
+
+            foreach ($docs as $key => $doc) {
+                if (isset($doc['id'])) {
+                    $schoolDoc = SchoolDocument::whereId($doc['id'])->first();
+                    $schoolDoc->title = $doc['title'];
+                    $schoolDoc->note = $doc['note'];
+                    $schoolDoc->link = $this->uploadSchoolDoc($doc['link'], $school->id, $doc['title']);
+                    unset($oldDocs[$doc['id']]);
+                    unset($docs[$key]);
+                }
+            }
+
+            if (!empty($oldDocs)) {
+                SchoolDocument::destroy($oldDocs);
+            }
+
+            if (count($docs) > 0) {
+                foreach ($docs as $key => $doc) {
+                    $docs[$key]['link'] = $this->uploadSchoolDoc($doc['link'], $school->id, $doc['title']);
+                }
+                $school->documents()->createMany($docs);
+            }
+
+        });
+        return redirect(route('schools.index'))->with('type', 'success')->with('message', 'School updated successfully !!');
     }
 
     /**
@@ -104,6 +146,16 @@ class SchoolController extends Controller
         //
     }
 
+    private function uploadSchoolDoc($docPath, $schoolId, $title)
+    {
+        if(gettype($docPath) == 'string' || is_null($docPath)){
+            return $docPath;
+        }
+        $imageName = $title . '_' .time().'.'.$docPath->extension();
+        $location = 'SchoolDoc/'. $schoolId ;
+        return Storage::url($docPath->storeAs($location, $imageName, 'public'));
+
+    }
     public function checkStock(Request $request, $school)
     {/*
         $schoolBooks = Book::where('school_id',$school)->where('quantity', '>', 0 )->where('active' , true)->limit(3)->get();
@@ -158,6 +210,7 @@ class SchoolController extends Controller
                 'mobile' => 'required|digits:10',
                 'warehouse_id' => 'required',
                 'email' => 'email',
+                // 'documents.link' => 'required'
             ],
             [
                 'name.required' => $tempName .' Name is empty.' ,
@@ -166,7 +219,8 @@ class SchoolController extends Controller
                 'pincode.required' => $tempName .' Pincode is empty.' ,
                 'mobile.required' => $tempName .' Moible is empty.',
                 'mobile.digits' => $tempName .' Moible# must number and 10 digits long.',
-                'email.required' => 'Enter valid Email.'
+                'email.required' => 'Enter valid Email.',
+                // 'documents.link.required' => 'School document link cannot be empty.'
             ]
         );
     }

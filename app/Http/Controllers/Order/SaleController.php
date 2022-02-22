@@ -118,22 +118,22 @@ class SaleController extends Controller
             $allItems = array();
             $currentItems = array();
             foreach ($sale->items as $key => $item) {
-                $allItems[] = $item->id;
+                $allItems[$item->id] = $item->id;
             }
             $sale->update($request->only('name', 'school_id', 'bundle_id', 'date', 'student_name', 'student_mobile', 'student_email', 'total_amount', 'discount_percent', 'discount_amount', 'total_quantity','note'));
 
             foreach ($request->items as $reqKey => $item) {
                 if (isset($item['id'])) {
                     $currentItems[] = $item['id'];
+                    unset($allItems[$item['id']]);
                     SaleItem::where('id', $item['id'])->update($item);
                 }else{
                     $sale->items()->create($item);
                 }
             }
 
-            $deletedItems = array_diff($allItems, $currentItems);
-            if ($deletedItems ) {
-                SaleItem::destroy($deletedItems);
+            if (!empty($allItems) ) {
+                SaleItem::destroy($allItems);
             }
         });
 

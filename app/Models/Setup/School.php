@@ -5,6 +5,7 @@ use App\Models\Orders\SchoolOrder;
 use App\Models\Setup\Book;
 use App\Models\Setup\Bundle;
 use App\Models\Setup\Location;
+use App\Models\Setup\SchoolDocument;
 use App\Models\Setup\Warehouse;
 use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -36,5 +37,10 @@ class School extends Model
     public function orders()
     {
         return $this->hasMany(SchoolOrder::class);
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(SchoolDocument::class);
     }
 }
