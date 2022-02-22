@@ -1,3 +1,11 @@
+<style>
+    @page {
+    size: auto;
+    size: A4;
+    margin-left: 5cm;
+    margin-right: 5cm;
+}
+</style>
 <template>
     <app-layout title="Sales">
         <template #header>
@@ -29,8 +37,8 @@
                     </div>
                 </div>
 
-                <div class="flex flex-row border-b mb-4">
-                    <div class="flex-col p-4 w-1/3 border-r">
+                <div class="flex flex-row border-b mb-4 print:hidden">
+                    <div class="flex-col p-4 w-1/3 border-r ">
                         <h2 class="uppercase font-semibold mb-2" >School Address</h2>
                         <p class="">{{ sale.school.name }}</p>
                         <p class="text-gray-500 text-sm">{{ sale.school.address }}</p>
@@ -130,7 +138,7 @@
 
 
                 <div class="mb-4">
-                    <print :link="{route:'sales.invoice.print', id:sale.id}" class="ml-4" >Print</print>
+                    <span @click='printme' class="ml-4 text-indigo-600 hover:text-indigo-900 cursor-pointer" >Print <span v-if="icon"><print /></span></span>
                 </div>
             </div>
         </div>
@@ -150,7 +158,7 @@
     import InputGroup from '@/Shared/Components/Form/Simple/InputGroup.vue'
     import { Inertia } from '@inertiajs/inertia'
     import RemoveIcon from '@/Shared/Components/Icons/svg/Trash.vue'
-    import print from '@/Shared/Components/Links/Print.vue'
+    import print from '@/Shared/Components/Icons/svg/Print.vue'
 
     export default defineComponent({
         components: {
@@ -169,7 +177,12 @@
             bundles: []
         }),
         created(){
+
         },
-        methods:{}
+        methods:{
+        printme(){
+                window.print();
+            }
+        }
     })
 </script>

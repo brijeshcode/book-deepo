@@ -78,6 +78,7 @@
 
           </div>
         </div>
+
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div class="flex flex-col">
               <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -139,8 +140,6 @@
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium" :class="sale.status == 'cancel' ? 'bg-red-200' : ''">
                             <Show-link class="p-1" :show="{route: 'sales.show', id:sale.id }" showicon />
-                            <doc class="p-1" :link="{route: 'sales.invoice.save', id:sale.id }" icon />
-
                             <print class="p-1" :link="{route: 'sales.invoice.print', id:sale.id }" icon />
                             <Edit-link v-if="($page.props.user.permissions.includes('edit sales')) && sale.status != 'cancel'" class="p-1" :edit="{route: 'sales.edit', to:sale.id }" showicon />
 

@@ -1,6 +1,15 @@
+<style>
+    @page {
+    size: auto;
+    size: A4;
+    margin-left: 6cm;
+    margin-right: 8cm;
+}
+</style>
 <template>
 
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+        <div class="bg-white overflow-hidden shadow-xl rounded-lg">
+        <span class="print:hidden rounded-lg bg-black text-white m-4 cursor-pointer py-2 px-2" @click='printme'>Print me</span>
             <div class="p-2">
                 <!-- Introduction section -->
                 <div class="flex flex-row w-full justify-between border-b">
@@ -19,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-row border-b mb-4">
+                <!-- <div class="flex flex-row border-b mb-4">
                     <div class="flex-col p-4 w-1/3 border-r">
                         <h2 class="uppercase font-semibold mb-2" >School Address</h2>
                         <p class="">{{ sale.school.name }}</p>
@@ -49,7 +58,7 @@
                         <p class="text-gray-500 text-sm">Operator name</p>
 
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Order Item details section -->
                     <div class="text-xl uppercase px-4 mt-4">
@@ -135,8 +144,15 @@
             books: [],
             bundles: []
         }),
-        created(){
-        },
-        methods:{}
+        mounted() {
+        this.$nextTick(function () {
+            this.printme();
+        });
+    },
+        methods:{
+            printme(){
+                window.print();
+            }
+        }
     })
 </script>
