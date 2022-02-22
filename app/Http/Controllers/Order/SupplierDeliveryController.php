@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Order\ChallanController;
 use App\Models\Orders\SchoolOrder;
 use App\Models\Orders\SchoolOrderItem;
 use App\Models\Orders\SupplierChallan;
@@ -82,12 +81,12 @@ class SupplierDeliveryController extends Controller
         \DB::transaction(function() use ($request) {
             // dd($request);
             // 1.& 2  Insert supplier delivery &&  insert supplier delivery items
-            $supplierDelivery = SupplierOrderDelivery::create($request->only('date', 'supplier_id', 'school_id', 'supplier_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount','note'));
+            $supplierDelivery = SupplierOrderDelivery::create($request->only('date', 'supplier_id', 'school_id', 'supplier_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount', 'amount','note'));
 
 
             $challans = $request->challans;
             foreach ($challans as $key => $challan) {
-                $challans[$key]['path'] = $this->uploadChallans($challan['path']);
+                $challans[$key]['path'] = $this->uploadChallans($challan['path'], $request->supplier_id);
             }
             $supplierDelivery->challans()->createMany($challans);
             $supplierDelivery->items()->createMany($request->items);
@@ -103,7 +102,7 @@ class SupplierDeliveryController extends Controller
                 // 3. update supplier order items recived quantity
                 // 4. update school order items recived quantity
                 // 5. update book quantity
-                $this->updateSupplierOrderItemQuantity($item['supplier_order_item_id'], $item['quantity']);
+                $this->updateSupplierOrderItemQuantity($item['supplier_order_item_id'], $item['unit_price'], $item['quantity']);
 
             }
         });
@@ -114,15 +113,15 @@ class SupplierDeliveryController extends Controller
     public function update(Request $request, SupplierOrderDelivery $delivery)
     {
         \DB::transaction(function() use ($request, $delivery) {
-            $delivery->update($request->only('quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount','note'));
+            $delivery->update($request->only('quantity', 'discount_percent', 'discount', 'sub_total', 'amount', 'total_amount','note'));
 
             foreach ($request->items as $key => $item) {
-                $this->updateSupplierOrderItemQuantity($item['supplier_order_item_id'], $item['quantity']);
-
+                $this->updateSupplierOrderItemQuantity($item['supplier_order_item_id'], $item['unit_price'], $item['quantity']);
                 $supplierItem = SupplierOrderDeliveryItem::where('supplier_order_item_id', $item['supplier_order_item_id'])->first();
                 $supplierItem->quantity = $item['quantity'];
                 $supplierItem->unit_price = $item['unit_price'];
                 $supplierItem->discount_percent = $item['discount_percent'];
+                $supplierItem->price = $item['quantity'] * $item['unit_price'];
                 $supplierItem->discount_total = $item['discount_total'];
                 $supplierItem->price_total = $item['price_total'];
                 $supplierItem->save();
@@ -138,7 +137,7 @@ class SupplierDeliveryController extends Controller
                     $supplierChallan->date = $challan['date'];
                     $supplierChallan->challan_no = $challan['challan_no'];
                     $supplierChallan->amount = $challan['amount'];
-                    $supplierChallan->path = $this->uploadChallans($challan['path']);
+                    $supplierChallan->path = $this->uploadChallans($challan['path'], $delivery->supplier_id);
                     $supplierChallan->note = $challan['note'];
                     $supplierChallan->save();
                     unset($challans[$key]);
@@ -146,18 +145,23 @@ class SupplierDeliveryController extends Controller
             }
             if (count($challans) > 0) {
                 foreach ($challans as $key => $challan) {
-                    $challans[$key]['path'] = $this->uploadChallans($challan['path']);
+                    $challans[$key]['path'] = $this->uploadChallans($challan['path'],$delivery->supplier_id);
                 }
                 $delivery->challans()->createMany($challans);
             }
         });
-        // return redirect(route('school.order.index'))->with('type', 'success')->with('message', 'Delivey save successfully !!');
     }
 
-    public function updateSupplierOrderItemQuantity($supplierOrderItemId, $quantity){
+    public function show(SupplierOrderDelivery $delivery)
+    {
+        $delivery->load( 'supplier:id,name,email,mobile', 'order', 'school:id,name', 'items.book:id,name,class,subject,publisher_id');
+        return Inertia::render('Order/Suppliers/Deliveries/Show', compact('delivery'));
+    }
+
+    public function updateSupplierOrderItemQuantity($supplierOrderItemId, $unitPrice, $quantity){
         $supplierItem = SupplierOrderItem::whereId($supplierOrderItemId)->first();
 
-        $this->updateBookQuantity($supplierItem->book_id, $quantity, $supplierItem->quantity_recived);
+        $this->updateBookQuantity($supplierItem->book_id, $unitPrice, $quantity, $supplierItem->quantity_recived);
         $this->updateSchoolOrderItemQuantity($supplierItem->school_order_item_id, $quantity);
 
         $supplierItem->quantity_recived = $quantity;
@@ -166,10 +170,11 @@ class SupplierDeliveryController extends Controller
 
     }
 
-    public function updateBookQuantity($bookId,$newQty, $oldQty = 0 )
+    public function updateBookQuantity($bookId,$unitPrice, $newQty, $oldQty = 0 )
     {
         $book = Book::where('id', $bookId)->first();
-        $book->quantity +=  $newQty - $oldQty;
+        $book->quantity += $newQty - $oldQty;
+        $book->cost = $unitPrice;
         $book->save();
     }
 
@@ -180,15 +185,15 @@ class SupplierDeliveryController extends Controller
         $schoolItem->save();
     }
 
-    public function uploadChallans($challanPath)
+    public function uploadChallans($challanPath, $supplierId)
     {
         if(gettype($challanPath) == 'string' || is_null($challanPath)){
             return $challanPath;
         }
 
         $now = now();
-        $imageName = time().'.'.$challanPath->extension();
-        $location = 'Challans/Supplier/'. $now->year. '/'. $now->format('m');
+        $imageName = $supplierId . '_' . time().'.'.$challanPath->extension();
+        $location = 'Challans/Supplier/Delivery/'. $now->year. '/'. $now->format('m');
         return Storage::url($challanPath->storeAs($location, $imageName, 'public'));
     }
 }

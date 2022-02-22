@@ -34,7 +34,7 @@
                         <!-- Order Item details section -->
                         <div class="flex my-4">
                             Delivery From
-                            <select @change="deliveryFromChange($event)" v-model='deliveryFrom' class="ml-2">
+                                <select @change="deliveryFromChange($event)" v-model='deliveryFrom' class="ml-2">
                                     <option v-for="order in supplierOrders" data-deliveryType="supplier" :value="order.id">{{ order.supplier.name }}</option>
                                     <option v-for="order in publisherOrders" data-deliveryType="publisher" :value="order.id">{{ order.publisher.name }}</option>
                                 </select>
@@ -61,7 +61,7 @@
                                                 <jet-label value="Delivery Quantity" />
                                             </th>
                                             <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                <jet-label value="Unit Price" />
+                                                <jet-label value="Rate" />
                                             </th>
                                             <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 <jet-label value="Price" />
@@ -222,8 +222,8 @@
             const form = useForm({
               date: new Date().toISOString().slice(0,10),
               publisher_id: '',
-              publisher_order_id: '',
               supplier_id: '',
+              publisher_order_id: '',
               supplier_order_id: '',
               school_id: '',
               school_order_id: '',
@@ -232,6 +232,7 @@
               discount: 0,
               sub_total: 0,
               total_amount: 0,
+              amount: 0,
               note: '',
               items: [],
               challans: [],
@@ -251,6 +252,7 @@
                 let amt = 0;
                 this.form.items.forEach((item) =>{ amt += parseInt(item.price_total); });
                 this.form.total_amount = amt;
+                this.form.amount = amt;
                 return amt;
             }
 
@@ -259,36 +261,6 @@
             if (this.order) {
                 this.form.school_order_id = this.order.id;
                 this.form.school_id = this.order.school_id;
-
-                /*Object.keys(this.order).forEach((index) => {
-                    this.form[index] = this.order[index];
-                });*/
-                /*this.order.items.forEach((item, index) => {
-                    console.log(item);
-                    var orderItem = {
-                        delivery_quantity : 0,
-                        book_name : item.book.name,
-                        publisher_name : item.publisher.name,
-                        supplier_id : item.supplier_id,
-                        publisher_id : item.publisher_id,
-                        school_order_id : item.school_order_id,
-                        school_order_item_id : item.id,
-                        order_to : item.order_to,
-                        book_id : item.book_id,
-                        // quantity : item.quantity - item.quantity_recived,
-                        quantity : 0,
-                        price : 0,
-                        amount: 0,
-                        request_quantity : item.quantity,
-                        quantity_recived : item.quantity_recived
-                    };
-                    if (item.supplier) {
-                        orderItem.supplier_name = item.supplier.name;
-                    }
-
-                    this.form.items.push(orderItem);
-                });*/
-
             }
         },
         methods:{
@@ -359,7 +331,7 @@
                     if (order.id == order_id) {
                         this.form.supplier_id = order.supplier_id;
                         order.items.forEach(item => {
-                            if (item.quantity_recived >= item.quantity) {return;}
+                            // if (item.quantity_recived >= item.quantity) {return;}
 
                             this.form.items.push({
                                 supplier_order_item_id: item.id ,
@@ -377,7 +349,9 @@
                         });
 
                         order.challans.forEach(challan => {
-                            this.form.challans.push(challan);
+                            if (challan.challan_type == 'delivery' && this.form.supplier_id == challan.supplier_id) {
+                                this.form.challans.push(challan);
+                            }
                         });
                     }
                 });
@@ -389,7 +363,7 @@
                     if (order.id == order_id) {
                         this.form.publisher_id = order.publisher_id;
                         order.items.forEach(item => {
-                            if (item.quantity_recived >= item.quantity) { return; }
+                            // if (item.quantity_recived >= item.quantity) { return; }
                             this.form.items.push({
                                 publisher_order_item_id: item.id ,
                                 book_name: item.book.name,
@@ -398,7 +372,7 @@
                                 quantity_recived: item.quantity_recived,
                                 quantity: item.delivery == null ? 0 : item.delivery.quantity,
                                 unit_price: item.delivery == null ? 0 : item.delivery.unit_price,
-                                price: item.delivery == null ? 0 : item.delivery.price,
+                                price: item.delivery == null ? 0 : item.delivery.p,
                                 discount_percent: item.delivery == null ? 0 : item.delivery.discount_percent,
                                 discount_total: item.delivery == null ? 0 : item.delivery.discount_total,
                                 price_total:item.delivery == null ? 0 : item.delivery.price_total
@@ -406,7 +380,9 @@
                         });
 
                         order.challans.forEach(challan => {
-                            this.form.challans.push(challan);
+                            if (challan.challan_type == 'delivery' && this.form.publisher_id == challan.publisher_id) {
+                                this.form.challans.push(challan);
+                            }
                         });
                     }
                 });

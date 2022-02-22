@@ -20,7 +20,7 @@ class PublisherOrderController extends Controller
     //
     public function index(Request $request)
     {
-        $orders = PublisherOrder::with('publisher:id,name')
+        $orders = PublisherOrder::with('publisher:id,name', 'schoolOrder.school:id,name')
             ->when($request->quantity, function ($query, $quantity){
                 $query->where('quantity',  '='  , $quantity);
             })
@@ -36,7 +36,7 @@ class PublisherOrderController extends Controller
             ->when($request->to_date, function ($query, $to_date){
                 $query->where('date',  '<='  , $to_date);
             })
-            ->orderBy('id', 'desc')->paginate(5)
+            ->orderBy('id', 'desc')->paginate(10)
             ->withQueryString();
 
         $publishers = Publisher::has('orders')->whereActive(1)->orderBy('name', 'asc')->get();
@@ -210,26 +210,20 @@ class PublisherOrderController extends Controller
         );
     }
 
-    public function deliveryIndex(Request $request)
-    {
-        $deliveries = PublisherOrderDelivery::with('book', 'publisher')->paginate(10);
-        return Inertia::render('Order/Publishers/DeliveryIndex', compact('deliveries'));
-    }
-
     public function returnIndex(Request $request)
     {
         $returns = PublisherOrderReturn::with('publisher:id,name')
                 ->when($request->quantity, function ($query, $quantity){
-                    $query->where('quantity',  '='  , $quantity);
+                    $query->where('quantity', $quantity);
                 })
                 ->when($request->publisher_order_id, function ($query, $publisher_order_id){
-                    $query->where('publisher_order_id',  '='  , $publisher_order_id);
+                    $query->where('publisher_order_id', $publisher_order_id);
                 })
                 ->when($request->publisher_id, function ($query, $publisher_id){
-                    $query->where('publisher_id',  '='  , $publisher_id);
+                    $query->where('publisher_id', $publisher_id);
                 })
                 ->when($request->date, function ($query, $date){
-                    $query->where('date',  '='  , $date);
+                    $query->where( 'date', $date );
                 })
             ->orderBy('id', 'desc')
             ->paginate(10)

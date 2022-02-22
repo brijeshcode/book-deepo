@@ -12,8 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Sale extends Model
 {
-    use HasFactory,SoftDeletes;
-    use Authorable;
+    use HasFactory,SoftDeletes, Authorable;
     protected $fillable = [ 'date' , 'school_id', 'bundle_id', 'student_name','student_email', 'student_mobile', 'total_amount' ,'total_quantity', 'note', 'status', 'discount_percent', 'discount_amount'];
 
 
@@ -26,7 +25,6 @@ class Sale extends Model
     {
         return $this->hasMany(SaleItem::class);
     }
-
 
     public function school()
     {

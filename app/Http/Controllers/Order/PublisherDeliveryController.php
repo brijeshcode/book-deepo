@@ -42,6 +42,7 @@ class PublisherDeliveryController extends Controller
         $publishers = Publisher::select('id', 'name')->whereActive(1)->has('deliveries')->get();
         return Inertia::render('Order/Publishers/Deliveries/Index', compact('deliveries', 'publishers'));
     }
+
     public function store(Request $request)
     {
         // dd($request->challans);
@@ -65,22 +66,15 @@ class PublisherDeliveryController extends Controller
         // $this->validateFull($request);
 
         \DB::transaction(function() use ($request) {
-            $challans = $request->challans;
-            foreach ($challans as $key => $challan) {
-                $challans[$key]['path'] = $this->uploadChallans($challan['path']);
-            }
-
-            // dd($request);
             // 1.& 2  Insert publisher delivery &&  insert publisher delivery items
-            $publisherOrder = PublisherOrderDelivery::create($request->only('date', 'publisher_id', 'school_id', 'publisher_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount','note'));
-
-            $publisherOrder->items()->createMany($request->items);
+            $publisherDelivery = PublisherOrderDelivery::create($request->only('date', 'publisher_id', 'school_id', 'publisher_order_id', 'school_order_id',  'quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount','note'));
+            $publisherDelivery->items()->createMany($request->items);
 
             $challans = $request->challans;
             foreach ($challans as $key => $challan) {
-                $challans[$key]['path'] = $this->uploadChallans($challan['path']);
+                $challans[$key]['path'] = $this->uploadDeliveryChallans($challan['path'], $request->publisher_id);
             }
-            $publisherOrder->challans()->createMany($challans);
+            $publisherDelivery->challans()->createMany($challans);
 
 
             $schoolOrder = SchoolOrder::where( 'id', $request->school_order_id)->first();
@@ -91,7 +85,7 @@ class PublisherDeliveryController extends Controller
                 // 3. update publisher order items recived quantity
                 // 4. update school order items recived quantity
                 // 5. update book quantity
-                $this->updatePubliserOrderItemQuantity($item['publisher_order_item_id'], $item['quantity']);
+                $this->updatePubliserOrderItemQuantity($item['publisher_order_item_id'],$item['unit_price'],$item['quantity']);
             }
         });
 
@@ -103,13 +97,14 @@ class PublisherDeliveryController extends Controller
         \DB::transaction(function() use ($request, $delivery) {
             $delivery->update($request->only('quantity', 'discount_percent', 'discount', 'sub_total', 'total_amount','note'));
             foreach ($request->items as $key => $item) {
-                $this->updatePubliserOrderItemQuantity($item['publisher_order_item_id'], $item['quantity']);
+                $this->updatePubliserOrderItemQuantity($item['publisher_order_item_id'],$item['unit_price'], $item['quantity']);
 
                 $publisherItem = PublisherOrderDeliveryItem::where('publisher_order_item_id', $item['publisher_order_item_id'])->first();
                 $publisherItem->quantity = $item['quantity'];
                 $publisherItem->unit_price = $item['unit_price'];
                 $publisherItem->discount_percent = $item['discount_percent'];
                 $publisherItem->discount_total = $item['discount_total'];
+                $publisherItem->price = $item['quantity'] * $item['unit_price'];
                 $publisherItem->price_total = $item['price_total'];
                 $publisherItem->save();
             }
@@ -122,7 +117,7 @@ class PublisherDeliveryController extends Controller
                     $publisherChallan->date = $challan['date'];
                     $publisherChallan->challan_no = $challan['challan_no'];
                     $publisherChallan->amount = $challan['amount'];
-                    $publisherChallan->path = $this->uploadChallans($challan['path']);
+                    $publisherChallan->path = $this->uploadDeliveryChallans($challan['path'], $delivery->publisher_id);
                     $publisherChallan->note = $challan['note'];
                     $publisherChallan->save();
                     unset($challans[$key]);
@@ -131,50 +126,55 @@ class PublisherDeliveryController extends Controller
 
             if (count($challans) > 0) {
                 foreach ($challans as $key => $challan) {
-                    $challans[$key]['path'] = $this->uploadChallans($challan['path']);
+                    $challans[$key]['path'] = $this->uploadDeliveryChallans($challan['path'], $delivery->publisher_id);
                 }
                 $delivery->challans()->createMany($challans);
             }
         });
         return redirect(route('school.order.index'))->with('type', 'success')->with('message', 'Delivey save successfully !!');
-
     }
 
+    public function show(PublisherOrderDelivery $delivery)
+    {
+        $delivery->load( 'publisher:id,name,email,mobile', 'order', 'school:id,name', 'items.book:id,name,class,subject,publisher_id');
+        return Inertia::render('Order/Publishers/Deliveries/Show', compact('delivery'));
+    }
     // 3. update publisher order items recived quantity
-    public function updatePubliserOrderItemQuantity($publisherItemId, $quantity)
+    private function updatePubliserOrderItemQuantity($publisherItemId, $unitPrice,  $quantity)
     {
         $publisherItem = PublisherOrderItem::whereId($publisherItemId)->first();
 
-        $this->updateBookQuantity($publisherItem->book_id, $quantity, $publisherItem->quantity_recived);
+        $this->updateBookQuantity($publisherItem->book_id, $unitPrice, $quantity, $publisherItem->quantity_recived);
         $this->updateSchoolOrderItemQuantity($publisherItem->school_order_item_id, $quantity);
 
         $publisherItem->quantity_recived = $quantity;
         $publisherItem->save();
     }
 
-    public function updateBookQuantity($bookId,$newQty, $oldQty = 0 )
+    private function updateBookQuantity($bookId, $unitPrice, $newQty, $oldQty = 0 )
     {
         $book = Book::where('id', $bookId)->first();
         $book->quantity +=  $newQty - $oldQty;
+        $book->cost = $unitPrice;
         $book->save();
     }
 
     // 4. update school order items recived quantity
-    public function updateSchoolOrderItemQuantity($schoolOrderItemId, $recivedQuantity)
+    private function updateSchoolOrderItemQuantity($schoolOrderItemId, $recivedQuantity)
     {
         $schoolItem = SchoolOrderItem::whereId($schoolOrderItemId)->first();
         $schoolItem->recived_quantity = $recivedQuantity;
         $schoolItem->save();
     }
 
-    public function uploadChallans($challanPath)
+    private function uploadDeliveryChallans($challanPath, $publisherId)
     {
         if(gettype($challanPath) == 'string' || is_null($challanPath)){
             return $challanPath;
         }
         $now = now();
-        $imageName = time().'.'.$challanPath->extension();
-        $location = 'Challans/Publisher/'. $now->year. '/'. $now->format('m');
+        $imageName = $publisherId . '_' .time().'.'.$challanPath->extension();
+        $location = 'Challans/Publisher/Delivery/'. $now->year. '/'. $now->format('m');
         return Storage::url($challanPath->storeAs($location, $imageName, 'public'));
 
     }

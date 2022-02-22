@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 
 trait Authorable
 {
@@ -15,4 +15,10 @@ trait Authorable
             }
         });
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id')->select('name', 'id');
+    }
+
 }

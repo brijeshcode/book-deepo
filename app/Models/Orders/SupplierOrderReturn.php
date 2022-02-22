@@ -2,6 +2,7 @@
 
 namespace App\Models\Orders;
 
+use App\Models\Orders\SupplierChallan;
 use App\Models\Orders\SupplierOrder;
 use App\Models\Orders\SupplierOrderReturnItem;
 use App\Models\Setup\Supplier;
@@ -23,6 +24,11 @@ class SupplierOrderReturn extends Model
     public function order()
     {
         return $this->belongsTo(SupplierOrder::class, 'supplier_order_id' );
+    }
+
+    public function challans()
+    {
+        return $this->hasMany(SupplierChallan::class, 'return_id');
     }
 
     public function supplier()

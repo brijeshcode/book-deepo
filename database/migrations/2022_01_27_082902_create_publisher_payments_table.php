@@ -15,12 +15,13 @@ class CreatePublisherPaymentsTable extends Migration
     {
         Schema::create('publisher_payments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('publisher_order_id');
             $table->unsignedBigInteger('publisher_id');
-            $table->unsignedBigInteger('challan_id');
             $table->date('date');
             $table->double('amount', 10,2)->default(0);
-            $table->string('payment_mode')->defalt('cash');
             $table->text('note')->nullable();
+            $table->string('payment_mode')->defalt('cash');
+
             $table->unsignedBigInteger('user_id')->default('1');
             $table->ipAddress('user_ip')->default('127.0.0.1');
             $table->softDeletes();

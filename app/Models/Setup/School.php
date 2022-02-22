@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Setup;
 
 use App\Models\Orders\SchoolOrder;
@@ -7,7 +6,6 @@ use App\Models\Setup\Book;
 use App\Models\Setup\Bundle;
 use App\Models\Setup\Location;
 use App\Models\Setup\Warehouse;
-use App\Models\User;
 use App\Traits\Authorable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,11 +14,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class School extends Model
 {
     use HasFactory,SoftDeletes,Authorable;
-    protected $fillable = [ 'warehouse_id' , 'address', 'name', 'city', 'state', 'pincode',  'email' ,'mobile', 'fax' ,'contact_person',  'note', 'active'];
+    protected $fillable = [ 'warehouse_id' , 'address', 'name', 'city', 'state', 'pincode',  'email' ,'mobile', 'fax' ,'contact_person', 'note', 'active'];
 
-    protected $casts = [
-      'active' => 'boolean',
-    ];
+    protected $casts = [ 'active' => 'boolean' ];
 
     public function warehouse()
     {
@@ -31,11 +27,6 @@ class School extends Model
     {
         return $this->belongsToMany(Book::class);
         // return $this->hasMany(Book::class);
-    }
-
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
     }
 
     public function bundles()

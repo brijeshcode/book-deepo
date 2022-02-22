@@ -5,7 +5,6 @@ namespace App\Models\Orders;
 use App\Models\Orders\SupplierChallan;
 use App\Models\Orders\SupplierOrder;
 use App\Models\Orders\SupplierOrderDeliveryItem;
-use App\Models\Setup\Book;
 use App\Models\Setup\School;
 use App\Models\Setup\Supplier;
 use App\Traits\Authorable;
@@ -29,17 +28,12 @@ class SupplierOrderDelivery extends Model
     }
     public function order()
     {
-        return $this->belongsTo(SupplierOrder::class );
+        return $this->belongsTo(SupplierOrder::class, 'supplier_order_id' );
     }
 
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
-    }
-
-    public function book()
-    {
-        return $this->belongsTo(Book::class);
     }
 
     public function school()

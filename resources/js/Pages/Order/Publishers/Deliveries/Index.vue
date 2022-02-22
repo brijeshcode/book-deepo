@@ -81,6 +81,9 @@
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Amount
                           </th>
+                          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Action
+                          </th>
                         </tr>
 
                       </thead>
@@ -89,21 +92,21 @@
                           <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-900">{{ delivery.id }}</div>
                           </td>
-
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <Edit-link :edit="{route: 'supplierOrder.edit', to:delivery.id }" >
                             <div class="text-sm text-gray-500">{{ delivery.date }}</div>
-                          </Edit-link>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-900">{{ delivery.publisher.name }}</div>
                           </td>
-
                           <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-500">{{ delivery.quantity }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div class="text-sm text-gray-500">{{ delivery.total_amount }}</div>
+                          </td>
+
+                          <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
+                            <Show-link class="p-1" :show="{route: 'publisher.delivery.show', id:delivery.id }" showicon />
                           </td>
                         </tr>
                       </tbody>
@@ -133,11 +136,12 @@
     import FilterIcon from '@/Shared/Components/Icons/svg/Filter.vue'
     import JetInput from '@/Jetstream/Input.vue'
     import JetButton from '@/Jetstream/Button.vue'
+    import ShowLink from '@/Shared/Components/Links/Show.vue'
 
     export default defineComponent({
         components: {
             AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination,
-            FilterIcon,JetLabel,JetInput,JetButton
+            FilterIcon,JetLabel,JetInput,JetButton,ShowLink
         },
         props:{
             deliveries: Object,

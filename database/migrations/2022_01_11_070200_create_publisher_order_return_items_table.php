@@ -15,7 +15,6 @@ class CreatePublisherOrderReturnItemsTable extends Migration
     {
         Schema::create('publisher_order_return_items', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
             $table->unsignedBigInteger('publisher_order_return_id');
             $table->unsignedBigInteger('publisher_order_item_id');
             $table->unsignedBigInteger('book_id');

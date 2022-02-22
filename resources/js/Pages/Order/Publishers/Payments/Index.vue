@@ -2,15 +2,13 @@
     <app-layout title="Publisher Payments">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Publisher Payments
-                <!-- <add-link createRoute="publisher.order.create" isbutton >Generate</add-link> -->
+                Publisher Payments History
             </h2>
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'publishers.index'}, { route:'publisher.payments.index', name:'Payments'} ]" />
+            <bread-simple :items="[ { route: 'publishers.index'}, {route: 'publisher.order.index', name:'Orders'}, { route: 'publisher.payments.index', name: 'Payments History'} ]" />
         </template>
-
         <template #actions>
             <div class="flex">
               <span @click="toggleFilter" class="p-2">
@@ -31,31 +29,33 @@
               <jet-input id="to_date" type="date" class="mt-1 block w-full" v-model="filter.to_date" autocomplete="to_date" />
             </div>
             <div class="filter">
-              <jet-label for="quantity" required value="Order quantity" />
-              <jet-input id="quantity" type="number" class="mt-1 block w-full" v-model="filter.quantity" autocomplete="quantity" />
+              <jet-label for="publisher_order_id" value="Publisher Order #" />
+              <jet-input id="publisher_order_id" type="text" class="mt-1 block w-full" v-model="filter.publisher_order_id" autocomplete="publisher_order_id" />
             </div>
             <div class="filter">
-              <jet-label for="amount" required value="Order amount" />
+              <jet-label for="amount" value="Amount" />
               <jet-input id="amount" type="number" class="mt-1 block w-full" v-model="filter.amount" autocomplete="amount" />
             </div>
-            <!-- <div class="filter">
-              <jet-label for="status" required value="Order Status" />
-              <select id="status" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"
-                  v-model="filter.status"
-                  >
-                  <option value="Requested">Requested</option>
-                  <option value="Partial">Partial</option>
-                  <option value="Completed">Completed</option>
-                  <option value="Cancelled">Cancelled</option>
-                  </select>
-            </div> -->
+
             <div class="filter">
-              <jet-label for="publisher_id" required value="Publisher" />
+              <jet-label for="payment_mode" value="Payment mode" />
+              <jet-input id="payment_mode" type="text" class="mt-1 block w-full" v-model="filter.payment_mode" autocomplete="payment_mode" />
+            </div>
+
+
+
+            <div class="filter">
+              <jet-label for="publisher_id" value="Publishers" />
                   <select id="publisher_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"
                   v-model="filter.publisher_id"
                   >
                       <option v-for="publisher in publishers" :value="publisher.id">{{ publisher.name }}</option>
                   </select>
+            </div>
+
+            <div class="filter">
+              <jet-label for="note" value="Note" />
+              <jet-input id="note" type="text" class="mt-1 block w-full" v-model="filter.note" autocomplete="note" />
             </div>
 
           </div>
@@ -77,69 +77,45 @@
                     <table class="min-w-full divide-y divide-gray-200">
                       <thead class="bg-gray-50">
                         <tr>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            School Order #
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Date
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Publisher</th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Challan #
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Amount
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Note
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Publisher</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">School</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mode</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Note</th>
+                          <!-- <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th> -->
                         </tr>
                       </thead>
                       <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="challan in challans.data" :key="challan.id">
+                        <tr v-for="payment in payments.data" :key="payment.id">
                           <td class="px-6 py-4 whitespace-nowrap">
-                              <div class="text-sm text-gray-500">{{ challan.school_order_id }}</div>
+                              <div class="text-sm text-gray-500">{{ payment.date }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                              <div class="text-sm text-gray-500">{{ challan.date }}</div>
+                              <div class="text-sm text-gray-900">{{ payment.publisher.name }}</div>
+                              <div class="text-sm text-gray-500">Order: #{{ payment.order.id }}</div>
                           </td>
-
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ challan.publisher.name }}</div>
-                            <div class="text-sm text-gray-500">{{ challan.email }}</div>
-                            <div class="text-sm text-gray-500">{{ challan.mobile }}</div>
-                          </td>
-
-                          <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500">{{ challan.challan_no }}</div>
+                              <div class="text-sm text-gray-900">{{ payment.order.school.name }}</div>
+                              <div class="text-sm text-gray-500">Order: #{{ payment.order.school_order_id }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm text-gray-500">{{ challan.amount }}</div>
+                            <div class="text-sm text-gray-500">{{ payment.amount }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm uppercase text-gray-500">{{ challan.payment_status }}</div>
+                            <div class="text-sm uppercase text-gray-500">{{ payment.payment_mode }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm text-gray-500">{{ challan.note }}</div>
+                            <div class="text-sm text-gray-500">{{ payment.note }}</div>
                           </td>
-                          <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                            <Show-link class="p-1" :show="{route: 'publisher.payments.challan.show', id:challan.id }" showicon />
-
-                            <SimpleLink v-if="challan.payment_status != 'paid' " class="p-1" :link="{route: 'publisher.payments.challan.create', id:challan.id }" >
-                              <pay />
-                            </SimpleLink>
-
-                            <!-- <deliver-link :challan="{route: 'publisher.challan.delivery', id:challan.id }" title="Update delivery" showicon /> -->
-                          </td>
+                          <!-- <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium"> -->
+                            <!-- <Show-link class="p-1" :show="{route: 'publisher.payments.payment.show', id:payment.id }" showicon /> -->
+                            <!-- <Show-link class="p-1" :show="{route: 'publisher.payment.show', id:payment.id }" showicon /> -->
+                          <!-- </td> -->
                         </tr>
                       </tbody>
                     </table>
-                    <Pagination :pageData="challans" pageof=" Publishers Challans" />
+                    <Pagination :pageData="payments" pageof=" Publishers Payments" />
                    </div>
                 </div>
               </div>
@@ -156,42 +132,43 @@
     import AddLink from '@/Shared/Components/Links/Add.vue'
     import DeliverLink from '@/Shared/Components/Links/Delivery.vue'
     import ShowLink from '@/Shared/Components/Links/Show.vue'
-    import SimpleLink from '@/Shared/Components/Links/Simple.vue'
-    import pay from '@/Shared/Components/Icons/svg/Paypal.vue'
     import Search from '@/Shared/Components/Filters/Search.vue'
-    import { Inertia } from '@inertiajs/inertia'
     import JetLabel from '@/Jetstream/Label.vue'
     import FilterIcon from '@/Shared/Components/Icons/svg/Filter.vue'
     import JetInput from '@/Jetstream/Input.vue'
     import JetButton from '@/Jetstream/Button.vue'
+    import { Inertia } from '@inertiajs/inertia'
+
     export default defineComponent({
         components: {
-            AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination,ShowLink, SimpleLink,
-            FilterIcon,JetLabel,JetInput,JetButton,
-            pay
+            AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination,ShowLink,
+            FilterIcon,JetLabel,JetInput,JetButton
         },
-        props:{ challans: Object ,publishers: Object},
+        props:{ payments: Object, publishers: Object },
         data: () => ({
             showFilter: false,
             filter:{
               from_date: null,
               to_date: null,
-              quantity: null,
+              challan_no: null,
               amount: null,
-              status: null,
+              payment_status: null,
+              note: null,
               publisher_id: null,
               filter: 1
             }
         }),
+        created(){
+        },
         methods:{
           toggleFilter(){
-            this.showFilter   = !this.showFilter;
+            this.showFilter = !this.showFilter;
           },
           filterData(){
             Inertia.get(route('publisher.payments.index'), this.filter ,{
                         preserveState: true,
                         replace: true
-                    });
+            });
           }
         }
     })

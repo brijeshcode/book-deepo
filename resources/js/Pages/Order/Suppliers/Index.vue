@@ -7,7 +7,7 @@
             </h2>
         </template>
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplier.order.index', name:'Orders'} ]" />
+            <bread-simple :items="[ { route: 'suppliers.index'}, {route: 'supplier.order.index', name:'Orders'} ]" />
         </template>
 
         <template #actions>
@@ -34,10 +34,10 @@
               <jet-label for="quantity" value="Order quantity" />
               <jet-input id="quantity" type="number" class="mt-1 block w-full" v-model="filter.quantity" autocomplete="quantity" />
             </div>
-            <div class="filter">
+            <!-- <div class="filter">
               <jet-label for="amount" value="Order amount" />
               <jet-input id="amount" type="number" class="mt-1 block w-full" v-model="filter.amount" autocomplete="amount" />
-            </div>
+            </div> -->
            <!--  <div class="filter">
               <jet-label for="status" value="Order Status" />
               <select id="status" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"
@@ -79,24 +79,18 @@
                             <table class="min-w-full divide-y divide-gray-200">
                               <thead class="bg-gray-50">
                                 <tr>
-                                  <th>#</th>
-                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Date
-                                  </th>
-                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Supplier
-                                  </th>
-                                  <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Contact Person
-                                  </th> -->
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">School</th>
+
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Quantity
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Amount
+                                    Due
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Note
+                                    Paid
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                 </tr>
@@ -104,33 +98,39 @@
                               <tbody class="bg-white divide-y divide-gray-200">
                                 <tr v-for="order in orders.data" :key="order.id">
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                  {{ order.id }}</td>
-                                  <td class="px-6 py-4 whitespace-nowrap">
-                                    <Edit-link :edit="{route: 'supplierOrder.edit', to:order.id }" >
-                                    <div class="text-sm text-gray-500">{{ order.date }}</div>
-                                  </Edit-link>
+                                    <Show-link class="p-1" :show="{route: 'supplier.order.show', id:order.id }" >
+                                      <div class="text-sm text-gray-500">{{ order.date }}</div>
+                                    </Show-link>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ order.supplier.name }}</div>
+                                    <div class="text-sm text-gray-500">Order: #{{ order.id }}</div>
+                                  </td>
+
+                                  <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ order.school.name }}</div>
+                                    <div class="text-sm text-gray-500">Order: #{{ order.school_order_id }}</div>
                                   </td>
 
                                   <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-500">{{ order.quantity }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <div class="text-sm text-gray-500">{{ order.amount }}</div>
+                                    <div class="text-sm text-gray-500">{{ order.due }}</div>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <div class="text-sm text-gray-500">{{ order.note }}</div>
+                                    <div class="text-sm text-gray-500">{{ order.paid }}</div>
                                   </td>
+
                                   <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
                                     <Show-link class="p-1" :show="{route: 'supplier.order.show', id:order.id }" showicon />
                                     <span :title="order.order_recived_confirmation ? 'Order Recived Confirm By Publisher' : 'Order Revice not Confirma Not Recived'" class="p-1" :class="order.order_recived_confirmation ? 'text-green-500': 'text-gray-500'"> <SeenIcon /></span>
+                                    <simple-link v-if=" order.due > 0" class="p-1" :link="{route: 'supplier.payments.create', id:order.id }" ><pay-icon /></simple-link>
+
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
-
                             <Pagination :pageData="orders" pageof=" Suppliers Orders" />
                           </div>
                         </div>
@@ -157,12 +157,14 @@
     import JetButton from '@/Jetstream/Button.vue'
     import { Inertia } from '@inertiajs/inertia'
     import SeenIcon from '@/Shared/Components/Icons/svg/Doubletick.vue'
+    import SimpleLink from '@/Shared/Components/Links/Simple.vue'
+    import payIcon from '@/Shared/Components/Icons/svg/Paypal.vue'
 
 
     export default defineComponent({
         components: {
             AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination,ShowLink,
-            FilterIcon,JetLabel,JetInput,JetButton,SeenIcon
+            FilterIcon,JetLabel,JetInput,JetButton,SeenIcon,SimpleLink,payIcon
         },
         props: ['orders', 'suppliers' ],
 

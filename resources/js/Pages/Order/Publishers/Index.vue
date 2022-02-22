@@ -3,7 +3,6 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Publisher Order
-                <!-- <add-link createRoute="publisher.order.create" isbutton >Generate</add-link> -->
             </h2>
         </template>
 
@@ -12,7 +11,6 @@
         </template>
         <template #actions>
             <div class="flex">
-              <!-- <Add-link createRoute="publisher.order.create" title="Add new publisher order" withIcon /> -->
 
               <span @click="toggleFilter" class="p-2">
                 <FilterIcon class=" cursor-pointer text-gray-500 hover:text-gray-800" />
@@ -78,47 +76,42 @@
                     <table class="min-w-full divide-y divide-gray-200">
                       <thead class="bg-gray-50">
                         <tr>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Date
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Publisher
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Contact Person
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Quantity
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Amount
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Note
-                          </th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">School</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paid</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Note</th>
                           <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                         </tr>
                       </thead>
                       <tbody class="bg-white divide-y divide-gray-200">
                         <tr v-for="order in orders.data" :key="order.id">
                           <td class="px-6 py-4 whitespace-nowrap">
-
+                            <Show-link class="p-1" :show="{route: 'supplier.order.show', id:order.id }" >
                               <div class="text-sm text-gray-500">{{ order.date }}</div>
+                            </Show-link>
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">{{ order.publisher.name }}</div>
+                            <div class="text-sm text-gray-500">Order: #{{ order.id }}</div>
+                          </td>
 
-                          </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ order.publisher.name }}</div>
+                            <div class="text-sm text-gray-900">{{ order.school_order.school.name }}</div>
+                            <div class="text-sm text-gray-500">Order: #{{ order.school_order_id }}</div>
                           </td>
-                          <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ order.publisher.name }}</div>
-                            <div class="text-sm text-gray-500">{{ order.email }}</div>
-                            <div class="text-sm text-gray-500">{{ order.mobile }}</div>
-                          </td>
+
                           <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-500">{{ order.quantity }}</div>
                           </td>
+
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm text-gray-500">{{ order.amount }}</div>
+                            <div class="text-sm text-gray-500">{{ order.due }}</div>
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <div class="text-sm text-gray-500">{{ order.paid }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <div class="text-sm text-gray-500">{{ order.note }}</div>
@@ -127,6 +120,8 @@
                             <Show-link class="p-1" :show="{route: 'publisher.order.show', id:order.id }" showicon />
                             <span :title="order.order_recived_confirmation ? 'Order Recived Confirm By Supplier' : 'Order Revice not Confirma Not Recived'" class="p-1" :class="order.order_recived_confirmation ? 'text-green-500': 'text-gray-500'"> <SeenIcon /></span>
                             <!-- <deliver-link :order="{route: 'publisher.order.delivery', id:order.id }" title="Update delivery" showicon /> -->
+
+                             <simple-link v-if=" order.due > 0" class="p-1" :link="{route: 'publisher.payments.create', id:order.id }" ><pay-icon /></simple-link>
                           </td>
                         </tr>
                       </tbody>
@@ -156,6 +151,8 @@
     import FilterIcon from '@/Shared/Components/Icons/svg/Filter.vue'
     import JetInput from '@/Jetstream/Input.vue'
     import JetButton from '@/Jetstream/Button.vue'
+    import SimpleLink from '@/Shared/Components/Links/Simple.vue'
+    import payIcon from '@/Shared/Components/Icons/svg/Paypal.vue'
 
     export default defineComponent({
 
@@ -163,7 +160,7 @@
             AppLayout,BreadSimple,Search,AddLink,
             DeliverLink,Pagination,ShowLink,
             FilterIcon,JetLabel,JetInput,JetButton,
-            SeenIcon
+            SeenIcon,SimpleLink,payIcon
         },
         props:{ orders: Object , publishers: Object},
         data: () => ({

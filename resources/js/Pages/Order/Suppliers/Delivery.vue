@@ -7,8 +7,8 @@
         </template>
 
         <template #breadcrum>
-            <bread-simple v-if="edit" :items="[  { route: 'suppliers'}, {route: 'supplier.order.index', name:'Orders'} , { name:'edit'} ]" />
-            <bread-simple v-else :items="[ { route: 'suppliers'}, {route: 'supplier.order.index', name:'Orders'} , {route: 'supplierOrder.create', name:'Generate'} ]" />
+            <bread-simple v-if="edit" :items="[  { route: 'suppliers.index'}, {route: 'supplier.order.index', name:'Orders'} , { name:'edit'} ]" />
+            <bread-simple v-else :items="[ { route: 'suppliers.index'}, {route: 'supplier.order.index', name:'Orders'} , {route: 'supplier.order.create', name:'Generate'} ]" />
         </template>
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -186,7 +186,7 @@
                 if (confirm('Are you sure?')) {
                     this.form.items.splice(index, 1);
                     if (item_id) {
-                        axios.delete(route('supplierOrderItem.delete', item_id));
+                        axios.delete(route('supplier.order.item.delete', item_id));
                     }
                 }
             },
@@ -200,7 +200,7 @@
                });
                if (canSubmit) {
                     this.form.total_quantity = this.computeQuantity;
-                    this.order ? this.form.put(route('supplierOrder.update', this.order.id)) : this.form.post(route('supplierOrder.store'));
+                    this.order ? this.form.put(route('supplier.order.update', this.order.id)) : this.form.post(route('supplier.order.store'));
                }else{
                     alert('Order items are not set properly, "please select the book in the list" ');
                }

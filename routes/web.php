@@ -4,12 +4,14 @@ use App\Http\Controllers\Logs\SchoolOrderEmailLogController;
 use App\Http\Controllers\Order\PublisherDeliveryController;
 use App\Http\Controllers\Order\PublisherOrderController;
 use App\Http\Controllers\Order\PublisherPaymentController;
+use App\Http\Controllers\Order\PublisherReturnController;
 use App\Http\Controllers\Order\SaleController;
 use App\Http\Controllers\Order\SampleController;
 use App\Http\Controllers\Order\SchoolOrderController;
 use App\Http\Controllers\Order\SupplierDeliveryController;
 use App\Http\Controllers\Order\SupplierOrderController;
 use App\Http\Controllers\Order\SupplierPaymentController;
+use App\Http\Controllers\Order\SupplierReturnController;
 use App\Http\Controllers\Setup\BookController;
 use App\Http\Controllers\Setup\BundleController;
 use App\Http\Controllers\Setup\LocationsController;
@@ -99,15 +101,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/school/{school}/get-stock', [SchoolController::class, 'getStock'])->name('school.getStock');
 
 
-    Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers');
-    Route::get('/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
-    Route::get('/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
-    Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
-    Route::get('/suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
-    Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
-    Route::get('/supplier/{supplier}/books/', [SupplierController::class, 'books'])->name('suppliers.books');
-
-
     Route::get('books/list', [BookController::class , 'list'])->name('books.list');
     Route::resource('books', BookController::class)->except(['destroy']);
 
@@ -128,27 +121,37 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/{order}/delivery', 'delivery')->name('delivery');
         Route::get('/returns', 'returnIndex')->name('returns.index');
     });
-
-
     Route::controller(PublisherDeliveryController::class)->prefix('/publisher/deliveries')->name('publisher.delivery.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/', 'store')->name('store');
+        Route::get('/{delivery}/show', 'show')->name('show');
+    });
+    Route::controller(PublisherReturnController::class)->prefix('/publisher/returns')->name('publisher.return.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'store')->name('store');
+    });
 
+    Route::controller(PublisherPaymentController::class)->prefix('/publisher/payments')->name('publisher.payments.')
+        ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{publisherOrder}/order','create')->name('create');
+        Route::post('/','store')->name('store');
     });
 
 
+    Route::get('/supplier/{supplier}/books/', [SupplierController::class, 'books'])->name('suppliers.books');
+    Route::resource('suppliers', SupplierController::class)->except(['destroy']);
 
-    Route::get('/supplier/orders', [SupplierOrderController::class, 'index'])->name('supplier.order.index');
-    Route::get('/supplier/orders/create', [SupplierOrderController::class, 'create'])->name('supplierOrder.create');
-    Route::post('/supplier/orders', [SupplierOrderController::class, 'store'])->name('supplierOrder.store');
-    Route::get('/supplier/orders/{order}/edit', [SupplierOrderController::class, 'edit'])->name('supplierOrder.edit');
-    Route::get('/supplier/orders/{order}/show', [SupplierOrderController::class, 'show'])->name('supplier.order.show');
-    // Route::put('/supplier/order/{order}', [SupplierOrderController::class, 'update'])->name('supplierOrder.update');
-    Route::delete('/supplier/orders/item/{item}/delete', [SupplierOrderController::class, 'deleteItem'])->name('supplierOrderItem.delete');
+    Route::controller(SupplierOrderController::class)->prefix('/supplier/order')->name('supplier.order.')->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('', 'store')->name('store');
+        Route::get('/{order}/edit', 'edit')->name('edit');
+        Route::get('/{order}/show', 'show')->name('show');
+        Route::delete('/item/{item}/delete', 'deleteItem')->name('item.delete');
+        Route::get('/{order}/delivery', 'delivery')->name('delivery'); // un-used
 
-    Route::get('/supplier/orders/{order}/delivery', [SupplierOrderController::class, 'delivery'])->name('supplier.order.delivery'); // un-used
-
-    // Route::get('/supplier/orders/deliveries', [SupplierOrderController::class, 'deliveryIndex'])->name('supplier.delivery.index');
+    });
 
     // new route
     Route::controller(SupplierDeliveryController::class)->prefix('/supplier/delivery')->name('supplier.delivery.')->group(function () {
@@ -157,10 +160,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/{order}/delivery', 'delivery')->name('delivery');*/
         Route::post('/', 'store')->name('store');
         Route::get('/', 'index')->name('index');
+        Route::get('/{delivery}/show', 'show')->name('show');
 
     });
-
-    Route::get('/supplier/order/returns', [SupplierOrderController::class, 'returnIndex'])->name('supplier.returns.index');
+    Route::controller(SupplierReturnController::class)->prefix('/supplier/returns')->name('supplier.return.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'store')->name('store');
+    });
     Route::get('/supplier/order/returns/{return}', [SupplierOrderController::class, 'returnShow'])->name('supplier.returns.show');
 
 
@@ -181,12 +187,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
 
 
-
-
-
     Route::get('/school/orders/{order_id}/email-notification', [SchoolOrderEmailLogController::class, 'create'])->name('school.order.manual_email_notification');
     Route::post('/school/orders/{order_id}/email-notification', [SchoolOrderEmailLogController::class, 'store'])->name('school.order.manual_email_notification.store');
-
 
 
     Route::get('/warehouse/{warehouse_id}/schools', [WarehouseController::class, 'schools'])->name('warehouse.schools');
@@ -195,26 +197,29 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/location/{location_id}/publishers', [LocationsController::class, 'publishers'])->name('location.publishers');
 
     Route::resource('/bundles', BundleController::class)->except(['destroy']);
+
     Route::resource('/sales', SaleController::class)->except(['destroy']);
-    Route::post('/sales/{sale}/cancel', [SaleController::class, 'cancel'])->name('sales.cancel');
-    Route::get('/sales/{sale}/invoice/save', [SaleController::class, 'saveInvoice'])->name('sales.invoice.save');
-    Route::get('/sales/{sale}/invoice/print', [SaleController::class, 'printInvoice'])->name('sales.invoice.print');
+    Route::controller(SaleController::class)->prefix('/sales')->name('sales.')->group(function () {
+        Route::post('/{sale}/cancel', 'cancel')->name('cancel');
+        Route::get('/{sale}/invoice/save','saveInvoice')->name('invoice.save');
+        Route::get('/{sale}/invoice/print', 'printInvoice')->name('invoice.print');
+    });
+
+
+
+    Route::controller(SupplierPaymentController::class)->prefix('/supplier/payments')->name('supplier.payments.')
+        ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{supplierOrder}/order','create')->name('create');
+        Route::post('/','store')->name('store');
+        // Route::put('/','update')->name('update');
+        // Route::get('/{patyment}','show')->name('show');
+    });
+
     Route::resource('/users', UsersController::class)->except(['destroy', 'show']);
     Route::resource('/roles', RolesController::class)->except(['destroy', 'show']);
     Route::resource('/samples', SampleController::class)->except(['destroy']);
 
-
-    Route::get('/publisher/payments', [PublisherPaymentController::class, 'index'])->name('publisher.payments.index');
-    Route::get('/publisher/challan/{challan}/payment', [PublisherPaymentController::class, 'challanPayment'])->name('publisher.payments.challan.create');
-    Route::post('/publisher/challan/payment', [PublisherPaymentController::class, 'storeChallanPayment'])->name('publisher.payments.challan.store');
-
-    Route::get('/publisher/challan/{challan}', [PublisherPaymentController::class, 'showChallan'])->name('publisher.payments.challan.show');
-
-
-    Route::get('/supplier/payments', [SupplierPaymentController::class, 'index'])->name('supplier.payments.index');
-    Route::get('/supplier/challan/{challan}/payment', [SupplierPaymentController::class, 'challanPayment'])->name('supplier.payments.challan.create');
-    Route::post('/supplier/challan/payment', [SupplierPaymentController::class, 'storeChallanPayment'])->name('supplier.payments.challan.store');
-
-    Route::get('/supplier/challan/{challan}', [SupplierPaymentController::class, 'showChallan'])->name('supplier.payments.challan.show');
+    // Route::get('/supplier/challan/{challan}', [SupplierPaymentController::class, 'showChallan'])->name('supplier.payments.challan.show');
 
 });

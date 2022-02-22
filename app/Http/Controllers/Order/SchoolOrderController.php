@@ -5,15 +5,9 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Order\PublisherOrderController;
 use App\Models\Orders\PublisherOrder;
-use App\Models\Orders\PublisherOrderDelivery;
-use App\Models\Orders\PublisherOrderItem;
-use App\Models\Orders\PublisherOrderReturn;
 use App\Models\Orders\SchoolOrder;
 use App\Models\Orders\SchoolOrderItem;
 use App\Models\Orders\SupplierOrder;
-use App\Models\Orders\SupplierOrderDelivery;
-use App\Models\Orders\SupplierOrderItem;
-use App\Models\Orders\SupplierOrderReturn;
 use App\Models\Setup\Book;
 use App\Models\Setup\School;
 use Illuminate\Http\Request;
@@ -184,127 +178,15 @@ class SchoolOrderController extends Controller
                 // 'items.supplierDelivery',
                 // 'items.publisherDelivery',
                 'items.book' ,
-                'items.supplier',
-                'items.publisher',
+                'items.supplier:id,name',
+                'items.publisher:id,name',
                 'school'
             )
             ->where('id',$order_id)->first();
 
-        $schools = School::select('id', 'name', 'email' ,'mobile', 'contact_person')
-                    ->where('active', 1)->orderBy('name')->get();
+        $publisherOrders = PublisherOrder::with('deliveries.items', 'deliveries.items.book:id,name,class', 'deliveries.publisher:id,name', 'returns.items', 'challans')->where('school_order_id', $order_id)->first();
+        $supplierOrders = SupplierOrder::with('deliveries.items', 'deliveries.items.book:id,name,class', 'deliveries.supplier:id,name', 'returns.items', 'challans')->where('school_order_id', $order_id)->first();
 
-        $books = Book::with('suppliers', 'publisher:id,name,mobile,email')
-                ->select( 'id', 'publisher_id', 'sku_no','name', 'author_name' ,'description', 'quantity', 'cost', 'class' , 'note', 'subject')
-                ->where('active' , true)
-                ->orderBy('name')->get();
-
-        return Inertia::render('Order/Schools/Return', compact('schools', 'order', 'books'))->with('type', 'success')->with('message', 'Order generated successfully !!');
+        return Inertia::render('Order/Schools/Return', compact('supplierOrders', 'order', 'publisherOrders'))->with('type', 'success')->with('message', 'Order generated successfully !!');
     }
-
-    public function storeReturn(Request $request)
-    {
-        \DB::transaction(function() use ($request) {
-        $totalRecivedQuantity = $schoolOrderId = 0;
-        $bookQuantity = $suppleirReturns = $publisherReturns  = array();
-
-            foreach ($request->items as $key => $item) {
-                if ($item['quantity'] <= 0 ) continue;
-
-                $schoolOrderId =  $item['school_order_id'];
-
-                $bookQuantity[] = [
-                    'id' => $item['book_id'],
-                    'quantity' => $item['quantity'],
-                ];
-
-                if ($item['order_to'] == 'Supplier') {
-
-                    $supplierOrderItem = SupplierOrderItem::select('id')
-                    ->where('school_order_item_id' , $item['school_order_item_id'])
-                    ->first();
-
-                    $supplierOrder = SupplierOrder::select('id')
-                    ->where('school_order_id' , $item['school_order_id'])
-                    ->first();
-
-                    if (!isset($suppleirReturns[$item['supplier_id']])) {
-                        $suppleirReturns[$item['supplier_id']] = [
-                            'date' => now(),
-                            'supplier_order_id' => $supplierOrder->id,
-                            'supplier_id' => $item['supplier_id'],
-                            'quantity' => 0,
-                            'amount' => 0,
-                        ];
-                    }
-
-                    $suppleirReturns[$item['supplier_id']]['items'][] = [
-                            'date' => now(),
-                        'supplier_order_item_id' => $supplierOrderItem->id,
-                        'book_id' => $item['book_id'],
-                        'unit_price' => 0,
-                        'quantity' => $item['quantity'],
-                        'price' => 0
-                    ];
-                    $suppleirReturns[$item['supplier_id']]['quantity'] += $item['quantity'];
-                    // $delivery = SupplierOrderDelivery::create($delivery);
-                }else{
-
-                    $publisherOrderItem = PublisherOrderItem::select('id')
-                    ->where('school_order_item_id' , $item['school_order_item_id'])
-                    ->first();
-
-                    $publisherOrder = PublisherOrder::select('id')
-                    ->where('school_order_id' , $item['school_order_id'])
-                    ->first();
-
-
-                    if (!isset($publisherReturns[$item['publisher_id']])) {
-                        $publisherReturns[$item['publisher_id']] = [
-                            'date' => now(),
-                            'publisher_order_id' => $publisherOrder->id,
-                            'publisher_id' => $item['publisher_id'],
-                            'quantity' => 0,
-                            'amount' => 0,
-                        ];
-                    }
-
-                    $publisherReturns[$item['publisher_id']]['items'][] = [
-                        // 'school_order_item_id' => $item['id'],
-                            'date' => now(),
-                        'publisher_order_item_id' => $publisherOrderItem->id,
-                        'book_id' => $item['book_id'],
-                        'unit_price' => 0,
-                        'quantity' => $item['quantity'],
-                        'price' => 0
-                    ];
-                    $publisherReturns[$item['publisher_id']]['quantity'] += $item['quantity'];
-                    // $delivery = PublisherOrderDelivery::create($delivery);
-                }
-            }
-
-            if (count($suppleirReturns) > 0) {
-                // dd($suppleirReturns);
-                foreach ($suppleirReturns as $key => $supplierReturn) {
-                    $supplierReturn = SupplierOrderReturn::create($supplierReturn)->items()->createMany($supplierReturn['items']);
-                }
-            }
-
-            if (count($publisherReturns) > 0) {
-                foreach ($publisherReturns as $key => $publisherReturn) {
-                    $publisherReturn = PublisherOrderReturn::create($publisherReturn)->items()->createMany($publisherReturn['items']);
-                }
-            }
-
-            if (!empty($bookQuantity)) {
-                foreach ($bookQuantity as $key => $item) {
-                    $book = Book::where('id', $item['id'])->first();
-                    $book->quantity -= $item['quantity'];
-                    $book->save();
-                }
-            }
-
-        });
-        return redirect(route('school.order.index'))->with('type', 'success')->with('message', 'Return save successfully !!');
-    }
-
 }

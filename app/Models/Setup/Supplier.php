@@ -6,6 +6,7 @@ use App\Models\Orders\SupplierChallan;
 use App\Models\Orders\SupplierOrder;
 use App\Models\Orders\SupplierOrderDelivery;
 use App\Models\Orders\SupplierOrderReturn;
+use App\Models\Orders\SupplierPayment;
 use App\Models\Setup\Book;
 use App\Models\Setup\Location;
 use App\Traits\Authorable;
@@ -51,5 +52,10 @@ class Supplier extends Model
     public function returns()
     {
         return $this->hasMany(SupplierOrderReturn::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(SupplierPayment::class);
     }
 }

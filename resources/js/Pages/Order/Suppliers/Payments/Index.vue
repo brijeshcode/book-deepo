@@ -2,13 +2,12 @@
     <app-layout title="Supplier Payments">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Supplier Payments
-                <!-- <add-link createRoute="supplier.order.create" isbutton >Generate</add-link> -->
+                Supplier Payments History
             </h2>
         </template>
 
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplier.order.index', name:'Orders'}, { route: 'supplier.payments.index', name: 'Payments'} ]" />
+            <bread-simple :items="[ { route: 'suppliers.index'}, {route: 'supplier.order.index', name:'Orders'}, { route: 'supplier.payments.index', name: 'Payments History'} ]" />
         </template>
         <template #actions>
             <div class="flex">
@@ -30,22 +29,19 @@
               <jet-input id="to_date" type="date" class="mt-1 block w-full" v-model="filter.to_date" autocomplete="to_date" />
             </div>
             <div class="filter">
-              <jet-label for="challan_no" value="Challan #" />
-              <jet-input id="challan_no" type="text" class="mt-1 block w-full" v-model="filter.challan_no" autocomplete="challan_no" />
+              <jet-label for="supplier_order_id" value="Supplier Order #" />
+              <jet-input id="supplier_order_id" type="text" class="mt-1 block w-full" v-model="filter.supplier_order_id" autocomplete="supplier_order_id" />
             </div>
             <div class="filter">
               <jet-label for="amount" value="Amount" />
               <jet-input id="amount" type="number" class="mt-1 block w-full" v-model="filter.amount" autocomplete="amount" />
             </div>
+
             <div class="filter">
-              <jet-label for="payment_status" value="Payment Status" />
-              <select id="payment_status" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"
-                  v-model="filter.payment_status"
-                  >
-                  <option value="Due">Due</option>
-                  <option value="Paid">Paid</option>
-                  </select>
+              <jet-label for="payment_mode" value="Payment mode" />
+              <jet-input id="payment_mode" type="text" class="mt-1 block w-full" v-model="filter.payment_mode" autocomplete="payment_mode" />
             </div>
+
 
 
             <div class="filter">
@@ -81,69 +77,45 @@
                     <table class="min-w-full divide-y divide-gray-200">
                       <thead class="bg-gray-50">
                         <tr>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            School Order #
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Date
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Supplier</th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Challan #
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Amount
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Note
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">School</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mode</th>
+                          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Note</th>
+                          <!-- <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th> -->
                         </tr>
                       </thead>
                       <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="challan in challans.data" :key="challan.id">
+                        <tr v-for="payment in payments.data" :key="payment.id">
                           <td class="px-6 py-4 whitespace-nowrap">
-                              <div class="text-sm text-gray-500">{{ challan.school_order_id }}</div>
+                              <div class="text-sm text-gray-500">{{ payment.date }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                              <div class="text-sm text-gray-500">{{ challan.date }}</div>
+                              <div class="text-sm text-gray-900">{{ payment.supplier.name }}</div>
+                              <div class="text-sm text-gray-500">Order: #{{ payment.order.id }}</div>
                           </td>
-
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ challan.supplier.name }}</div>
-                            <div class="text-sm text-gray-500">{{ challan.email }}</div>
-                            <div class="text-sm text-gray-500">{{ challan.mobile }}</div>
-                          </td>
-
-                          <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-500">{{ challan.challan_no }}</div>
+                              <div class="text-sm text-gray-900">{{ payment.order.school.name }}</div>
+                              <div class="text-sm text-gray-500">Order: #{{ payment.order.school_order_id }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm text-gray-500">{{ challan.amount }}</div>
+                            <div class="text-sm text-gray-500">{{ payment.amount }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm uppercase text-gray-500">{{ challan.payment_status }}</div>
+                            <div class="text-sm uppercase text-gray-500">{{ payment.payment_mode }}</div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="text-sm text-gray-500">{{ challan.note }}</div>
+                            <div class="text-sm text-gray-500">{{ payment.note }}</div>
                           </td>
-                          <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
-                            <Show-link class="p-1" :show="{route: 'supplier.payments.challan.show', id:challan.id }" showicon />
-                            <!-- <Show-link class="p-1" :show="{route: 'supplier.challan.show', id:challan.id }" showicon /> -->
-                            <SimpleLink v-if="challan.payment_payment_status != 'paid' " class="p-1" :link="{route: 'supplier.payments.challan.create', id:challan.id }" >
-                              <pay />
-                            </SimpleLink>
-
-                            <!-- <deliver-link :challan="{route: 'supplier.challan.delivery', id:challan.id }" title="Update delivery" showicon /> -->
-                          </td>
+                          <!-- <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium"> -->
+                            <!-- <Show-link class="p-1" :show="{route: 'supplier.payments.payment.show', id:payment.id }" showicon /> -->
+                            <!-- <Show-link class="p-1" :show="{route: 'supplier.payment.show', id:payment.id }" showicon /> -->
+                          <!-- </td> -->
                         </tr>
                       </tbody>
                     </table>
-                    <Pagination :pageData="challans" pageof=" Suppliers Challans" />
+                    <Pagination :pageData="payments" pageof=" Suppliers Payments" />
                    </div>
                 </div>
               </div>
@@ -160,8 +132,6 @@
     import AddLink from '@/Shared/Components/Links/Add.vue'
     import DeliverLink from '@/Shared/Components/Links/Delivery.vue'
     import ShowLink from '@/Shared/Components/Links/Show.vue'
-    import SimpleLink from '@/Shared/Components/Links/Simple.vue'
-    import pay from '@/Shared/Components/Icons/svg/Paypal.vue'
     import Search from '@/Shared/Components/Filters/Search.vue'
     import JetLabel from '@/Jetstream/Label.vue'
     import FilterIcon from '@/Shared/Components/Icons/svg/Filter.vue'
@@ -171,11 +141,10 @@
 
     export default defineComponent({
         components: {
-            AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination,ShowLink, SimpleLink,
-            FilterIcon,JetLabel,JetInput,JetButton,
-            pay
+            AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination,ShowLink,
+            FilterIcon,JetLabel,JetInput,JetButton
         },
-        props:{ challans: Object, suppliers: Object },
+        props:{ payments: Object, suppliers: Object },
         data: () => ({
             showFilter: false,
             filter:{
@@ -199,7 +168,7 @@
             Inertia.get(route('supplier.payments.index'), this.filter ,{
                         preserveState: true,
                         replace: true
-                    });
+            });
           }
         }
     })

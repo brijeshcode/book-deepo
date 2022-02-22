@@ -20,11 +20,14 @@ class CreateSupplierChallansTable extends Migration
             $table->unsignedBigInteger('supplier_delivery_id')->nullable();
             $table->unsignedBigInteger('supplier_order_id')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
+            $table->unsignedBigInteger('delivery_id')->nullable();
+            $table->unsignedBigInteger('return_id')->nullable();
 
             $table->date('date');
             $table->string('challan_no');
             $table->double('amount',10,2)->default(0);
             $table->text('path')->nullable();
+            $table->enum('challan_type', ['delivery','return'])->default('delivery');
             $table->enum('payment_status', ['paid','due','partial'])->default('due');
             $table->text('note')->nullable();
 

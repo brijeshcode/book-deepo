@@ -6,6 +6,7 @@ use App\Models\Orders\PublisherChallan;
 use App\Models\Orders\PublisherOrder;
 use App\Models\Orders\PublisherOrderDelivery;
 use App\Models\Orders\PublisherOrderReturn;
+use App\Models\Orders\PublisherPayment;
 use App\Models\Setup\Book;
 use App\Models\Setup\Location;
 use App\Traits\Authorable;
@@ -49,5 +50,10 @@ class Publisher extends Model
     public function returns()
     {
         return $this->hasMany(PublisherOrderReturn::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(PublisherPayment::class);
     }
 }

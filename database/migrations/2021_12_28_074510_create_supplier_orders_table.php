@@ -19,6 +19,7 @@ class CreateSupplierOrdersTable extends Migration
             $table->unsignedBigInteger('school_id');
             $table->unsignedBigInteger('school_order_id');
             $table->enum('status', ['Requested','Partial','Completed', 'Cancelled'])->default('Requested');
+            $table->enum('payment_status', ['due','paid'])->default('due');
             $table->date('date');
             $table->unsignedBigInteger('quantity')->default(0);
             $table->double('amount', 10,2)->default(0);

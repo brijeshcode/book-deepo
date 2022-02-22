@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
 use App\Models\Orders\PublisherChallan;
+use App\Models\Orders\PublisherOrder;
 use App\Models\Orders\PublisherPayment;
 use App\Models\Setup\Publisher;
 use Illuminate\Http\Request;
@@ -13,25 +14,28 @@ class PublisherPaymentController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware(['can:access {{ auth }}'])->except(['locations','warehouses','suppliers','publishers']);
+        // $this->middleware(['can:access {{ auth }}'])->except(['locations','warehouses','publishers','publishers']);
         // $this->middleware(['can:create {{ auth }}'])->only(['create', 'store']);
         // $this->middleware(['can:edit {{ auth }}'])->only(['edit', 'update']);
     }
 
     public function index(Request $request)
     {
-        $challans = PublisherChallan::with('publisher:id,name')
-                ->when($request->challan_no, function ($query, $challan_no){
-                    $query->where('challan_no',  '='  , $challan_no);
+        $payments = PublisherPayment::with('publisher:id,name','order:id,school_id,school_order_id', 'order.school:id,name')
+                ->when($request->payment_mode, function ($query, $payment_mode){
+                    $query->wherePaymentMode($payment_mode);
                 })
                 ->when($request->amount, function ($query, $amount){
-                    $query->where('amount',  '='  , $amount);
+                    $query->whereAmount($amount);
                 })
-                ->when($request->payment_status, function ($query, $payment_status){
-                    $query->where('payment_status',  '='  , $payment_status);
+                ->when($request->payment_mode, function ($query, $payment_mode){
+                    $query->where('payment_mode',  '='  , $payment_mode);
                 })
                 ->when($request->publisher_id, function ($query, $publisher_id){
                     $query->where('publisher_id',  '='  , $publisher_id);
+                })
+                ->when($request->publisher_order_id, function ($query, $publisher_order_id){
+                    $query->where('publisher_order_id', $publisher_order_id);
                 })
                 ->when($request->from_date, function ($query, $from_date){
                     $query->where('date',  '>=' , $from_date);
@@ -45,17 +49,25 @@ class PublisherPaymentController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(10)
             ->withQueryString();
-        $publishers = Publisher::select('id', 'name')->whereActive(1)->has('challans')->get();
-        return Inertia::render('Order/Publishers/Payments/Index', compact('challans', 'publishers'));
+        $publishers = Publisher::select('id', 'name')->whereActive(1)->has('payments')->get();
+        return Inertia::render('Order/Publishers/Payments/Index', compact('payments', 'publishers'));
     }
 
-    public function create($publisherId)
+    public function create(PublisherOrder $publisherOrder)
     {
-        $challans = PublisherChallan::wherePublisherId($publisherId)->where("payment_status", 'due')->get();
-        return Inertia::render('Order/Publishers/Payments/Create', compact('challans'));
+        $publisherOrder->load('deliveries', 'returns', 'challans', 'payments');
+        return Inertia::render('Order/Publishers/Payments/Create', compact('publisherOrder'));
     }
 
-    public function challanPayment(PublisherChallan $challan)
+    public function store(Request $request)
+    {
+        \DB::transaction(function() use ($request) {
+            PublisherPayment::create($request->only('publisher_id', 'publisher_order_id', 'date', 'payment_mode', 'amount', 'note'));
+        });
+        return redirect(route('publisher.payments.index'))->with('type', 'success')->with('message', 'Publisher Order Payment store successfully !!');
+    }
+
+    /*public function challanPayment(PublisherChallan $challan)
     {
         $challan->load('publisher:id,name', 'delivery:id,date,quantity,discount_percent,discount,total_amount', 'schoolOrder:id,date,status,note,quantity,amount');
         return Inertia::render('Order/Publishers/Payments/Challan', compact('challan'));
@@ -74,5 +86,5 @@ class PublisherPaymentController extends Controller
         });
         return redirect(route('publisher.payments.index'))->with('type', 'success')->with('message', 'Challan Payment store successfully !!');
 
-    }
+    }*/
 }

@@ -3,11 +3,10 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Supplier Order Deliveries
-                <!-- <add-link createRoute="supplierOrder.create" isbutton >Generate</add-link> -->
             </h2>
         </template>
         <template #breadcrum>
-            <bread-simple :items="[ { route: 'suppliers'}, {route: 'supplier.order.index', name: 'Order'}, { name:'Deliveries'} ]" />
+            <bread-simple :items="[ { route: 'suppliers.index'}, {route: 'supplier.order.index', name: 'Order'}, { name:'Deliveries'} ]" />
         </template>
 
         <template #actions>
@@ -82,6 +81,9 @@
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Amount
                                   </th>
+                                  <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Action
+                                  </th>
                                 </tr>
 
                               </thead>
@@ -92,9 +94,7 @@
                                   </td>
 
                                   <td class="px-6 py-4 whitespace-nowrap">
-                                    <Edit-link :edit="{route: 'supplierOrder.edit', to:delivery.id }" >
                                     <div class="text-sm text-gray-500">{{ delivery.date }}</div>
-                                  </Edit-link>
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ delivery.supplier.name }}</div>
@@ -105,6 +105,9 @@
                                   </td>
                                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     <div class="text-sm text-gray-500">{{ delivery.total_amount }}</div>
+                                  </td>
+                                   <td class="px-6 py-4 whitespace-nowrap text-right flex justify-end text-sm font-medium">
+                                    <Show-link class="p-1" :show="{route: 'supplier.delivery.show', id:delivery.id }" showicon />
                                   </td>
                                 </tr>
                               </tbody>
@@ -123,7 +126,6 @@
 <script>
     import { defineComponent } from 'vue'
     import { Inertia } from '@inertiajs/inertia'
-    import { Link } from '@inertiajs/inertia-vue3';
     import AppLayout from '@/Layouts/AppLayout.vue'
     import Pagination from '@/Shared/Components/Pagination/Simple.vue'
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
@@ -134,11 +136,13 @@
     import FilterIcon from '@/Shared/Components/Icons/svg/Filter.vue'
     import JetInput from '@/Jetstream/Input.vue'
     import JetButton from '@/Jetstream/Button.vue'
+    import ShowLink from '@/Shared/Components/Links/Show.vue'
 
     export default defineComponent({
         components: {
             AppLayout,BreadSimple, Search,AddLink,DeliverLink,Pagination,
             FilterIcon,JetLabel,JetInput,JetButton
+            ,ShowLink
         },
         props:{
             deliveries: Object,

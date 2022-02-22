@@ -20,6 +20,7 @@ class CreatePublisherOrderReturnsTable extends Migration
             $table->unsignedBigInteger('publisher_order_id');
             $table->integer('quantity')->default(0);
             $table->double('amount', 10,2)->default(0);
+            $table->text('note')->nullable();
 
 
             $table->unsignedBigInteger('user_id')->default('1');

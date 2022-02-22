@@ -11,7 +11,7 @@ class PublisherOrderReturnItem extends Model
 {
     use HasFactory,SoftDeletes;
     use Authorable;
-    protected $fillable = ['date', 'publisher_order_return_id', 'publisher_order_item_id', 'book_id', 'unit_price', 'quantity', 'price'];
+    protected $fillable = ['publisher_order_return_id', 'publisher_order_item_id', 'book_id', 'unit_price', 'quantity', 'price'];
 
     public function returns()
     {

@@ -59,7 +59,7 @@
                                         </jet-dropdown-link>
 
                                         <jet-dropdown-link  :href="route('publisher.payments.index')">
-                                            Payments
+                                            Payments History
                                         </jet-dropdown-link>
                                     </template>
                                 </jet-dropdown>
@@ -73,7 +73,7 @@
 
                                     <template #content>
 
-                                        <jet-dropdown-link :href="route('suppliers')">
+                                        <jet-dropdown-link :href="route('suppliers.index')">
                                             List
                                         </jet-dropdown-link>
 
@@ -85,12 +85,12 @@
                                             Deliveires
                                         </jet-dropdown-link>
 
-                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access suppliers returns'))"  :href="route('supplier.returns.index')">
+                                        <jet-dropdown-link v-if="($page.props.user.permissions.includes('access suppliers returns'))"  :href="route('supplier.return.index')">
                                             Returns
                                         </jet-dropdown-link>
 
                                         <jet-dropdown-link  :href="route('supplier.payments.index')">
-                                            Payments
+                                            Payments History
                                         </jet-dropdown-link>
 
 
@@ -301,10 +301,10 @@
                         <jet-responsive-nav-link :href="route('warehouses.index')" :active="route().current('warehouses.index')">
                             Warehouses
                         </jet-responsive-nav-link>
-                        <jet-responsive-nav-link :href="route('suppliers')" :active="route().current('suppliers')">
+                        <jet-responsive-nav-link :href="route('suppliers.index')" :active="route().current('suppliers.index')">
                             Suppliers
                         </jet-responsive-nav-link>
-                        <jet-responsive-nav-link :href="route('publishers.index')" :active="route().current('publishers')">
+                        <jet-responsive-nav-link :href="route('publishers.index')" :active="route().current('publishers.index')">
                             Publishers
                         </jet-responsive-nav-link>
                         <jet-responsive-nav-link :href="route('books.index')" :active="route().current('books')">
