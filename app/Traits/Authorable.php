@@ -10,8 +10,10 @@ trait Authorable
     {
         static::creating(function ($model) {
             if (empty($model->user_id)) {
-                $model->user_id = auth()->id();
-                $model->user_ip = request()->ip();
+                /*$model->user_id = auth()->id();
+                $model->user_ip = request()->ip();*/
+                $model->user_id = 1;
+                $model->user_ip = '127.0.0.1';
             }
         });
     }
