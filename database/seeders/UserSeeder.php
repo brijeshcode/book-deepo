@@ -23,9 +23,6 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'remember_token' => Str::random(10),
             ],
-        );
-
-        User::insert(
             [
                 'name' => "Brijesh",
                 'email' => 'brijesh@phoeniixx.com',
@@ -34,5 +31,7 @@ class UserSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ],
         );
+
+
     }
 }

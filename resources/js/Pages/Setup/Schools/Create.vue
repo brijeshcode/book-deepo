@@ -109,7 +109,8 @@
                                 </div>
                                 <div>
                                     <Link v-if="schoolDoc.id " :href="schoolDoc.link" class="text-indigo-600">Click to open File </Link>
-                                    <input type="file"  @input="schoolDoc.link = $event.target.files[0]" class="w-full" />
+                                    <!-- <input type="file" @input="schoolDoc.link = $event.target.files[0]" /> -->
+                                    <input type="file" @input="schoolDoc.link = $event.target.files[0]" class="w-full" />
                                 </div>
 
                                 <div>
@@ -133,6 +134,9 @@
 
 <script>
     import { defineComponent } from 'vue'
+    import { Link } from '@inertiajs/inertia-vue3';
+    import { useForm } from '@inertiajs/inertia-vue3'
+
     import AppLayout from '@/Layouts/AppLayout.vue'
     import JetButton from '@/Jetstream/Button.vue'
     import JetInput from '@/Jetstream/Input.vue'
@@ -140,8 +144,6 @@
     import JetLabel from '@/Jetstream/Label.vue'
     import BreadSimple from '@/Shared/Components/Breadcrum/Simple.vue'
     import Trash from '@/Shared/Components/Icons/svg/Trash.vue'
-    import { Link } from '@inertiajs/inertia-vue3';
-    import { useForm } from '@inertiajs/inertia-vue3'
     import JetCheckbox from '@/Jetstream/Checkbox.vue'
 
     export default defineComponent({
@@ -162,6 +164,7 @@
          }),
         setup () {
             const form = useForm({
+              _method: 'PUT',
               name: null,
               warehouse_id: '',
               city: null,
@@ -178,7 +181,16 @@
 
             })
 
-            return { form  }
+            function submitData(){
+                if (this.school) {
+                    form.post(route('schools.update', this.school.id));
+                }else{
+                    form._method = 'POST';
+                    form.post(route('schools.store'));
+                }
+                // this.school ? form.post(route('schools.update', this.school.id)) : form.post(route('schools.store'))
+            }
+            return { form, submitData  }
         },
 
         created(){
@@ -207,9 +219,7 @@
                     link:''
                 });
             },
-            submitData(){
-                 this.school ? this.form.put(route('schools.update', this.school.id)) : this.form.post(route('schools.store'))
-            },
+
             removeDocument(index) {
                 if (confirm('Are you sure?')) { this.form.documents.splice(index, 1); }
             },

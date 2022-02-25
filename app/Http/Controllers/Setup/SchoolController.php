@@ -99,7 +99,7 @@ class SchoolController extends Controller
 
     public function update(Request $request, School $school)
     {
-
+        // dd($request->all());
         $this->validateFull($request);
         \DB::transaction(function() use ($request, $school) {
             $school->update($request->all());
@@ -115,6 +115,7 @@ class SchoolController extends Controller
                     $schoolDoc->title = $doc['title'];
                     $schoolDoc->note = $doc['note'];
                     $schoolDoc->link = $this->uploadSchoolDoc($doc['link'], $school->id, $doc['title']);
+                    $schoolDoc->save();
                     unset($oldDocs[$doc['id']]);
                     unset($docs[$key]);
                 }
